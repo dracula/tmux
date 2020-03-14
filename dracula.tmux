@@ -3,19 +3,25 @@
 main() {
 
   ## Colors
-  black='colour16'
   white='#f8f8f2'  #'colour255'
   gray='#44475a' #'colour236'
   dark_gray='#282a36' #'colour236'
   yellow='#f1fa8c' #'colour215'
   light_purple='#bd93f9' #'colour141'
   dark_purple='#6272a4' #'colour61'
+  cyan='#8be9fd'
+  green='#50fa7b'
+  orange='#ffb86c'
+  pink='#ff79c6'
+  red='#ff555'
 
   ## Icons
   left_sep=''
   right_sep=''
   right_alt_sep=''
 
+  tmux set-option -g pane-border-style "fg=${dark_purple}"
+  tmux set-option -g pane-active-border-style "fg=${pink}"
   tmux set-option -g status on
   tmux set-option -g status-left-length 100
   tmux set-option -g status-right-length 100
