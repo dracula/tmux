@@ -1,51 +1,44 @@
 #!/usr/bin/env bash
 
-# Dracula inspired color scheme for tmux
-# Author: Dane Williams
+main() {
 
-main()
-{
-	# Dracula Color Palette
-	background_color='#282a36'
-	current_line_color='#44475a'
-	foreground_color='#f8f8f2'
-	comment_color='#6272a4'
-	cyan='#8be9fd'
-	green='#50fa7b'
-	orange='#ffb86c'
-	pink='#ff79c6'
-	purple='#bd93f9'
-	red='#ff5555'
-	yellow='#f1fa8c'
+  ## Colors
+  black='colour16'
+  white='colour255'
+  gray='colour236'
+  dark_gray='colour236'
+  yellow='colour215'
+  light_purple='colour141'
+  dark_purple='colour61'
 
-	tmux set-option -g default-terminal "screen-256color"
-	
-	# border for panes
-	tmux set-option -g pane-border-style-fg "${comment_color}"
-	tmux set-option -g pane-active-border-style-fg "${pink}"
+  ## Icons
+  left_sep=''
+  right_sep=''
+  right_alt_sep=''
 
-	# message text
-	tmux set-option -g message-style-bg "${current_line_color}"
-	tmux set-option -g message-style-fg "${cyan}"
-
-	# status line
-	tmux set-option -g status on
-	tmux set-option -g status-style-bg "${current_line_color}"
-	tmux set-option -g status-style-fg "${purple}"
-	tmux set-option -g status-interval 1
-
-	# left
-	tmux set-option -g status-left "#[bg=${foreground_color}]#[fg=${background_color}]#{?client_prefix,#[bg=${pink}],} ☺"
-	tmux set-option -ga status-left "#[bg=${current_line_color}]#[fg=${pink}] #{?window_zoomed_flag, ↕  ,   }"
-
-	# right
-	tmux set-option -g status-right "#[fg=${cyan},bg=${current_line_color}]#[fg=${current_line_color},bg=${cyan}] #(tmux-mem-cpu-load -g 5 --interval 2) "
-	tmux set-option -ga status-right "#[fg=${pink},bg=${cyan}]#[fg=${current_line_color},bg=${pink}] #(${uptime | cut -f 4-5 -d " " | cut -f 1 -d ","}) "
-	tmux set-option -ga status-right "#[fg={purple},bg=${pink}][fg=${foreground_color},bg=${purple}] %a %H:%M:%S #[fg=${comment_color}]%Y-%m-%d "
-
-	# window status
-	tmux set-window-option -g window-status-style "fg=${purple}, bg=${background_color}"
-	tmux set-window-option -g window-status-current-style "fg=${pink}, bg=${background_color}"
-	tmux set-window-option -g windows-status-current-format "#[fg=current_line_color]#[bg=${purple}][fg=${foreground_color}]#[bg=${purple}] #I #W #[fg=${purple}]#[bg=${current_line_color}]"
+  tmux set-option -g status on
+  tmux set-option -g status-left-length 100
+  tmux set-option -g status-right-length 100
+  tmux set-option -g status-bg "${dark_gray}"
+  tmux set-option -g pane-active-border-fg "${dark_purple}"
+  tmux set-option -g pane-border-fg "${gray}"
+  tmux set-option -g message-bg "${gray}"
+  tmux set-option -g message-fg "${white}"
+  tmux set-option -g message-command-bg "${gray}"
+  tmux set-option -g message-command-fg "${white}"
+  tmux set-option -g status-left " #I #[fg=${dark_gray},reverse]${right_sep} "
+  tmux set-option -g status-left-style "fg=${white},bg=${dark_purple},bold"
+  tmux set-option -g status-right "${left_sep}#[bg=${black},reverse] %Y-%m-%d %H:%M "
+  tmux set-option -g status-right-style "fg=${light_purple},bg=${dark_gray}"
+  tmux set-window-option -g window-status-activity-style "fg=${white},bg=${gray}"
+  tmux set-window-option -g window-status-separator ''
+  tmux set-window-option -g window-status-format ' #I #W '
+  tmux set-window-option -g window-status-style "fg=${yellow},bg=${dark_gray}"
+  tmux set-window-option -g window-status-current-format \
+    "${right_sep}#[fg=${black}] #I ${right_alt_sep} #W #[fg=${dark_gray},reverse]${right_sep}"
+  tmux set-window-option -g window-status-current-style "fg=${dark_gray},bg=${light_purple}"
 }
 
+main
+
+# vim: set filetype=bash
