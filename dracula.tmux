@@ -16,10 +16,15 @@ main()
   cyan='#8be9fd'
   green='#50fa7b'
   orange='#ffb86c'
+  red='#ff5555'
   pink='#ff79c6'
+  yellow='#f1fa8c'
 
   # set refresh interval
   tmux set-option -g status-interval 1
+
+  # set clock
+  tmux set-option -g clock-mode-style 12
 
   # set length 
   tmux set-option -g status-left-length 100
@@ -34,9 +39,13 @@ main()
  
   # status bar
   tmux set-option -g status-style "bg=${gray},fg=${white}"
-  tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${orange}],} ☺ " 
-  tmux set-option -g status-right "#[fg=${dark_gray},bg=${cyan}] tructus "
-  tmux set-option -ga status-right "#[fg=${dark_gray},bg=${pink}] #(~/.tmux/plugins/tmux-dracula/battery.sh) #[fg=${white},bg=${dark_purple}] %a %H:%M #(date +%Z) %m/%d/%Y "
+
+  tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺ " 
+
+  tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #(~/.tmux/plugins/tmux-dracula/battery.sh) "
+  tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] tructus "
+  tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] flazen " 
+  tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
   
   # window tabs 
   tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W "

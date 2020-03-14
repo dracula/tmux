@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+#author: Dane Williams
+#scipt for gathering battery percentage and A/C status
+#script is called in dracula.tmux program
+
 battery_percent()
 {
 	echo $(pmset -g batt | grep -Eo '[0-9]?[0-9]?[0-9]%')
@@ -23,5 +27,6 @@ main()
 	echo "♥ $bat_stat$bat_perc"
 }
 
+#run main driver program
 main
 
