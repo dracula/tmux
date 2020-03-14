@@ -1,2 +1,2 @@
 # tmux-dracula
-Dracula theme for tmux :)
+Color scheme for tmux inspired by the popular Dracula theme :)
