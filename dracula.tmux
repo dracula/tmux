@@ -28,11 +28,11 @@ main() {
   tmux set-option -g status-right-length 100
   tmux set-option -g status-bg "${dark_gray}"
   
-  tmux set-option -g message-bg "${gray}"
-  tmux set-option -g message-fg "${white}"
+ # tmux set-option -g message-bg "${gray}"
+ # tmux set-option -g message-fg "${white}"
   tmux set-option -g message-style "bg=${gray},fg=${cyan}"
-  tmux set-option -g message-command-bg "${gray}"
-  tmux set-option -g message-command-fg "${white}"
+ # tmux set-option -g message-command-bg "${gray}"
+ # tmux set-option -g message-command-fg "${white}"
   
   tmux set-option -g status-left " #I #[fg=${dark_gray},reverse]${right_sep} "
   tmux set-option -g status-left-style "fg=${white},bg=${dark_purple},bold"
@@ -49,4 +49,3 @@ main() {
 
 main
 
-# vim: set filetype=bash
