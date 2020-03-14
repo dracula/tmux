@@ -20,7 +20,22 @@ main()
 
 	tmux set-option -g default-terminal "screen-256color"
 	
-	#border for panes
-	tmux set-option -g pane-border-style fg='#6272a4'
-	tmux set-option -g pane-active-border-style fg='#ff79c6'
+	# border for panes
+	tmux set-option -g pane-border-style-fg "${comment_color}"
+	tmux set-option -g pane-active-border-style-fg "${pink}"
+
+	# message text
+	tmux set-option -g message-style-bg "${current_line_color}"
+	tmux set-option -g message-style-fg "${cyan}"
+
+	# status line
+	tmux set-option -g status on
+	tmux set-option -g status-style-bg "${current_line_color}"
+	tmux set-option -g status-style-fg "${purple}"
+	tmux set-option -g status-interval 1
+
+	tmux set-option -g status-left "#[bg=${foreground_color}]#[fg=${background_color}]#{?client_prefix,#[bg=${pink}],} ☺"
+
+	tmux set-option -ga status-left "#[bg=${current_line_color}]#[fg=${pink}] #{?window_zoomed_flag, ↕  ,   }"
+
 }
