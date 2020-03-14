@@ -4,12 +4,12 @@ main() {
 
   ## Colors
   black='colour16'
-  white='colour255'
-  gray='colour236'
-  dark_gray='colour236'
-  yellow='colour215'
-  light_purple='colour141'
-  dark_purple='colour61'
+  white='#f8f8f2'  #'colour255'
+  gray='#44475a' #'colour236'
+  dark_gray='#282a36' #'colour236'
+  yellow='#f1fa8c' #'colour215'
+  light_purple='#bd93f9' #'colour141'
+  dark_purple='#6272a4' #'colour61'
 
   ## Icons
   left_sep=''
