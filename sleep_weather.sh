@@ -4,7 +4,6 @@
 
 main()
 {
-	echo "Loading Weather..." > ~/.tmux/plugins/tmux-dracula/weather.txt
 	while tmux has-session &> /dev/null
 	do
 		./weather.sh > ~/.tmux/plugins/tmux-dracula/weather.txt

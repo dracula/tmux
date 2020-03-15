@@ -38,6 +38,8 @@ main()
   tmux set-option -g message-style "bg=${gray},fg=${white}"
 
   # run scripts in background
+  echo "Loading Weather..." > ~/.tmux/plugins/tmux-dracula/weather.txt &
+  ./weather.sh > ~/.tmux/plugins/tmux-dracula/weather.txt &
   ./sleep_weather.sh &
 
   # status bar
