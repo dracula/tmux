@@ -24,7 +24,7 @@ main()
   #./sleep_weather.sh &
 
   # set refresh interval
-  tmux set-option -g status-interval 1
+  tmux set-option -g status-interval 5
 
   # set clock
   tmux set-option -g clock-mode-style 12
