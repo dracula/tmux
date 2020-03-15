@@ -32,15 +32,15 @@ forecast_unicode()
 	forecast=$(weather_information | head -n 1)
 
 	if [[ $forecast =~ 'Snow' ]]; then
-		echo '❄'
+		echo '❄ '
 	elif [[ (($forecast =~ 'Rain') || ($forecast =~ 'Shower')) ]]; then
-		echo '☂'
+		echo '☂ '
 	elif [[ (($forecast =~ 'Overcast') || ($forecast =~ 'Cloud')) ]]; then
-		echo '☁'
+		echo '☁ '
 	elif [[ $forecast = 'NA' ]]; then
 		echo ''
 	else
-		echo '☀'
+		echo '☀ '
 	fi
 	
 
@@ -49,7 +49,7 @@ forecast_unicode()
 display_weather()
 {
 	if [ $country = 'US' ]; then
-		echo " $(forecast_unicode) $(get_temp)°F"
+		echo " $(forecast_unicode)$(get_temp)°F"
 	else
 		echo ''
 	fi
