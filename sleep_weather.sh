@@ -6,7 +6,7 @@ main()
 {
 	while true
 	do
-		./weather.sh
+		./weather.sh > ~/.tmux/plugins/tmux-dracula/weather.txt
 		sleep 600
 	done
 }
