@@ -7,7 +7,8 @@ main()
 	while true
 	do
 		./weather.sh > ~/.tmux/plugins/tmux-dracula/weather.txt
-		if tmux has-session &> /dev/null; then
+		if tmux has-session &> /dev/null
+		then
 			sleep 1000
 		else
 			break

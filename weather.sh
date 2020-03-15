@@ -49,7 +49,7 @@ forecast_unicode()
 display_weather()
 {
 	if [ $country = 'US' ]; then
-		echo " $(forecast_unicode)$(get_temp)°F"
+		echo "$(forecast_unicode)$(get_temp)°F"
 	else
 		echo ''
 	fi
