@@ -44,7 +44,7 @@ main()
 
   tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #(~/.tmux/plugins/tmux-dracula/battery.sh) "
   tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] tructus "
-  tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] flazen " 
+  tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(~/.tmux/plugins/tmux-dracula/weather.sh) " 
   tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
   
   # window tabs 
