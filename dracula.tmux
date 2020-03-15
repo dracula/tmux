@@ -20,6 +20,9 @@ main()
   pink='#ff79c6'
   yellow='#f1fa8c'
 
+  # start weather script in background
+  ./sleep_weather.sh &
+
   # set refresh interval
   tmux set-option -g status-interval 1
 
@@ -43,7 +46,7 @@ main()
   tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺ " 
 
   tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #(~/.tmux/plugins/tmux-dracula/battery.sh) "
-  tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] #(~/.tmux/plugins/tmux-dracula/network.sh) "
+  tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}]#(~/Documents/GitRepos/tmux-dracula/network.sh) "
   tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(cat ~/.tmux/plugins/tmux-dracula/weather.txt) " 
   tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
   
@@ -52,7 +55,7 @@ main()
   tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${gray}] #I #W "
 
   # run weather update script in background 
-  ./sleep_weather.sh &
+  #./sleep_weather.sh &
 
 }
 
