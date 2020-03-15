@@ -39,6 +39,8 @@ forecast_unicode()
 		echo '☂'
 	elif [[ (($forecast =~ 'Overcast') || ($forecast =~ 'Cloud')) ]]; then
 		echo '☁'
+	elif [[ $forecast = 'NA' ]]; then
+		echo ''
 	else
 		echo '☀'
 	fi
