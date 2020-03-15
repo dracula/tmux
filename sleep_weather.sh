@@ -4,15 +4,14 @@
 
 main()
 {
-	while tmux has-session &> /dev/null
+	while true
 	do
 		./weather.sh > ~/.tmux/plugins/tmux-dracula/weather.txt
-	#	error=$(cat ~/.tmux/plugins/tmux-dracula/weather.txt | sed -n 2p)
-	#	if [ $error = '  "error": {' ]; then
-	#		echo "Too Many Requests" > ~/.tmux/plugins/tmux-dracula/weather.txt
-	#		break
-	#	fi
-		sleep 1000
+		if tmux has-session &> /dev/null; then
+			sleep 1000
+		else
+			break
+		fi
 	done
 }
 

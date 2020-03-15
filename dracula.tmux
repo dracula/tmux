@@ -51,6 +51,7 @@ main()
   tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W "
   tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${gray}] #I #W "
 
+  # run weather update script in background 
   ./sleep_weather.sh &
 
 }

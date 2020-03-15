@@ -12,8 +12,6 @@ country=$(curl -s https://ipinfo.io/country 2> /dev/null)
 region_code_url=http://www.ip2country.net/ip2country/region_code.html
 weather_url=https://forecast.weather.gov/zipcity.php
 
-zip=46556
-
 #substitute region code for regions in north america
 get_region_code()
 {
