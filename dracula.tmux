@@ -37,8 +37,9 @@ main()
   # message styling
   tmux set-option -g message-style "bg=${gray},fg=${white}"
 
-  # run weather script in background
-  ./sleep_weather.sh > weather.txt &
+  # run scripts in background
+  #./sleep_weather.sh > weather.txt &
+  #./internet.sh > internet.txt &
 
   # status bar
   tmux set-option -g status-style "bg=${gray},fg=${white}"
@@ -47,7 +48,7 @@ main()
 
   tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #(~/.tmux/plugins/tmux-dracula/battery.sh) "
   tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] tructus "
-  tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(cat weather.txt) " 
+  tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(cat ~/.tmux/plugins/tmux-dracula/weather.txt) " 
   tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
   
   # window tabs 
