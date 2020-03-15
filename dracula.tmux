@@ -39,7 +39,6 @@ main()
 
   # run scripts in background
   ./sleep_weather.sh &
-  #./internet.sh > internet.txt &
 
   # status bar
   tmux set-option -g status-style "bg=${gray},fg=${white}"

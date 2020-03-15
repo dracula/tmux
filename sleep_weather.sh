@@ -4,10 +4,11 @@
 
 main()
 {
+	echo "Loading Weather..." > ~/.tmux/plugins/tmux-dracula/weather.txt
 	while tmux has-session &> /dev/null
 	do
 		./weather.sh > ~/.tmux/plugins/tmux-dracula/weather.txt
-		if [ (cat ~/.tmux/plugins/tmux-dracula/weather.txt | tail -1) = } ]; then
+		if [ (cat ~/.tmux/plugins/tmux-dracula/weather.txt | sed -n 2p) =~ '  "error": {' ]; then
 			echo "Too Many Requests" > ~/.tmux/plugins/tmux-dracula/weather.txt
 			break
 		fi
