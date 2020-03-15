@@ -2,8 +2,8 @@
 Color scheme for tmux inspired by the popular Dracula theme
 
 ## Features
-Day, date, time, timezone
-Current location based on network with temperature and forecast icon (if available)
+Day, date, time, timezone  
+Current location based on network with temperature and forecast icon (if available)  
 Network connection status and SSID
 Battery percentage and AC power connection status
 Color code based on if prefix is active or not
