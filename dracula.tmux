@@ -38,7 +38,7 @@ main()
   tmux set-option -g message-style "bg=${gray},fg=${white}"
 
   # run scripts in background
-  #./sleep_weather.sh > weather.txt &
+  ./sleep_weather.sh > weather.txt &
   #./internet.sh > internet.txt &
 
   # status bar
