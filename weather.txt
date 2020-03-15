@@ -1,0 +1,6 @@
+ {
+  "error": {
+    "title": "Rate limit exceeded",
+    "message": "You've hit the daily limit for the unauthenticated API. Create an API access token by signing up to get 50k req/month."
+  }
+}, { "error": { "title": "Rate limit exceeded", "message": "You've hit the daily limit for the unauthenticated API. Create an API access token by signing up to get 50k req/month." } }

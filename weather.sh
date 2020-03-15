@@ -57,8 +57,8 @@ display_weather()
 
 main()
 {
+	# process should be cancelled when session is killed
 	if ping -q -c 1 -W 1 ipinfo.io &>/dev/null; then
-
 		echo "$(display_weather) $city, $(get_region_code)"
 	else
 		echo "Location Unavailable"
