@@ -16,7 +16,7 @@ battery_status()
 	if [ $status = 'discharging' ]; then
 		echo ''
 	else
-		echo 'Charging '
+		echo 'AC '
 	fi
 }
 
