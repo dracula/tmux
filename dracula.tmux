@@ -21,7 +21,7 @@ main()
   yellow='#f1fa8c'
 
   # start weather script in background
-  ./sleep_weather.sh &
+  #./sleep_weather.sh &
 
   # set refresh interval
   tmux set-option -g status-interval 1
@@ -55,7 +55,7 @@ main()
   tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${gray}] #I #W "
 
   # run weather update script in background 
-  #./sleep_weather.sh &
+  ./sleep_weather.sh &
 
 }
 

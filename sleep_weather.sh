@@ -9,7 +9,7 @@ main()
 		./weather.sh > ~/.tmux/plugins/tmux-dracula/weather.txt
 		if tmux has-session &> /dev/null
 		then
-			sleep 1000
+			sleep 15m
 		else
 			break
 		fi
