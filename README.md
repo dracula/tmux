@@ -15,7 +15,7 @@ List of windows with current window highlighted
 ![Alt text](screenshots/alt-tmux-dracula-screenshot.jpg?raw=true "Tmux Dracula")  
 When prefix is enabled smiley face turns from green to yellow  
 When charging, 'AC' is displayed
-If forecast information is available, a ☀, ☁, ☂, or ❄ corresponding with the forecast is displayed alongside the temperature
+If forecast information is available, a ☀, ☁, ☂, or ❄ unicode character corresponding with the forecast is displayed alongside the temperature
   
 ## Compatibility
 Designed for compatibility with Mac systems and tested on macOS 10.15 Catalina  
