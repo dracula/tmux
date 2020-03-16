@@ -20,5 +20,6 @@ Be sure that `run -b '~/.tmux/plugins/tpm/tpm'` is at the bottom of .tmux.config
 Restart tmux and then use `prefix + I` (capital I as in Install) to install  
   
 ## Troubleshooting
-Some users have experienced issues where the weather does not load immediately. This can be solved by manually running dracula.tmux:  
+Some users have experienced issues where the weather does not load immediately. 
+This may be solved by manually running dracula.tmux:  
 `~/.tmux/plugins/tmux-dracula/dracula.tmux`  
