@@ -4,10 +4,13 @@
 
 main()
 {
-	./weather.sh > ~/.tmux/plugins/tmux-dracula/weather.txt
+	current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+	$current_dir/weather.sh > $current_dir/../data/weather.txt
+	
 	while tmux has-session &> /dev/null
 	do
-		./weather.sh > ~/.tmux/plugins/tmux-dracula/weather.txt
+		$current_dir/weather.sh > $current_dir/../data/weather.txt
 		if tmux has-session &> /dev/null
 		then
 			sleep 1000
