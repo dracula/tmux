@@ -14,6 +14,8 @@ List of windows with current window highlighted
 ![Alt text](screenshots/tmux-dracula-screenshot.jpg?raw=true "Tmux Dracula")  
 tmux-dracula in action  
   
+  
+  
 ![Alt text](screenshots/alt-tmux-dracula-screenshot.jpg?raw=true "Tmux Dracula")  
 When prefix is enabled smiley face turns from green to yellow  
 When charging, 'AC' is displayed
