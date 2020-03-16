@@ -46,7 +46,7 @@ main()
   tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺ " 
 
   tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #(~/.tmux/plugins/tmux-dracula/battery.sh) "
-  tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}]#(~/Documents/GitRepos/tmux-dracula/network.sh) "
+  tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}]#(~/.tmux/plugins/tmux-dracula/network.sh) "
   tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(cat ~/.tmux/plugins/tmux-dracula/weather.txt) " 
   tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
   
