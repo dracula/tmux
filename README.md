@@ -1,6 +1,6 @@
 # tmux-dracula
-Color scheme for tmux inspired by the popular Dracula theme  
-For official Dracula theme on other platforms check out https://draculatheme.com/  
+Color scheme for tmux inspired by the popular dracula theme  
+For dracula theme on other platforms check out the <a href="https://draculatheme.com/">official dracula theme</a>  
   
 ## Features
 Day, date, time, timezone  
