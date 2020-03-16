@@ -12,7 +12,11 @@ List of windows with current window highlighted
   
 ## Screenshots
 ![Alt text](screenshots/tmux-dracula-screenshot.jpg?raw=true "Tmux Dracula")
-
+  
+## Compatibility
+Designed for compatibility with Mac systems and tested on macOS 10.15 Catalina  
+Compatibility with Linux systems and/or WSL on Windows is not yet available  
+  
 ## Installation
 Use TPM (tmux plugin manager) and add to your .tmux.conf:  
 `set -g @plugin 'danerwilliams/tmux-dracula'`  
