@@ -4,12 +4,13 @@
 
 main()
 {
-	while true
+	./weather.sh > ~/.tmux/plugins/tmux-dracula/weather.txt
+	while tmux has-session &> /dev/null
 	do
 		./weather.sh > ~/.tmux/plugins/tmux-dracula/weather.txt
 		if tmux has-session &> /dev/null
 		then
-			sleep 15m
+			sleep 1000
 		else
 			break
 		fi
