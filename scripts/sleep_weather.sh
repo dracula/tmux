@@ -13,7 +13,7 @@ main()
 		$current_dir/weather.sh > $current_dir/../data/weather.txt
 		if tmux has-session &> /dev/null
 		then
-			sleep 1000
+			sleep 1200
 		else
 			break
 		fi
