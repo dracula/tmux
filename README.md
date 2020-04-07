@@ -2,7 +2,7 @@
 
 > A dark theme for [tmux](https://github.com/tmux/tmux/wiki)  
   
-![Screenshot](./screenshot.jpg)  
+![Screenshot](./screenshot.png)  
   
 ## Install
 
