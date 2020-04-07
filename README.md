@@ -7,7 +7,7 @@
 ## Install
 
 Use TPM (tmux plugin manager) and add to your .tmux.conf:  
-`set -g @plugin 'danerwilliams/tmux-dracula'`  
+`set -g @plugin 'dracula/tmux'`  
 Be sure that `run -b '~/.tmux/plugins/tpm/tpm'` is at the bottom of .tmux.config for tpm to work  
 Restart tmux and then use `prefix + I` (capital I as in Install) to install  
   
