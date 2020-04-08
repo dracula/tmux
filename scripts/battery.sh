@@ -6,17 +6,49 @@
 
 battery_percent()
 {
-	echo $(pmset -g batt | grep -Eo '[0-9]?[0-9]?[0-9]%')
+	# Check OS
+	case $(uname -s) in
+		Linux)
+			cat /sys/class/power_supply/BAT0/capacity
+		;;
+
+		Darwin)
+			echo $(pmset -g batt | grep -Eo '[0-9]?[0-9]?[0-9]%')
+		;;
+
+		CYGWIN*|MINGW32*|MSYS*|MINGW*)
+			# leaving empty - TODO - windows compatability
+		;;
+
+		*)
+		;;
+	esac
 }
 
 battery_status()
 {
-	status=$(pmset -g batt | sed -n 2p | cut -d ';' -f 2)
+	# Check OS
+	case $(uname -s) in
+		Linux)
+			status=$(cat /sys/class/power_supply/BAT0/status)
+		;;
 
-	if [ $status = 'discharging' ]; then
+		Darwin)
+			status=$(pmset -g batt | sed -n 2p | cut -d ';' -f 2)
+		;;
+
+		CYGWIN*|MINGW32*|MSYS*|MINGW*)
+			# leaving empty - TODO - windows compatability
+		;;
+
+		*)
+		;;
+	esac
+
+	if [ $status = 'discharging' ] || [ $status = 'Discharging' ]; then
 		echo ''
 	else
-		echo 'AC '
+	 	echo 'AC '
 	fi
 }
 
