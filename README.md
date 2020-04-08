@@ -22,8 +22,7 @@ All instructions can be found at [draculatheme.com/tmux](https://draculatheme.co
 
 ## Compatibility
 
-Designed for compatibility with Mac systems and tested on macOS 10.15 Catalina
-Compatibility with Linux systems and/or WSL on Windows is not yet available
+Compatible with macOS and Linux. Tested on tmux 3.0a
 
 ## Team
 
