@@ -4,7 +4,7 @@
 
 If you are a tpm user, you can install the theme and keep up to date by adding the following to your .tmux.conf file:
 
-	set -g @plugin 'dracula/tmux
+	set -g @plugin 'dracula/tmux'
 
 #### Activating theme
 
