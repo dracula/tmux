@@ -26,14 +26,7 @@ Compatible with macOS and Linux. Tested on tmux 3.0a
 
 ## Options
 
-### `@dracula-show-weather`
-
-The weather module can be disabled by adding the following line to your
-`~/.tmux.conf`:
-
-```
-set -g @dracula-show-weather false
-```
+Disable weather functionality: `set -g @dracula-show-weather false`  
 
 ## Team
 
