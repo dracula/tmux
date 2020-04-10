@@ -5,12 +5,11 @@
 #script is then called in the dracula.tmux program
 
 # test if rate limit hit
-exit=$(curl --write-out "%{http_code}\n" --silent --output /dev/null ipinfo.io)
+exit_code=$(curl --write-out "%{http_code}\n" --silent --output /dev/null ipinfo.io)
 
-if [ $exit -eq 429 ] ; then
+if [ $exit_codes -eq 429 ] ; then
 	echo "Response Rate Limit Reached"
-	return
-	
+	exit 1
 
 city=$(curl -s https://ipinfo.io/city 2> /dev/null)
 region=$(curl -s https://ipinfo.io/region 2> /dev/null)
