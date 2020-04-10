@@ -9,7 +9,7 @@ exit_code=$(curl --write-out "%{http_code}\n" --silent --output /dev/null ipinfo
 
 if [ $exit_codes -eq 429 ] ; then
 	echo "Response Limit Reached"
-#	exit 1
+	exit 1
 
 city=$(curl -s https://ipinfo.io/city 2> /dev/null)
 region=$(curl -s https://ipinfo.io/region 2> /dev/null)
