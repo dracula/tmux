@@ -25,7 +25,7 @@ All instructions can be found at [draculatheme.com/tmux](https://draculatheme.co
 Compatible with macOS and Linux. Tested on tmux 3.0a
 
 ## Options
-
+Customize the status bar by adding any of these lines to your .tmux.conf as desired:  
 Disable weather functionality: `set -g @dracula-show-weather false`  
 
 ## Team
