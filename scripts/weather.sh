@@ -5,7 +5,12 @@
 #script is then called in the dracula.tmux program
 
 # test if rate limit hit
-exit = $(curl --write-out "%{http_code}\n" --silent --output /dev/null ipinfo.io)
+exit=$(curl --write-out "%{http_code}\n" --silent --output /dev/null ipinfo.io)
+
+if [ $exit -eq 429 ] ; then
+	echo "Response Rate Limit Reached"
+	return
+	
 
 city=$(curl -s https://ipinfo.io/city 2> /dev/null)
 region=$(curl -s https://ipinfo.io/region 2> /dev/null)
@@ -57,13 +62,6 @@ display_weather()
 		echo ''
 	fi
 }
-
-make_request()
-{
-	if ping -q pc 1 -W 1 ipinfo.io &>/dev/null; then
-		echo "$(display_weaher) $city, $(get_region_code)"
-	else
-		
 
 main()
 {
