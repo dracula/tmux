@@ -19,7 +19,7 @@ load_request_params()
 	region_code_url=http://www.ip2country.net/ip2country/region_code.html
 	weather_url=https://forecast.weather.gov/zipcity.php
 
-	if [ $exit_code = '429' ] ; then
+	if [[ $exit_code = '429' ]] ; then
 		return 1
 	fi 		
 	return 0
@@ -71,16 +71,16 @@ display_weather()
 main()
 {
 	
-	if [ $load_request_params -eq 1 ]; then
+	if $load_request_params; then
 		echo "Request Limit Reached"
 		exit
 	fi
 	# process should be cancelled when session is killed
-#	if ping -q -c 1 -W 1 ipinfo.io &>/dev/null; then
-#		echo "$(display_weather) $city, $(get_region_code)"
-#	else
-#		echo "Location Unavailable"
-#	fi
+	if ping -q -c 1 -W 1 ipinfo.io &>/dev/null; then
+		echo "$(display_weather) $city, $(get_region_code)"
+	else
+		echo "Location Unavailable"
+	fi
 }
 
 #run main driver program
