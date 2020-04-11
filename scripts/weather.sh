@@ -60,10 +60,9 @@ display_weather()
 
 main()
 {
-	
+	echo "$(exit_codes)"
 	if [ $exit_codes = '429' ] ; then
 		echo "$(exit_codes)"
-		echo "Response Limit Reached"
 		exit 1
 
 	# process should be cancelled when session is killed
