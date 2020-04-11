@@ -13,8 +13,8 @@ load_request_params()
 	zip=$(curl -s https://ipinfo.io/postal 2> /dev/null | tail -1)
 	#country=$(curl -s https://ipinfo.io/country 2> /dev/null)
 	country_w_code=$(curl -w "\n%{http_code}\n" -s https://ipinfo.io/country 2> /dev/null)
-	country=`echo $country_w_code | grep -Eo [a-zA-Z]+` 
-	exit_code=`echo $country_w_code | grep -Eo [0-9]+`
+	country=`grep -Eo [a-zA-Z]+ <<< "$country_w_code"` 
+	exit_code=`grep -Eo [0-9]+ <<< "$country_w_code"`
 
 	region_code_url=http://www.ip2country.net/ip2country/region_code.html
 	weather_url=https://forecast.weather.gov/zipcity.php
