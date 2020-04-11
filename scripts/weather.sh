@@ -18,8 +18,6 @@ load_request_params()
 
 	region_code_url=http://www.ip2country.net/ip2country/region_code.html
 	weather_url=https://forecast.weather.gov/zipcity.php
-	
-	echo $exit_code
 }
 
 #substitute region code for regions in north america
@@ -68,8 +66,9 @@ display_weather()
 main()
 {
 	# don't run the rest of the script unless we can safely get all the information
-	request_status=$(load_request_params)
-	if [ $request_status -eq 429 ]; then
+	load_request_params
+
+	if [[ $exit_code -eq 429 ]]; then
 		echo "Request Limit Reached"
 		exit
 	fi
