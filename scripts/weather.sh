@@ -62,6 +62,7 @@ main()
 {
 	
 	if [ $exit_codes = '429' ] ; then
+		echo "$(exit_codes)"
 		echo "Response Limit Reached"
 		exit 1
 
