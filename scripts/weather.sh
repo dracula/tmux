@@ -7,10 +7,6 @@
 # test if rate limit hit
 exit_code=$(curl --write-out "%{http_code}\n" --silent --output /dev/null ipinfo.io)
 
-if [ $exit_codes -eq 429 ] ; then
-	echo "Response Limit Reached"
-	exit 1
-
 city=$(curl -s https://ipinfo.io/city 2> /dev/null)
 region=$(curl -s https://ipinfo.io/region 2> /dev/null)
 zip=$(curl -s https://ipinfo.io/postal 2> /dev/null | tail -1)
@@ -64,6 +60,11 @@ display_weather()
 
 main()
 {
+	
+	if [ $exit_codes -eq 429 ] ; then
+		echo "Response Limit Reached"
+		exit 1
+
 	# process should be cancelled when session is killed
 	if ping -q -c 1 -W 1 ipinfo.io &>/dev/null; then
 		echo "$(display_weather) $city, $(get_region_code)"
