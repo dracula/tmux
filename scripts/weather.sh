@@ -4,13 +4,21 @@
 #script for gathering current location and weather at location
 #script is then called in the dracula.tmux program
 
-city=$(curl -s https://ipinfo.io/city 2> /dev/null)
-region=$(curl -s https://ipinfo.io/region 2> /dev/null)
-zip=$(curl -s https://ipinfo.io/postal 2> /dev/null | tail -1)
-country=$(curl -s https://ipinfo.io/country 2> /dev/null)
+# test if rate limit hit
+# only testing last request because of redundancy
+load_request_params()
+{
+	
+	city=$(curl -s https://ipinfo.io/city 2> /dev/null)
+	region=$(curl -s https://ipinfo.io/region 2> /dev/null)
+	zip=$(curl -s https://ipinfo.io/postal 2> /dev/null | tail -1)
+	country_w_code=$(curl -w "\n%{http_code}\n" -s https://ipinfo.io/country 2> /dev/null)
+	country=`grep -Eo [a-zA-Z]+ <<< "$country_w_code"` 
+	exit_code=`grep -Eo [0-9]{3} <<< "$country_w_code"`
 
-region_code_url=http://www.ip2country.net/ip2country/region_code.html
-weather_url=https://forecast.weather.gov/zipcity.php
+	region_code_url=http://www.ip2country.net/ip2country/region_code.html
+	weather_url=https://forecast.weather.gov/zipcity.php
+}
 
 #substitute region code for regions in north america
 get_region_code()
@@ -57,6 +65,13 @@ display_weather()
 
 main()
 {
+	# don't run the rest of the script unless we can safely get all the information
+	load_request_params
+
+	if [[ $exit_code -eq 429 ]]; then
+		echo "Request Limit Reached"
+		exit
+	fi
 	# process should be cancelled when session is killed
 	if ping -q -c 1 -W 1 ipinfo.io &>/dev/null; then
 		echo "$(display_weather) $city, $(get_region_code)"
