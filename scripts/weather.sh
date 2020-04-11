@@ -19,7 +19,7 @@ load_request_params()
 	region_code_url=http://www.ip2country.net/ip2country/region_code.html
 	weather_url=https://forecast.weather.gov/zipcity.php
 
-	if [ $exit_code = '429' ] ; then
+	if [ $exit_code =~ '429' ] ; then
 		return 1
 	fi 		
 	return 0
