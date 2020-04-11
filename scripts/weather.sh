@@ -73,6 +73,7 @@ main()
 	
 	if [ $load_request_params -eq 1 ]; then
 		echo "Request Limit Reached"
+		exit
 	fi
 	# process should be cancelled when session is killed
 	if ping -q -c 1 -W 1 ipinfo.io &>/dev/null; then
