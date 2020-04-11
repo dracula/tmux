@@ -5,7 +5,7 @@
 #script is then called in the dracula.tmux program
 
 # test if rate limit hit
-exit_code=$(curl --write-out "%{http_code}\n" --silent --output /dev/null ipinfo.io)
+exit_code=$(curl --write-out "%{http_code}\n" --silent --output /dev/null https://ipinfo.io)
 
 city=$(curl -s https://ipinfo.io/city 2> /dev/null)
 region=$(curl -s https://ipinfo.io/region 2> /dev/null)
@@ -61,7 +61,7 @@ display_weather()
 main()
 {
 	
-	if [ $exit_codes -eq 429 ] ; then
+	if [ $exit_codes -eq 200 ] ; then
 		echo "Response Limit Reached"
 		exit 1
 
