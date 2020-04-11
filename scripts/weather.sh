@@ -61,7 +61,7 @@ display_weather()
 main()
 {
 	
-	if [ $exit_codes -eq '200' ] ; then
+	if [ $exit_codes = '429' ] ; then
 		echo "Response Limit Reached"
 		exit 1
 
