@@ -6,7 +6,6 @@
 
 # test if rate limit hit
 exit_code=$(curl --write-out "%{http_code}\n" --silent --output /dev/null https://ipinfo.io)
-echo $exit_code
 
 city=$(curl -s https://ipinfo.io/city 2> /dev/null)
 region=$(curl -s https://ipinfo.io/region 2> /dev/null)
