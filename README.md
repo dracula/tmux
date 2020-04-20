@@ -26,7 +26,9 @@ Compatible with macOS and Linux. Tested on tmux 3.0a
 
 ## Options
 Customize the status bar by adding any of these lines to your .tmux.conf as desired:  
-Disable weather functionality: `set -g @dracula-show-weather false`  
+* Disable battery functionality: `set -g @dracula-show-battery false`
+* Disable network functionality: `set -g @dracula-show-network false`
+* Disable weather functionality: `set -g @dracula-show-weather false`
 
 ## Team
 
