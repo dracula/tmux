@@ -37,7 +37,7 @@ get_ssid()
 
 main()
 {
-	if ping -q -c 1 -W 1 google.com &>/dev/null; then
+	if ping -q -c 1 -W 1 github.com &>/dev/null; then
 		echo "$(get_ssid)"
 	else
 		echo ' Offline'
