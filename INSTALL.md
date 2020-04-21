@@ -12,3 +12,9 @@ If you are a tpm user, you can install the theme and keep up to date by adding t
 2. Run tmux
 3. Use the tpm install command: `prefix + I` (default prefix is ctrl+b)
 
+#### Configuration
+
+Customize the status bar by adding any of these lines to your .tmux.conf as desired:  
+* Disable battery functionality: `set -g @dracula-show-battery false`
+* Disable network functionality: `set -g @dracula-show-network false`
+* Disable weather functionality: `set -g @dracula-show-weather false`
