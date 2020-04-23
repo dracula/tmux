@@ -12,11 +12,6 @@ All instructions can be found at [draculatheme.com/tmux](https://draculatheme.co
 
 Configuration and options can be found at [draculatheme.com/tmux](https://draculatheme.com/tmux).
 
-Customize the status bar by adding any of these lines to your .tmux.conf as desired:  
-* Disable battery functionality: `set -g @dracula-show-battery false`
-* Disable network functionality: `set -g @dracula-show-network false`
-* Disable weather functionality: `set -g @dracula-show-weather false`
-
 ## Features
 
 * Day, date, time, timezone
