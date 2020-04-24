@@ -33,7 +33,7 @@ weather_information()
 }
 get_temp()
 {
-	weather_information | grep 'deg;F' | cut -d '&' -f 1
+	weather_information | grep "deg;$TEMPUNIT" | cut -d '&' -f 1
 }
 forecast_unicode() 
 {
@@ -57,7 +57,7 @@ forecast_unicode()
 display_weather()
 {
 	if [ $country = 'US' ]; then
-		echo "$(forecast_unicode)$(get_temp)°F"
+		echo "$(forecast_unicode)$(get_temp)°$TEMPUNIT"
 	else
 		echo ''
 	fi

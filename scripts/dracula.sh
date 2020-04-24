@@ -21,6 +21,7 @@ main()
   show_battery=$(get_tmux_option "@dracula-show-battery" true)
   show_network=$(get_tmux_option "@dracula-show-network" true)
   show_weather=$(get_tmux_option "@dracula-show-weather" true)
+  temperature_unit=$(get_tmux_option "@dracula-temperature-unit" "F")
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -37,7 +38,7 @@ main()
 
   # start weather script in background
   if $show_weather; then
-    $current_dir/sleep_weather.sh &
+    env TEMPUNIT="$temperature_unit" $current_dir/sleep_weather.sh &
   fi
 
   # set refresh interval
