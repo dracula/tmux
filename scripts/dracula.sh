@@ -38,7 +38,7 @@ main()
 
   # start weather script in background
   if $show_weather; then
-    env TEMPUNIT="$temperature_unit" $current_dir/sleep_weather.sh &
+    $current_dir/sleep_weather.sh $temperature_unit &
   fi
 
   # set refresh interval

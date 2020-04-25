@@ -4,6 +4,10 @@
 #script for gathering current location and weather at location
 #script is then called in the dracula.tmux program
 
+temp_unit=$1
+echo "2 called weather.sh with $temp_unit" > /tmp/weatherout
+
+
 # test if rate limit hit
 # only testing last request because of redundancy
 load_request_params()
@@ -33,7 +37,7 @@ weather_information()
 }
 get_temp()
 {
-	weather_information | grep "deg;$TEMPUNIT" | cut -d '&' -f 1
+	weather_information | grep "deg;$temp_unit" | cut -d '&' -f 1
 }
 forecast_unicode() 
 {
@@ -57,7 +61,7 @@ forecast_unicode()
 display_weather()
 {
 	if [ $country = 'US' ]; then
-		echo "$(forecast_unicode)$(get_temp)°$TEMPUNIT"
+		echo "$(forecast_unicode)$(get_temp)°$temp_unit"
 	else
 		echo ''
 	fi
