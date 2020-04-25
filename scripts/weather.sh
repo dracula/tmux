@@ -56,8 +56,12 @@ forecast_unicode()
 #get weather display if in US
 display_weather()
 {
-	if [ $country = 'US' ]; then
+	if [ $country = 'US' && $degree = 'farenheight']; then
 		echo "$(forecast_unicode)$(get_temp)°F"
+	elif [$country == 'US' && $dergee = 'celcius' ]; then
+					$(temp) = ($(get_temp) - 32) *5 / 9
+		echo "$(forecast_unicode)°C"
+
 	else
 		echo ''
 	fi
