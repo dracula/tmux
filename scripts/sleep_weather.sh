@@ -2,6 +2,8 @@
 
 #wrapper script for running weather on interval
 
+fahrenheit=$1
+
 main()
 {
 	current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -10,7 +12,7 @@ main()
 	
 	while tmux has-session &> /dev/null
 	do
-		$current_dir/weather.sh > $current_dir/../data/weather.txt
+		$current_dir/weather.sh $fahrenheit > $current_dir/../data/weather.txt
 		if tmux has-session &> /dev/null
 		then
 			sleep 1200

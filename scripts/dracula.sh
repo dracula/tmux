@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# a tmux color scheme inspired by dracula
-# author: Dane Williams
-
 get_tmux_option() {
   local option=$1
   local default_value=$2
@@ -23,7 +20,7 @@ main()
   show_battery=$(get_tmux_option "@dracula-show-battery" true)
   show_network=$(get_tmux_option "@dracula-show-network" true)
   show_weather=$(get_tmux_option "@dracula-show-weather" true)
-  fahrenheit=$(get_tmux_option "@dracula-fahrenheit" true)
+  show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -40,7 +37,7 @@ main()
 
   # start weather script in background
   if $show_weather; then
-    $current_dir/sleep_weather.sh &
+    $current_dir/sleep_weather.sh $show_fahrenheit &
   fi
 
   # set refresh interval
@@ -76,7 +73,7 @@ main()
   fi
 
   if $show_weather; then
-    tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt) " 
+	  tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt) " 
   fi
 
   tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
