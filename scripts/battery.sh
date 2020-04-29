@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-#author: Dane Williams
-#scipt for gathering battery percentage and A/C status
-#script is called in dracula.tmux program
-
 battery_percent()
 {
 	# Check OS
