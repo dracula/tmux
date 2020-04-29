@@ -18,9 +18,12 @@ main()
 {
   # set current directory variable
   current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+  # set configuration option variables
   show_battery=$(get_tmux_option "@dracula-show-battery" true)
   show_network=$(get_tmux_option "@dracula-show-network" true)
   show_weather=$(get_tmux_option "@dracula-show-weather" true)
+  fahrenheit=$(get_tmux_option "@dracula-fahrenheit" true)
 
   # Dracula Color Pallette
   white='#f8f8f2'
