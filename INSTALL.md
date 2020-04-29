@@ -18,3 +18,4 @@ Customize the status bar by adding any of these lines to your .tmux.conf as desi
 * Disable battery functionality: `set -g @dracula-show-battery false`
 * Disable network functionality: `set -g @dracula-show-network false`
 * Disable weather functionality: `set -g @dracula-show-weather false`
+* Switch from default fahrenheit to celsius: `set -g @dracula-show-fahrenheit false`
