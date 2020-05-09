@@ -44,7 +44,7 @@ main()
   tmux set-option -g status-interval 5
 
   # set clock
-  tmux set-option -g clock-mode-style 12
+  tmux set-option -g clock-mode-style 24
 
   # set length 
   tmux set-option -g status-left-length 100
