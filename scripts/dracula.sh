@@ -20,8 +20,7 @@ main()
   show_network=$(get_tmux_option "@dracula-show-network" true)
   show_weather=$(get_tmux_option "@dracula-show-weather" true)
   show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
-  right_sep=''
-  left_sep=''
+  show_powerline=$(get_tmux_option "@dracula-show-powerline" true)
   # Dracula Color Pallette
   white='#f8f8f2'
   gray='#44475a'
@@ -35,6 +34,10 @@ main()
   pink='#ff79c6'
   yellow='#f1fa8c'
   
+  if $show_powerline; then
+      right_sep=''
+      left_sep=''
+  fi
   # start weather script in background
   if $show_weather; then
     $current_dir/sleep_weather.sh $show_fahrenheit &
