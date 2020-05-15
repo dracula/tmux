@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
+BAT=$(ls /sys/class/power_supply/BAT* | head -1)
+
 battery_percent()
 {
 	# Check OS
 	case $(uname -s) in
 		Linux)
-			cat /sys/class/power_supply/BAT0/capacity
+			cat $BAT/capacity
 		;;
 
 		Darwin)
@@ -26,7 +28,7 @@ battery_status()
 	# Check OS
 	case $(uname -s) in
 		Linux)
-			status=$(cat /sys/class/power_supply/BAT0/status)
+			status=$(cat $BAT/status)
 		;;
 
 		Darwin)
