@@ -63,31 +63,54 @@ main()
   # status bar
   tmux set-option -g status-style "bg=${gray},fg=${white}"
 
-  tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺  #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}        " 
+  if $show_powerline; then
 
-  tmux set-option -g  status-right ""
+      tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺  #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}        " 
+      tmux set-option -g  status-right ""
+      powerbg=${gray}
 
-  powerbg=${gray}
+      if $show_battery; then
+        tmux set-option -g  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
+        powerbg=${pink}
+      fi
 
-  if $show_battery; then
-    tmux set-option -g  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
-    powerbg=${pink}
-  fi
+      if $show_network; then
+        tmux set-option -ga status-right "#[fg=${cyan},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${cyan}]#($current_dir/network.sh) "
+        powerbg=${cyan}
+      fi
 
-  if $show_network; then
-    tmux set-option -ga status-right "#[fg=${cyan},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${cyan}]#($current_dir/network.sh) "
-    powerbg=${cyan}
-  fi
+      if $show_weather; then
+          tmux set-option -ga status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt) " 
+        powerbg=${orange}
+      fi
 
-  if $show_weather; then
-	  tmux set-option -ga status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt) " 
-    powerbg=${orange}
-  fi
+      tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
+      # window tabs 
+      tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W #[fg=${dark_purple},bg=${gray}]${left_sep}"
+  else
+    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺ " 
 
-  tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
+    tmux set-option -g  status-right ""
+
+      if $show_battery; then
+        tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
+      fi
+
+      if $show_network; then
+        tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}]#($current_dir/network.sh) "
+      fi
+
+      if $show_weather; then
+          tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt) " 
+      fi
+
+      tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
   
-  # window tabs 
-  tmux set-window-option -g window-status-current-format "#[bg=${dark_purple},fg=${gray}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W #[bg=${dark_purple},fg=${gray}]${right_sep}"
+      # window tabs 
+      tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W "
+
+  fi
+  
   tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${gray}] #I #W "
 }
 
