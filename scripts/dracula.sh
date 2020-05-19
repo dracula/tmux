@@ -21,6 +21,7 @@ main()
   show_network=$(get_tmux_option "@dracula-show-network" true)
   show_weather=$(get_tmux_option "@dracula-show-weather" true)
   show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
+  show_military=$(get_tmux_option "@dracula-military-time" true)
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -44,7 +45,10 @@ main()
   tmux set-option -g status-interval 5
 
   # set clock
-  tmux set-option -g clock-mode-style 24
+  # tmux set-option -g clock-mode-style 12
+  if $show_military; then
+    tmux set-option -g clock-mode-style 24 &
+  fi
 
   # set length 
   tmux set-option -g status-left-length 100
