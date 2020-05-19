@@ -48,6 +48,8 @@ main()
   # tmux set-option -g clock-mode-style 12
   if $show_military; then
     tmux set-option -g clock-mode-style 24 &
+else
+    tmux set-option -g clock-mode-style 12 &
   fi
 
   # set length 
