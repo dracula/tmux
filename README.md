@@ -14,6 +14,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 
 ## Features
 
+* Support for powerline
 * Day, date, time, timezone
 * Current location based on network with temperature and forecast icon (if available)
 * Network connection status and SSID
