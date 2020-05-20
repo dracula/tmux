@@ -20,10 +20,7 @@ main()
   show_network=$(get_tmux_option "@dracula-show-network" true)
   show_weather=$(get_tmux_option "@dracula-show-weather" true)
   show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
-<<<<<<< HEAD
-=======
   show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
->>>>>>> 4084fd83c8f5b4a71eb1be8e9421c1a68cff4c3d
   show_military=$(get_tmux_option "@dracula-military-time" false)
 
   # Dracula Color Pallette
