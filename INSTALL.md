@@ -20,3 +20,4 @@ Customize the status bar by adding any of these lines to your .tmux.conf as desi
 * Disable weather functionality: `set -g @dracula-show-weather false`
 * Switch from default fahrenheit to celsius: `set -g @dracula-show-fahrenheit false`
 * Enable powerline symbols: `set -g @dracula-show-powerline true`
+* Enable military time: `set -g @dracula-military-time true`
