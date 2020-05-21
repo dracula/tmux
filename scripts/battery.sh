@@ -1,13 +1,39 @@
 #!/usr/bin/env bash
+linux_acpi() {
+    arg=$1
+    BAT=$(ls -d /sys/class/power_supply/BAT* | head -1)
+    if [ ! -x "$(which acpi 2> /dev/null)" ];then
+        case "$arg" in
+            status)
+                cat $BAT/status
+            ;;
 
-BAT=$(ls /sys/class/power_supply/BAT* | head -1)
+            percent)
+                cat $BAT/capacity
+            ;;
 
+            *)
+            ;;
+        esac
+    else
+        case "$arg" in
+            status)
+                acpi | cut -d: -f2- | cut -d, -f1 | tr -d ' '
+            ;;
+            percent)
+                acpi | cut -d: -f2- | cut -d, -f2 | tr -d '% '
+            ;;
+            *)
+            ;;
+        esac
+    fi
+}
 battery_percent()
 {
 	# Check OS
 	case $(uname -s) in
 		Linux)
-			cat $BAT/capacity
+            linux_acpi percent
 		;;
 
 		Darwin)
@@ -28,7 +54,7 @@ battery_status()
 	# Check OS
 	case $(uname -s) in
 		Linux)
-			status=$(cat $BAT/status)
+            status=$(linux_acpi status)
 		;;
 
 		Darwin)
@@ -43,7 +69,7 @@ battery_status()
 		;;
 	esac
 
-	if [ $status = 'discharging' ] || [ $status = 'Discharging' ]; then
+	if [ "$status" = "discharging" ] || [ "$status" = "Discharging" ]; then
 		echo ''
 	else
 	 	echo 'AC '
