@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
-BAT=$(ls /sys/class/power_supply/BAT* | head -1)
-
 battery_percent()
 {
 	# Check OS
 	case $(uname -s) in
 		Linux)
-			cat $BAT/capacity
+			cat /sys/class/power_supply/BAT0/capacity
 		;;
 
 		Darwin)
@@ -28,7 +26,7 @@ battery_status()
 	# Check OS
 	case $(uname -s) in
 		Linux)
-			status=$(cat $BAT/status)
+			status=$(cat /sys/class/power_supply/BAT0/status)
 		;;
 
 		Darwin)
@@ -43,7 +41,7 @@ battery_status()
 		;;
 	esac
 
-	if [ $status = 'discharging' ] || [ $status = 'Discharging' ]; then
+	if [[ $status = 'discharging' ]] || [[ $status = 'Discharging' ]]; then
 		echo ''
 	else
 	 	echo 'AC '
