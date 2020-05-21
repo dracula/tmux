@@ -23,7 +23,8 @@ main()
   show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
   show_left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
   show_military=$(get_tmux_option "@dracula-military-time" false)
-
+  show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
+  show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
   # Dracula Color Pallette
   white='#f8f8f2'
   gray='#44475a'
@@ -47,8 +48,8 @@ main()
   esac
 
   if $show_powerline; then
-      right_sep=''
-      left_sep=''
+      right_sep="$show_right_sep"
+      left_sep="$show_left_sep"
   fi
   # start weather script in background
   if $show_weather; then
