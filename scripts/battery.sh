@@ -69,7 +69,7 @@ battery_status()
 		;;
 	esac
 
-	if [ "$status" = "discharging" ] || [ "$status" = "Discharging" ]; then
+	if [[ "$status" = 'discharging' ]] || [[ "$status" = 'Discharging' ]]; then
 		echo ''
 	else
 	 	echo 'AC '
