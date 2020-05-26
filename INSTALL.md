@@ -20,6 +20,6 @@ Customize the status bar by adding any of these lines to your .tmux.conf as desi
 * Disable weather functionality: `set -g @dracula-show-weather false`
 * Switch from default fahrenheit to celsius: `set -g @dracula-show-fahrenheit false`
 * Enable powerline symbols: `set -g @dracula-show-powerline true`
-* Switch powerline symbols `set -g @dracula-show-left-sep ` for left and `set -g @dracula-show-right-sep ` for right symbol
+* Switch powerline symbols `set -g @dracula-show-left-sep ` for left and `set -g @dracula-show-right-sep ` for right symbol (can set any symbol you like as seperator)
 * Enable military time: `set -g @dracula-military-time true`
-* Switch the left smiley icon `set -g @dracula-show-left-icon session` it can accept `session`, `smiley`, or any charachter.
+* Switch the left smiley icon `set -g @dracula-show-left-icon session` it can accept `session`, `smiley`, or any character.
