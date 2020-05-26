@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 linux_acpi() {
     arg=$1
     BAT=$(ls -d /sys/class/power_supply/BAT* | head -1)
@@ -28,6 +29,7 @@ linux_acpi() {
         esac
     fi
 }
+
 battery_percent()
 {
 	# Check OS
@@ -69,7 +71,7 @@ battery_status()
 		;;
 	esac
 
-	if [[ "$status" = 'discharging' ]] || [[ "$status" = 'Discharging' ]]; then
+	if [ $status = 'discharging' ] || [ $status = 'Discharging' ]; then
 		echo ''
 	else
 	 	echo 'AC '
