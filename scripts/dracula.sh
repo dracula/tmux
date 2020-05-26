@@ -21,8 +21,10 @@ main()
   show_weather=$(get_tmux_option "@dracula-show-weather" true)
   show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
   show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
+  show_left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
   show_military=$(get_tmux_option "@dracula-military-time" false)
-
+  show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
+  show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
   # Dracula Color Pallette
   white='#f8f8f2'
   gray='#44475a'
@@ -36,9 +38,18 @@ main()
   pink='#ff79c6'
   yellow='#f1fa8c'
   
+  case $show_left_icon in
+      smiley)
+          left_icon="☺ ";;
+      session)
+          left_icon="#W ";;
+      *)
+          left_icon=$show_left_icon;;
+  esac
+
   if $show_powerline; then
-      right_sep=''
-      left_sep=''
+      right_sep="$show_right_sep"
+      left_sep="$show_left_sep"
   fi
   # start weather script in background
   if $show_weather; then
@@ -67,7 +78,7 @@ main()
 
   if $show_powerline; then
 
-      tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺  #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}        " 
+      tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
       tmux set-option -g  status-right ""
       powerbg=${gray}
 
@@ -95,7 +106,7 @@ main()
       # window tabs 
       tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W #[fg=${dark_purple},bg=${gray}]${left_sep}"
   else
-    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺ " 
+    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon}"
 
     tmux set-option -g  status-right ""
 
