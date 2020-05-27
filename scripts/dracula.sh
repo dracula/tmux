@@ -25,6 +25,7 @@ main()
   show_military=$(get_tmux_option "@dracula-military-time" false)
   show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
   show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
+  show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
   # Dracula Color Pallette
   white='#f8f8f2'
   gray='#44475a'
@@ -67,7 +68,12 @@ main()
   tmux set-option -g status-right-length 100
 
   # pane border styling
-  tmux set-option -g pane-active-border-style "fg=${dark_purple}"
+  if $show_border_contrast; then
+    tmux set-option -g pane-active-border-style "fg=${light_purple}"
+  else
+    tmux set-option -g pane-active-border-style "fg=${dark_purple}"
+  fi
+
   tmux set-option -g pane-border-style "fg=${gray}"
 
   # message styling
