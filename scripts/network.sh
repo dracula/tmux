@@ -9,7 +9,7 @@ get_ssid()
 		Linux)
 			SSID=$(iw dev | sed -nr 's/^\t\tssid (.*)/\1/p')
 			if [ -n "$SSID" ]; then
-				echo -- "$SSID"
+				printf '%s' "$SSID"
 			else
 				echo 'Ethernet'
 			fi
