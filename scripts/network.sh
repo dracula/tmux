@@ -7,8 +7,9 @@ get_ssid()
 	# Check OS
 	case $(uname -s) in
 		Linux)
-			if iw dev | grep ssid | cut -d ' ' -f 2 &> /dev/null; then
-				echo "$(iw dev | grep ssid | cut -d ' ' -f 2)"
+			SSID=$(iw dev | sed -nr 's/^\t\tssid (.*)/\1/p')
+			if [ -n "$SSID" ]; then
+				echo -- "$SSID"
 			else
 				echo 'Ethernet'
 			fi
