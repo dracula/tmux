@@ -43,7 +43,7 @@ main()
       smiley)
           left_icon="☺ ";;
       session)
-          left_icon="#W ";;
+          left_icon="#S ";;
       *)
           left_icon=$show_left_icon;;
   esac
