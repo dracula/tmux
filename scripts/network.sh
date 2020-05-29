@@ -43,7 +43,7 @@ main()
 	    fi
 	done
 
-	echo " $network"
+	echo "$network"
 }
 
 #run main driver function
