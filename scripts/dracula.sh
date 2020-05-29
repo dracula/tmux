@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 get_tmux_option() {
   local option=$1
   local default_value=$2
@@ -26,6 +27,7 @@ main()
   show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
   show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
+
   # Dracula Color Pallette
   white='#f8f8f2'
   gray='#44475a'
@@ -39,6 +41,8 @@ main()
   pink='#ff79c6'
   yellow='#f1fa8c'
   
+
+  # Handle left icon configuration
   case $show_left_icon in
       smiley)
           left_icon="☺ ";;
@@ -50,19 +54,22 @@ main()
           left_icon=$show_left_icon;;
   esac
 
+  # Handle powerline option
   if $show_powerline; then
       right_sep="$show_right_sep"
       left_sep="$show_left_sep"
   fi
+
   # start weather script in background
   if $show_weather; then
     $current_dir/sleep_weather.sh $show_fahrenheit &
   fi
 
-  # set refresh interval
+
+  # sets refresh interval to every 5 seconds
   tmux set-option -g status-interval 5
 
-  # set clock
+  # set clock to 12 hour by default
   tmux set-option -g clock-mode-style 12
 
   # set length 
@@ -75,7 +82,6 @@ main()
   else
     tmux set-option -g pane-active-border-style "fg=${dark_purple}"
   fi
-
   tmux set-option -g pane-border-style "fg=${gray}"
 
   # message styling
@@ -84,59 +90,61 @@ main()
   # status bar
   tmux set-option -g status-style "bg=${gray},fg=${white}"
 
+
+  # Powerline Configuration
   if $show_powerline; then
 
       tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
       tmux set-option -g  status-right ""
       powerbg=${gray}
 
-      if $show_battery; then
+      if $show_battery; then # battery
         tmux set-option -g  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
         powerbg=${pink}
       fi
 
-      if $show_network; then
+      if $show_network; then # network
         tmux set-option -ga status-right "#[fg=${cyan},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${cyan}]#($current_dir/network.sh) "
         powerbg=${cyan}
       fi
 
-      if $show_weather; then
+      if $show_weather; then # weather
           tmux set-option -ga status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt)" 
         powerbg=${orange}
       fi
 
-      if $show_military; then
+      if $show_military; then # military time
 	tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %R #(date +%Z) "
       else
 	tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
       fi
 
-      # window tabs 
       tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W #[fg=${dark_purple},bg=${gray}]${left_sep}"
+  
+  # Non Powerline Configuration
   else
     tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon}"
 
     tmux set-option -g  status-right ""
 
-      if $show_battery; then
+      if $show_battery; then # battery
         tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
       fi
 
-      if $show_network; then
+      if $show_network; then # network
         tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}]#($current_dir/network.sh) "
       fi
 
-      if $show_weather; then
+      if $show_weather; then # weather
           tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt)" 
       fi
 
-      if $show_military; then
+      if $show_military; then # military time
 	tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %R #(date +%Z) "
       else
 	tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
       fi
 
-      # window tabs 
       tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W "
 
   fi
