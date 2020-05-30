@@ -98,17 +98,17 @@ main()
       tmux set-option -g  status-right ""
       powerbg=${gray}
 
-      if $show_battery; then
+      if $show_battery; then # battery
         tmux set-option -g  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh)"
         powerbg=${pink}
       fi
 
-      if $show_network; then
+      if $show_network; then # network
         tmux set-option -ga status-right "#[fg=${cyan},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${cyan}] #($current_dir/network.sh)"
         powerbg=${cyan}
       fi
 
-      if $show_weather; then
+      if $show_weather; then # weather
         tmux set-option -ga status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt)"
         powerbg=${orange}
       fi
