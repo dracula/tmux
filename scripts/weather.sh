@@ -58,7 +58,7 @@ forecast_unicode()
 display_weather()
 {
 	if [ $country = 'US' ]; then
-		echo "$(forecast_unicode)$(get_temp)°"
+		echo "$(forecast_unicode)$(get_temp)° "
 	else
 		echo ''
 	fi
@@ -75,7 +75,7 @@ main()
 	fi
 	# process should be cancelled when session is killed
 	if ping -q -c 1 -W 1 ipinfo.io &>/dev/null; then
-		echo "$(display_weather) $city, $(get_region_code)"
+		echo "$(display_weather)$city, $(get_region_code)"
 	else
 		echo "Location Unavailable"
 	fi

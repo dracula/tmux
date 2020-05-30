@@ -35,7 +35,8 @@ battery_percent()
 	# Check OS
 	case $(uname -s) in
 		Linux)
-            linux_acpi percent
+			percent=$(linux_acpi percent)
+			[ -n "$percent" ] && echo " $percent"
 		;;
 
 		Darwin)
@@ -74,7 +75,7 @@ battery_status()
 	if [ $status = 'discharging' ] || [ $status = 'Discharging' ]; then
 		echo ''
 	else
-	 	echo 'AC '
+	 	echo 'AC'
 	fi
 }
 
