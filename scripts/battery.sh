@@ -85,9 +85,9 @@ main()
 	bat_perc=$(battery_percent)
 
 	if [ -z "$bat_stat" ]; then # Test if status is empty or not
-		echo "♥ $bat_stat $bat_perc"
-	else
 		echo "♥ $bat_perc"
+	else
+		echo "♥ $bat_stat $bat_perc"
 	fi
 }
 
