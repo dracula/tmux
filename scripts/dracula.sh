@@ -27,6 +27,7 @@ main()
   show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
   show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
+  show_cpu_percentage=$(get_tmux_option "@dracula-cpu-percent" false)
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -64,6 +65,10 @@ main()
   if $show_weather; then
     $current_dir/sleep_weather.sh $show_fahrenheit &
   fi
+  
+  if $show_cpu_percentage; then
+    $current_dir/cpu_info.sh &
+  fi
 
 
   # sets refresh interval to every 5 seconds
@@ -98,6 +103,11 @@ main()
       tmux set-option -g  status-right ""
       powerbg=${gray}
 
+      if $show_cpu_percentage; then
+	 tmux set-option -ga status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/cpu_info.sh)"
+	 powerbg=${pink}
+      fi
+
       if $show_battery; then # battery
         tmux set-option -g  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh)"
         powerbg=${pink}
@@ -129,6 +139,10 @@ main()
 
       if $show_battery; then # battery
         tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
+      fi
+
+      if $show_cpu_percentage; then
+	tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}]#($current_dir/cpu_info.sh) "
       fi
 
       if $show_network; then # network
