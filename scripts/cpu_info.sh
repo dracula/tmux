@@ -11,6 +11,7 @@ get_percent()
 		
 		Mac)
 			percent=$(ps -A -o %cpu | awk '{s+=$1} END {print s "%"}')
+			echo $percent
 		;;
 
 		Windows)
