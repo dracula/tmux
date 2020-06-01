@@ -28,7 +28,6 @@ check_os()
 		;;
 
 		Darwin)
-			# Dont have a mac currently, TODO - Mac compatability - May have a solution, testing
 			get_percent Mac
 		;;
 
@@ -48,7 +47,7 @@ main()
 {
 	cpu_percent=$(check_os)
 	echo "CPU $cpu_percent"
-	sleep 5
+	sleep 10
 }
 #run main driver
 main

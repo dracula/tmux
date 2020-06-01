@@ -103,14 +103,14 @@ main()
       tmux set-option -g  status-right ""
       powerbg=${gray}
 
-      if $show_cpu_percentage; then
-	 tmux set-option -ga status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/cpu_info.sh)"
-	 powerbg=${pink}
-      fi
-
       if $show_battery; then # battery
         tmux set-option -g  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh)"
         powerbg=${pink}
+      fi
+
+      if $show_cpu_percentage; then
+	 tmux set-option -ga status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/cpu_info.sh)"
+	 powerbg=${orange}
       fi
 
       if $show_network; then # network
