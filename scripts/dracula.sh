@@ -66,10 +66,10 @@ main()
     $current_dir/sleep_weather.sh $show_fahrenheit &
   fi
   
+  # start cpu script in the background
   if $show_cpu_percentage; then
     $current_dir/cpu_info.sh &
   fi
-
 
   # sets refresh interval to every 5 seconds
   tmux set-option -g status-interval 5

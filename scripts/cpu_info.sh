@@ -10,7 +10,7 @@ get_percent()
 		;;
 		
 		Mac)
-			# TODO - Mac compatability
+			percent=$(ps -A -o %cpu | awk '{s+=$1} END {print s "%"}')
 		;;
 
 		Windows)
@@ -27,7 +27,7 @@ check_os()
 		;;
 
 		Darwin)
-			# Dont have a mac currently, TODO - Mac compatability
+			# Dont have a mac currently, TODO - Mac compatability - May have a solution, testing
 			get_percent Mac
 		;;
 
