@@ -2,8 +2,7 @@
 
 get_percent()
 {
-	arg=$1
-	case "$arg" in
+	case $(uname -s) in
 		Linux)
 			percent=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}')
 			echo $percent
@@ -19,33 +18,10 @@ get_percent()
 		;;
 	esac
 }
-check_os()
-{
-	# Check os
-	case $(uname -s) in
-		Linux)
-			get_percent Linux
-		;;
-
-		Darwin)
-			get_percent Mac
-		;;
-
-		CYGWIN*|MINGW32*|MSYS*|MINGW*)
-			get_percent Windows
-			# leaving empty - TODO - windows compatability
-		;;
-
-		*)
-		;;
-	esac
-}
-
-
 
 main()
 {
-	cpu_percent=$(check_os)
+	cpu_percent=$(get_percent)
 	echo "CPU $cpu_percent"
 	sleep 10
 }
