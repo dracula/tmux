@@ -28,6 +28,7 @@ main()
   show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
   show_cpu_percentage=$(get_tmux_option "@dracula-cpu-percent" false)
+  show_ram_percentage=$(get_tmux_option "@dracula-ram-percent" false)
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -103,6 +104,11 @@ main()
         powerbg=${pink}
       fi
 
+      if $show_ram_percent; then
+	 tmux set-option -ga status-right "#[fg=${cyan},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${cyan}] #($current_dir/ram_info.sh)"
+	 powerbg=${cyan}
+      fi
+
       if $show_cpu_percentage; then
 	 tmux set-option -ga status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/cpu_info.sh)"
 	 powerbg=${orange}
@@ -134,6 +140,9 @@ main()
 
       if $show_battery; then # battery
         tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
+      fi
+      if $show_ram_percentage; then
+	tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] #($current_dir/ram_info.sh) "
       fi
 
       if $show_cpu_percentage; then

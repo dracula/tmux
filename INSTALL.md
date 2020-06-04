@@ -25,3 +25,4 @@ Customize the status bar by adding any of these lines to your .tmux.conf as desi
 * Switch the left smiley icon `set -g @dracula-show-left-icon session` it can accept `session`, `smiley`, `window`, or any character.
 * Enable high contrast pane border: `set -g @dracula-border-contrast true`
 * Enable cpu percentage: `set -g @dracula-cpu-percent true`
+* Enable ram percentage: `set -g @dracula-ram-percent true`
