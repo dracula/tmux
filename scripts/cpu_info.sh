@@ -8,12 +8,12 @@ get_percent()
 			echo $percent
 		;;
 		
-		Mac)
+		Darwin)
 			percent=$(ps -A -o %cpu | awk '{s+=$1} END {print s "%"}')
 			echo $percent
 		;;
 
-		Windows)
+		CYGWIN*|MINGW32*|MSYS*|MINGW*)
 			# TODO - windows compatability
 		;;
 	esac
@@ -25,5 +25,6 @@ main()
 	echo "CPU $cpu_percent"
 	sleep 10
 }
-#run main driver
+
+# run main driver
 main
