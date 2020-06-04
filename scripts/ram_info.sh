@@ -9,7 +9,8 @@ get_percent()
 		;;
 
 		Darwin)
-			# TODO - Mac compatability
+			percent=$(ps -A -o %mem | awk '{mem += $1} END {print mem}')
+			echo $percent
 		;;
 
 		CYGWIN*|MINGW32*|MSYS*|MINGW*)
@@ -24,5 +25,6 @@ main()
 	echo "RAM $ram_percent"
 	sleep 10
 }
+
 #run main driver
 main
