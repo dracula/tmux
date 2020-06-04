@@ -20,6 +20,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 * Network connection status and SSID
 * Battery percentage and AC power connection status
 * CPU usage
+* RAM usage
 * Color code based on if prefix is active or not
 * List of windows with current window highlighted
 * When prefix is enabled smiley face turns from green to yellow
