@@ -137,7 +137,7 @@ main()
       fi
 
       if $show_cpu_percentage; then
-	tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}]#($current_dir/cpu_info.sh) "
+	tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/cpu_info.sh) "
       fi
 
       if $show_network; then # network
