@@ -19,8 +19,8 @@ get_percent()
 		Darwin)
 			# percent=$(ps -A -o %mem | awk '{mem += $1} END {print mem}')
 			used_mem=$(top -l 1 -s 0 | grep PhysMem | awk '{mem += $2} END {print mem}')
-			total_mem=$(hwprefs memory_size | sed 's/ //g; s/B//g;')
-			echo $used_mem/$total_mem
+			total_mem=$(system_profiler SPHardwareDataType | grep "Memory:" | awk '{mem += $2} END {print mem}')
+			echo $used_mem/$total_mem\G\B
 		;;
 
 		CYGWIN*|MINGW32*|MSYS*|MINGW*)
