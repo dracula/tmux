@@ -20,7 +20,7 @@ get_percent()
 			# percent=$(ps -A -o %mem | awk '{mem += $1} END {print mem}')
 			used_mem=$(top -l 1 -s 0 | grep PhysMem | awk '{print $2 $3}' | sed 's/used//g')
 			total_mem=$(system_profiler SPHardwareDataType | grep "Memory:" | awk '{print $2 $3}' | sed 's/used//g')
-			echo $used_mem/$total_mem\G\B
+			echo $used_mem/$total_mem
 		;;
 
 		CYGWIN*|MINGW32*|MSYS*|MINGW*)
