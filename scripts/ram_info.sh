@@ -18,9 +18,14 @@ get_percent()
 
 		Darwin)
 			# percent=$(ps -A -o %mem | awk '{mem += $1} END {print mem}')
-			used_mem=$(top -l 1 -s 0 | grep PhysMem | awk '{print $2 $3}' | sed 's/used//g')
-			total_mem=$(system_profiler SPHardwareDataType | grep "Memory:" | awk '{print $2 $3}' | sed 's/used//g')
-			echo $used_mem/$total_mem
+			used_mem=$(vm_stat | grep -i "Pages active:" | sed 's/\.//g' | awk '{printf "%d", $3*4096/1024/1024}')
+			total_mem=$(system_profiler SPHardwareDataType | grep "Memory:" | awk '{print $2 $3}')
+			if (( $used_mem < 1024 )); then
+				echo $used_mem\M\B/$total_mem
+			else
+				memory=$(($used_mem / 1024))
+				echo $memory\G\B/$total_mem
+			fi
 		;;
 
 		CYGWIN*|MINGW32*|MSYS*|MINGW*)
