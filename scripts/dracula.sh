@@ -28,6 +28,7 @@ main()
   show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
   show_cpu_percentage=$(get_tmux_option "@dracula-cpu-percent" false)
+  show_69_weather=$(get_tmux_option "@dracula-69-weather" true)
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -63,7 +64,7 @@ main()
 
   # start weather script in background
   if $show_weather; then
-    $current_dir/sleep_weather.sh $show_fahrenheit &
+    $current_dir/sleep_weather.sh $show_fahrenheit $show_69_weather &
   fi
   
   # sets refresh interval to every 5 seconds
