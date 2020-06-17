@@ -28,7 +28,7 @@ main()
   show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
   show_cpu_percentage=$(get_tmux_option "@dracula-cpu-percent" false)
-  show_69_weather=$(get_tmux_option "@dracula-69-weather" true)
+  show_69_weather=$(get_tmux_option "@dracula-69-weather" false)
 
   # Dracula Color Pallette
   white='#f8f8f2'
