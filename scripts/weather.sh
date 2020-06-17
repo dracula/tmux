@@ -2,6 +2,7 @@
 
 
 fahrenheit=$1
+weather_69=$2
 
 load_request_params()
 {
@@ -29,8 +30,10 @@ weather_information()
 	curl -sL $weather_url?inputstring=$zip | grep myforecast-current | grep -Eo '>.*<' | sed -E 's/>(.*)</\1/'
 }
 get_temp()
-{
-	if $fahrenheit; then
+{	
+	if $weather_69; then
+		echo "69"
+	elif $fahrenheit; then
 		echo $(weather_information | grep 'deg;F' | cut -d '&' -f 1)
 	else
 		echo $(( ($(weather_information | grep 'deg;F' | cut -d '&' -f 1) - 32) * 5 / 9 ))
