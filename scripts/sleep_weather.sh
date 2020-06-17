@@ -3,6 +3,7 @@
 #wrapper script for running weather on interval
 
 fahrenheit=$1
+weather_69=$2
 
 main()
 {
@@ -12,7 +13,7 @@ main()
 	
 	while tmux has-session &> /dev/null
 	do
-		$current_dir/weather.sh $fahrenheit > $current_dir/../data/weather.txt
+		$current_dir/weather.sh $fahrenheit $weather_69 > $current_dir/../data/weather.txt
 		if tmux has-session &> /dev/null
 		then
 			sleep 1200
