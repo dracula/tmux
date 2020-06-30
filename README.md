@@ -21,6 +21,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 * Battery percentage and AC power connection status
 * CPU usage
 * RAM usage
+* GPU usage
 * Color code based on if prefix is active or not
 * List of windows with current window highlighted
 * When prefix is enabled smiley face turns from green to yellow
