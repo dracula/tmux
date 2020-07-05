@@ -29,6 +29,7 @@ main()
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
   show_cpu_usage=$(get_tmux_option "@dracula-cpu-usage" false)
   show_ram_usage=$(get_tmux_option "@dracula-ram-usage" false)
+  show_gpu_usage=$(get_tmux_option "@dracula-gpu-usage" false)
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -114,6 +115,11 @@ main()
 	 powerbg=${orange}
       fi
 
+      if $show_gpu_usage; then
+	 tmux set-option -ga status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/gpu_usage.sh)"
+	 powerbg=${pink}
+      fi	
+
       if $show_network; then # network
         tmux set-option -ga status-right "#[fg=${cyan},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${cyan}] #($current_dir/network.sh)"
         powerbg=${cyan}
@@ -148,6 +154,10 @@ main()
       if $show_cpu_usage; then
 	tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/cpu_info.sh) "
       fi
+
+      if $show_gpu_usage; then
+	tmux set-option -ga status-right "#[fg=${dark_gray},bg=${pink}] #($current_dir/gpu_usage.sh) "
+      fi	
 
       if $show_network; then # network
         tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] #($current_dir/network.sh) "
