@@ -1,4 +1,4 @@
-2#!/usr/bin/env bash
+#!/usr/bin/env bash
 
 get_percent()
 {
