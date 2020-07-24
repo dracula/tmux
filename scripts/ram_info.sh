@@ -19,7 +19,7 @@ get_percent()
 		Darwin)
 			# percent=$(ps -A -o %mem | awk '{mem += $1} END {print mem}')
 			# Get used memory blocks with vm_stat, multiply by 4096 to get size in bytes, then convert to MiB
-			used_mem=$(vm_stat | grep ' active\|wired ' | sed 's/[^0-9]//g' | paste -sd ' ' - | awk '{printf "%d\n", ($1+$2) * 4096} / 1048576')
+			used_mem=$(vm_stat | grep ' active\|wired ' | sed 's/[^0-9]//g' | paste -sd ' ' - | awk '{printf "%d\n", ($1+$2) * 4096 / 1048576}')
 			total_mem=$(system_profiler SPHardwareDataType | grep "Memory:" | awk '{print $2 $3}')
 			if (( $used_mem < 1024 )); then
 				echo $used_mem\M\B/$total_mem
