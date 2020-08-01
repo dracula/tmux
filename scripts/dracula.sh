@@ -24,6 +24,7 @@ main()
   show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
   show_left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
   show_military=$(get_tmux_option "@dracula-military-time" false)
+  show_timezone=$(get_tmux_option "@dracula-show-timezone" true)
   show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
   show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
@@ -67,7 +68,15 @@ main()
   if $show_weather; then
     $current_dir/sleep_weather.sh $show_fahrenheit &
   fi
-  
+
+  # Set timezone unless hidden by configuration
+  case $show_timezone in
+      false)
+          timezone="";;
+      true)
+          timezone="#(date +%Z)";;
+  esac
+
   # sets refresh interval to every 5 seconds
   tmux set-option -g status-interval 5
 
@@ -131,9 +140,9 @@ main()
       fi
 
       if $show_military; then # military time
-	tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %R #(date +%Z) "
+	tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %R ${timezone} "
       else
-	tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
+	tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p ${timezone} "
       fi
 
       tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W #[fg=${dark_purple},bg=${gray}]${left_sep}"
@@ -168,9 +177,9 @@ main()
       fi
 
       if $show_military; then # military time
-	tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %R #(date +%Z) "
+	tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %R ${timezone} "
       else
-	tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
+	tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p ${timezone} "
       fi
 
       tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W "
