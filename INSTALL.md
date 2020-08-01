@@ -22,6 +22,7 @@ Customize the status bar by adding any of these lines to your .tmux.conf as desi
 * Enable powerline symbols: `set -g @dracula-show-powerline true`
 * Switch powerline symbols `set -g @dracula-show-left-sep ` for left and `set -g @dracula-show-right-sep ` for right symbol (can set any symbol you like as seperator)
 * Enable military time: `set -g @dracula-military-time true`
+* Disable timezone: `set -g @dracula-show-timezone false`
 * Switch the left smiley icon `set -g @dracula-show-left-icon session` it can accept `session`, `smiley`, `window`, or any character.
 * Enable high contrast pane border: `set -g @dracula-border-contrast true`
 * Enable cpu usage: `set -g @dracula-cpu-usage true`
