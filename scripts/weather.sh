@@ -27,8 +27,8 @@ display_weather()
 	fi
 	weather_information=$(fetch_weather_information $display_weather)
 
-	weather_condition=$(echo $weather_information | awk '{print $1;}') # Sunny, Snow, etc
-	temperature=$(echo $weather_information | awk '{print $2;}') # +31°C, -3°F, etc
+	weather_condition=$(echo $weather_information |  cut -d "+" -f 1 | cut -d "-" -f 1) # Sunny, Snow, etc
+	temperature=$(echo $weather_information | cut -d '+' -f 2) # +31°C, -3°F, etc
 	unicode=$(forecast_unicode $weather_condition)
 
 	echo "$unicode ${temperature/+/}" # remove the plus sign to the temperature
@@ -36,13 +36,13 @@ display_weather()
 
 forecast_unicode() 
 {
-	weather_condition=$1
+	weather_condition=$(echo $weather_condition | awk '{print tolower($0)}')
 
-	if [[ $weather_condition =~ 'Snow' ]]; then
+	if [[ $weather_condition =~ 'snow' ]]; then
 		echo '❄ '
-	elif [[ (($weather_condition =~ 'Rain') || ($weather_condition =~ 'Shower')) ]]; then
+	elif [[ (($weather_condition =~ 'rain') || ($weather_condition =~ 'shower')) ]]; then
 		echo '☂ '
-	elif [[ (($weather_condition =~ 'Overcast') || ($weather_condition =~ 'Cloud')) ]]; then
+	elif [[ (($weather_condition =~ 'overcast') || ($weather_condition =~ 'cloud')) ]]; then
 		echo '☁ '
 	elif [[ $weather_condition = 'NA' ]]; then
 		echo ''
