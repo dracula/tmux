@@ -4,7 +4,7 @@ get_platform()
 {
 	case $(uname -s) in
 		Linux)
-			gpu=$(lspci -v | grep -i gpu | grep driver | awk '{print $5}')
+			gpu=$(lspci -v | grep VGA | head -n 1 | awk '{print $5}')
 			echo $gpu
 		;;
 
@@ -20,10 +20,12 @@ get_platform()
 get_gpu()
 {
 	gpu=$(get_platform)
-	if [ $gpu == nvidia-gpu ]; then
-		usage=$(nvidia-smi | grep "%" | awk '{print $13}')
-		echo $usage
+	if [[ "$gpu" == NVIDIA ]]; then
+    usage=$(nvidia-smi | grep '%' | awk '{ sum += $13 } END { printf("%d%%\n", sum / NR) }')
+  else
+    usage='unknown'
 	fi
+  echo $usage
 }
 main()
 {
@@ -33,5 +35,3 @@ main()
 }
 # run the main driver
 main
-
-
