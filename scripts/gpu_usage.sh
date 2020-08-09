@@ -29,7 +29,7 @@ main()
 {
 	gpu_usage=$(get_gpu)
 	echo "GPU $gpu_usage"
-	sleep 10
+	sleep $RATE
 }
 # run the main driver
 main

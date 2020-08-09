@@ -23,7 +23,7 @@ main()
 {
 	cpu_percent=$(get_percent)
 	echo "CPU $cpu_percent"
-	sleep 10
+	sleep $RATE
 }
 
 # run main driver

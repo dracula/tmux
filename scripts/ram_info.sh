@@ -39,7 +39,7 @@ main()
 {
 	ram_percent=$(get_percent)
 	echo "RAM $ram_percent"
-	sleep 10
+	sleep $RATE
 }
 
 #run main driver
