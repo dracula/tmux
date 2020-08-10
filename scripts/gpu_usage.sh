@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# function for getting the refresh rate
 get_tmux_option() {
   local option=$1
   local default_value=$2
@@ -38,6 +39,7 @@ get_gpu()
 }
 main()
 {
+	# storing the refresh rate in the variable RATE, default is 5
 	RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
 	gpu_usage=$(get_gpu)
 	echo "GPU $gpu_usage"
