@@ -34,9 +34,6 @@ main()
   show_time=$(get_tmux_option "@dracula-show-time" true)
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
 
-  # exporting the value for the other scripts to read
-  export RATE=$show_refresh
-
   # Dracula Color Pallette
   white='#f8f8f2'
   gray='#44475a'
