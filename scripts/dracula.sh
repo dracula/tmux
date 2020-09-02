@@ -178,13 +178,12 @@ main()
           tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt) "
       fi
 
-      if $show_time; then
-	if $show_military; then # military time
-		tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %R ${timezone} "
-	else
-		tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p ${timezone} "
-	fi
+      if $show_military; then # military time
+	tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %R ${timezone} "
+      else
+	tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p ${timezone} "
       fi
+
       tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W "
 
   fi
