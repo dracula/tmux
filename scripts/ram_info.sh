@@ -28,6 +28,25 @@ get_percent()
 				echo $memory\G\B/$total_mem
 			fi
 		;;
+		
+		FreeBSD)
+			# Looked at the code from neofetch
+			hw_pagesize="$(sysctl -n hw.pagesize)"
+			mem_inactive="$(($(sysctl -n vm.stats.vm.v_inactive_count) * hw_pagesize))"
+			mem_unused="$(($(sysctl -n vm.stats.vm.v_free_count) * hw_pagesize))"
+			mem_cache="$(($(sysctl -n vm.stats.vm.v_cache_count) * hw_pagesize))"
+
+			free_mem=$(((mem_inactive + mem_unused + mem_cache) / 1024 / 1024))
+			total_mem=$(($(sysctl -n hw.physmem) / 1024 / 1024))
+			used_mem=$((total_mem - free_mem))
+			echo $used_mem
+			if (( $used_mem < 1024 )); then
+				echo $used_mem\M\B/$total_mem
+			else
+				memory=$(($used_mem/1024))
+				echo $memory\G\B/$total_mem
+			fi
+		;;
 
 		CYGWIN*|MINGW32*|MSYS*|MINGW*)
 			# TODO - windows compatability
