@@ -19,6 +19,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 * Current location based on network with temperature and forecast icon (if available)
 * Network connection status and SSID
 * Battery percentage and AC power connection status
+* Refresh rate control
 * CPU usage
 * RAM usage
 * GPU usage

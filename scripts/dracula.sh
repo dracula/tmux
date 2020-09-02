@@ -31,6 +31,8 @@ main()
   show_cpu_usage=$(get_tmux_option "@dracula-cpu-usage" false)
   show_ram_usage=$(get_tmux_option "@dracula-ram-usage" false)
   show_gpu_usage=$(get_tmux_option "@dracula-gpu-usage" false)
+  show_time=$(get_tmux_option "@dracula-show-time" true)
+  show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -78,7 +80,7 @@ main()
   esac
 
   # sets refresh interval to every 5 seconds
-  tmux set-option -g status-interval 5
+  tmux set-option -g status-interval $show_refresh
 
   # set clock to 12 hour by default
   tmux set-option -g clock-mode-style 12
