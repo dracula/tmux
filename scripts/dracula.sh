@@ -32,6 +32,8 @@ main()
   show_ram_usage=$(get_tmux_option "@dracula-ram-usage" false)
   show_gpu_usage=$(get_tmux_option "@dracula-gpu-usage" false)
   show_day_month=$(get_tmux_option "@dracula-day-month" false)
+  show_time=$(get_tmux_option "@dracula-show-time" true)
+  show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -79,7 +81,7 @@ main()
   esac
 
   # sets refresh interval to every 5 seconds
-  tmux set-option -g status-interval 5
+  tmux set-option -g status-interval $show_refresh
 
   # set clock to 12 hour by default
   tmux set-option -g clock-mode-style 12
@@ -140,14 +142,16 @@ main()
         powerbg=${orange}
       fi
 
-      if $show_day_month && $show_military ; then # military time and dd/mm
-        tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %d/%m %R ${timezone} "
-      elif $show_military; then # only military time
-        tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %R ${timezone} "
-      elif $show_day_month; then # only dd/mm
-        tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %d/%m %I:%M %p ${timezone} "
-      else
-        tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p ${timezone} "
+      if $show_time; then
+        if $show_day_month && $show_military ; then # military time and dd/mm
+          tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %d/%m %R ${timezone} "
+        elif $show_military; then # only military time
+          tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %R ${timezone} "
+        elif $show_day_month; then # only dd/mm
+          tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %d/%m %I:%M %p ${timezone} "
+        else
+          tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p ${timezone} "
+        fi
       fi
 
       tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W #[fg=${dark_purple},bg=${gray}]${left_sep}"
@@ -181,14 +185,16 @@ main()
           tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt) "
       fi
 
-      if $show_day_month && $show_military ; then # military time and dd/mm
-        tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %d/%m %R ${timezone} "
-      elif $show_military; then # only military time
-        tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %R ${timezone} "
-      elif $show_day_month; then # only dd/mm
-        tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %d/%m %I:%M %p ${timezone} "
-      else
-        tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p ${timezone} "
+      if $show_time; then
+        if $show_day_month && $show_military ; then # military time and dd/mm
+          tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %d/%m %R ${timezone} "
+        elif $show_military; then # only military time
+          tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %R ${timezone} "
+        elif $show_day_month; then # only dd/mm
+          tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %d/%m %I:%M %p ${timezone} "
+        else
+          tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p ${timezone} "
+        fi
       fi
 
       tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W "
