@@ -31,8 +31,8 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 
 ## Compatibility
 
-Compatible with macOS and Linux. Tested on tmux 3.0a
-
+Compatible with macOS and Linux. Tested on tmux 3.1b
+FreeBSD compatibility is in development
 
 ## Team
 
