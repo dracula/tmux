@@ -17,13 +17,13 @@ get_percent()
 	case $(uname -s) in
 		Linux)
 			# percent=$(free -m | awk 'NR==2{printf "%.1f%%\n", $3*100/$2}')
-			used_mem=$(free -g | grep Mem: | awk '{mem += $3} END {print mem}')
-			total_mem=$(free -h | grep Mem: | awk '{mem += $2} END {print mem}')
+			used_mem=$(free -g | awk '/^Mem/ {print $3}')
+			total_mem=$(free -h | awk '/^Mem/ {print $2}')
 			if (( $used_mem == 0 )); then
-				memory_usage=$(free -m | grep Mem: | awk '{mem += $3} END {print mem}')
+				memory_usage=$(free -m | awk '/^Mem/ {print $3}')
 				echo $memory_usage\M\B/$total_mem\G\B
 			else
-				memory_usage=$(free -g | grep Mem: | awk '{mem += $3} END {print mem}')
+				memory_usage=$(free -g | awk '/^Mem/ {print $3}')
 				echo $memory_usage\G\B/$total_mem\G\B
 			fi
 		;;
