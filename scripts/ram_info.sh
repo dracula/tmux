@@ -17,9 +17,14 @@ get_percent()
 	case $(uname -s) in
 		Linux)
 			# percent=$(free -m | awk 'NR==2{printf "%.1f%%\n", $3*100/$2}')
+			total_mem_gb=$(free -g | awk '/^Mem/ {print $2}')
 			used_mem=$(free -g | awk '/^Mem/ {print $3}')
 			total_mem=$(free -h | awk '/^Mem/ {print $2}')
-			if (( $used_mem == 0 )); then
+			if (( $total_mem_gb == 0)); then
+				memory_usage=$(free -m | awk '/^Mem/ {print $3}')
+				total_mem_mb=$(free -m | awk '/^Mem/ {print $2}')
+				echo $memory_usage\M\B/$total_mem_mb\M\B
+			elif (( $used_mem == 0 )); then
 				memory_usage=$(free -m | awk '/^Mem/ {print $3}')
 				echo $memory_usage\M\B/$total_mem\G\B
 			else
