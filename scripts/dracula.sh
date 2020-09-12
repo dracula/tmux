@@ -104,6 +104,11 @@ main()
   # status bar
   tmux set-option -g status-style "bg=${gray},fg=${white}"
 
+  # wait unit data/weather.txt exists just to avoid errors
+  # this should almost never need to wait unless something unexpected occurs
+  while [ ! -f $current_dir/../data/weather.txt ]; do
+      sleep 0.01
+  done
 
   # Powerline Configuration
   if $show_powerline; then
