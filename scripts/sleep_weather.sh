@@ -19,6 +19,10 @@ main()
 
 	current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+	if [ ! -f $current_dir/../data/weather.txt ]; then
+		printf "Loading..." > $current_dir/../data/weather.txt
+	fi
+
 	$current_dir/weather.sh > $current_dir/../data/weather.txt
 
 	while tmux has-session &> /dev/null
