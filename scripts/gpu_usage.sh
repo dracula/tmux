@@ -33,7 +33,7 @@ get_gpu()
 {
 	gpu=$(get_platform)
 	if [[ "$gpu" == NVIDIA ]]; then
-    usage=$(nvidia-smi | grep '%' | awk '{ sum += $13 } END { printf("%d%%\n", sum / NR) }')
+    usage=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{if ($1 < 10) {print "0"$1"%"} else {print $1"%"}}')
   else
     usage='unknown'
 	fi
