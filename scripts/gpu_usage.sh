@@ -32,8 +32,13 @@ get_platform()
 get_gpu()
 {
 	gpu=$(get_platform)
+	expand=$(get_tmux_option "@dracula-gpu-expand" true)
 	if [[ "$gpu" == NVIDIA ]]; then
-    usage=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{if ($1 < 10) {print "0"$1"%"} else {print $1"%"}}')
+		if $expand; then
+			usage=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{if ($1 < 10) {print "0"$1"%"} else {print $1"%"}}')
+		else
+			usage=$(nvidia-smi | grep '%' | awk '{ sum += $13 } END { mean = sum / NR; if (mean < 10) {printf("0%d%%\n", mean)} else {printf("%d%%\n", mean)}}') 
+		fi
   else
     usage='unknown'
 	fi
