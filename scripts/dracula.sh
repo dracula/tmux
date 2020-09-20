@@ -106,7 +106,7 @@ main()
 
   # wait unit data/weather.txt exists just to avoid errors
   # this should almost never need to wait unless something unexpected occurs
-  while [ ! -f $current_dir/../data/weather.txt ]; do
+  while $show_weather && [ ! -f $current_dir/../data/weather.txt ]; do
       sleep 0.01
   done
 
