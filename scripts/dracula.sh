@@ -83,8 +83,12 @@ main()
   # sets refresh interval to every 5 seconds
   tmux set-option -g status-interval $show_refresh
 
-  # set clock to 12 hour by default
-  tmux set-option -g clock-mode-style 12
+  # set the prefix + t time format
+  if $show_military; then
+	tmux set-option -g clock-mode-style 24
+  else
+	tmux set-option -g clock-mode-style 12
+  fi
 
   # set length 
   tmux set-option -g status-left-length 100
