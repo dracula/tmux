@@ -21,6 +21,7 @@ Customize the status bar by adding any of these lines to your .tmux.conf as desi
 * Switch from default fahrenheit to celsius: `set -g @dracula-show-fahrenheit false`
 * Enable powerline symbols: `set -g @dracula-show-powerline true`
 * Switch powerline symbols `set -g @dracula-show-left-sep ` for left and `set -g @dracula-show-right-sep ` for right symbol (can set any symbol you like as seperator)
+* Enable window flags: `set -g @dracula-show-flags true`
 * Adjust the refresh rate for the bar `set -g @dracula-refresh-rate 5` the default is 5, it can accept any number
 * Enable military time: `set -g @dracula-military-time true`
 * Disable timezone: `set -g @dracula-show-timezone false`
