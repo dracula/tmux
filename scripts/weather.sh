@@ -35,7 +35,7 @@ display_weather()
 	temperature=$(echo $weather_information | rev | cut -d ' ' -f 1 | rev) # +31°C, -3°F, etc
 	unicode=$(forecast_unicode $weather_condition)
 
-	echo "$unicode ${temperature/+/}" # remove the plus sign to the temperature
+	echo "$unicode${temperature/+/}" # remove the plus sign to the temperature
 }
 
 forecast_unicode()
