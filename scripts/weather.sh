@@ -31,8 +31,8 @@ display_weather()
 	fi
 	weather_information=$(fetch_weather_information $display_weather)
 
-	weather_condition=$(echo $weather_information |  cut -d "+" -f 1 | cut -d "-" -f 1) # Sunny, Snow, etc
-	temperature=$(echo $weather_information | cut -d '+' -f 2) # +31°C, -3°F, etc
+	weather_condition=$(echo $weather_information | rev | cut -d ' ' -f2- | rev) # Sunny, Snow, etc
+	temperature=$(echo $weather_information | rev | cut -d ' ' -f 1 | rev) # +31°C, -3°F, etc
 	unicode=$(forecast_unicode $weather_condition)
 
 	echo "$unicode ${temperature/+/}" # remove the plus sign to the temperature
