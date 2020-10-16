@@ -3,6 +3,7 @@
 #wrapper script for running weather on interval
 
 fahrenheit=$1
+location=$2
 
 LOCKFILE=/tmp/.dracula-tmux-weather.lock
 
@@ -27,7 +28,7 @@ main()
 
 	while tmux has-session &> /dev/null
 	do
-		$current_dir/weather.sh $fahrenheit > $current_dir/../data/weather.txt
+		$current_dir/weather.sh $fahrenheit $location > $current_dir/../data/weather.txt
 		if tmux has-session &> /dev/null
 		then
 			sleep 1200
