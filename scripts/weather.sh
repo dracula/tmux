@@ -18,7 +18,7 @@ fetch_weather_information()
 {
 	display_weather=$1
 	# it gets the weather condition textual name (%C), and the temperature (%t)
-	curl -sL wttr.in\?format="+%C+%t$display_weather"
+	curl -sL wttr.in\?format="%C+%t$display_weather"
 }
 
 #get weather display
