@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# setting the locale, some users have issues with different locales, this forces the correct one
+export LC_ALL=en_US.UTF-8
 
 linux_acpi() {
     arg=$1
@@ -43,6 +45,10 @@ battery_percent()
 			echo $(pmset -g batt | grep -Eo '[0-9]?[0-9]?[0-9]%')
 		;;
 
+		FreeBSD)
+			echo $(apm | sed '8,11d' | grep life | awk '{print $4}')
+		;;
+
 		CYGWIN*|MINGW32*|MSYS*|MINGW*)
 			# leaving empty - TODO - windows compatability
 		;;
@@ -57,11 +63,15 @@ battery_status()
 	# Check OS
 	case $(uname -s) in
 		Linux)
-            status=$(linux_acpi status)
+			status=$(linux_acpi status)
 		;;
 
 		Darwin)
 			status=$(pmset -g batt | sed -n 2p | cut -d ';' -f 2)
+		;;
+
+		FreeBSD)
+			status=$(apm | sed '8,11d' | grep Status | awk '{printf $3}')
 		;;
 
 		CYGWIN*|MINGW32*|MSYS*|MINGW*)
@@ -72,11 +82,28 @@ battery_status()
 		;;
 	esac
 
-	if [ $status = 'discharging' ] || [ $status = 'Discharging' ]; then
-		echo ''
-	else
-	 	echo 'AC'
-	fi
+	case $status in
+		discharging|Discharging)
+			echo ''
+		;;
+		high)
+			echo ''
+		;;
+		charging)
+			echo 'AC'
+		;;
+		*)
+			echo 'AC'
+		;;
+	esac
+	### Old if statements didn't work on BSD, they're probably not POSIX compliant, not sure
+	# if [ $status = 'discharging' ] || [ $status = 'Discharging' ]; then
+	# 	echo ''
+	# # elif [ $status = 'charging' ]; then # This is needed for FreeBSD AC checking support
+	# 	# echo 'AC'
+	# else
+	#  	echo 'AC'
+	# fi
 }
 
 main()
