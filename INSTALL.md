@@ -19,6 +19,7 @@ Customize the status bar by adding any of these lines to your .tmux.conf as desi
 * Disable network functionality: `set -g @dracula-show-network false`
 * Disable weather functionality: `set -g @dracula-show-weather false`
 * Disable time functionality: `set -g @dracula-show-time false`
+* Disable location information: `set -g @dracula-show-location false`
 * Switch from default fahrenheit to celsius: `set -g @dracula-show-fahrenheit false`
 * Enable powerline symbols: `set -g @dracula-show-powerline true`
 * Switch powerline symbols `set -g @dracula-show-left-sep ` for left and `set -g @dracula-show-right-sep ` for right symbol (can set any symbol you like as seperator)
