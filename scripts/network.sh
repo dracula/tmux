@@ -9,7 +9,7 @@ get_ssid()
 	# Check OS
 	case $(uname -s) in
 		Linux)
-			SSID=$(iw dev | sed -nr 's/^\t\tssid (.*)/\1/p')
+			SSID=$(nmcli -t -f active,ssid dev wifi | egrep '^yes' | cut -d\' -f2 | sed -e 's/yes://g')
 			if [ -n "$SSID" ]; then
 				printf '%s' "$SSID"
 			else
