@@ -38,6 +38,7 @@ main()
   show_day_month=$(get_tmux_option "@dracula-day-month" false)
   show_time=$(get_tmux_option "@dracula-show-time" true)
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
+  show_hostname=$(get_tmux_option "@dracula-show-hostname" false)
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -159,6 +160,11 @@ main()
         powerbg=${cyan}
       fi
 
+      if $show_hostname; then
+	 tmux set-option -ga status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/hostname.sh)"
+	 powerbg=${pink}
+      fi
+
       if $show_weather; then # weather
         tmux set-option -ga status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt)"
         powerbg=${orange}
@@ -201,6 +207,10 @@ main()
 
       if $show_network; then # network
         tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] #($current_dir/network.sh) "
+      fi
+
+      if $show_hostname; then
+	 tmux set-option -ga status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/hostname.sh)"
       fi
 
       if $show_weather; then # weather
