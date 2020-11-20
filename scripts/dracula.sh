@@ -62,7 +62,7 @@ main()
       window)
 	  left_icon="#W ";;
       *)
-          left_icon=$show_left_icon;;
+          left_icon="$show_left_icon ";;
   esac
 
   # Handle powerline option
