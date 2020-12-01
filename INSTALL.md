@@ -1,12 +1,14 @@
 ### [tmux](https://github.com/tmux/tmux/wiki)
 
-#### Install using tpm
+#### Install using [tpm](https://github.com/tmux-plugins/tpm)
 
 If you are a tpm user, you can install the theme and keep up to date by adding the following to your .tmux.conf file:
 
-	set -g @plugin 'dracula/tmux'
+	set -g @plugin 'dracula/tmux'  
 
-### Install with [Nix](https://nixos.org)
+Add any configuration options below this line in your tmux config.
+
+#### Install with [Nix](https://nixos.org)
 
 If you're using [home-manager](https://github.com/nix-community/home-manager), an example config would look similar to this:
 Then run `home-manager switch`, the `Activating theme` section doesn't apply here.
