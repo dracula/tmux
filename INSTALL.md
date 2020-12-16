@@ -58,6 +58,7 @@ Customize the status bar by adding any of these lines to your .tmux.conf as desi
 * Enable military time: `set -g @dracula-military-time true`
 * Disable timezone: `set -g @dracula-show-timezone false`
 * Switch the left smiley icon `set -g @dracula-show-left-icon session` it can accept `session`, `smiley`, `window`, or any character.
+* Add padding to the left smiley icon `set -g @dracula-left-icon-padding` default is 1, it can accept any number and 0 disables padding.
 * Enable high contrast pane border: `set -g @dracula-border-contrast true`
 * Enable cpu usage: `set -g @dracula-cpu-usage true`
 * Enable ram usage: `set -g @dracula-ram-usage true`
