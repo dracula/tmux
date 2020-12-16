@@ -27,6 +27,7 @@ main()
   show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
   show_flags=$(get_tmux_option "@dracula-show-flags" false)
   show_left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
+  show_left_icon_padding=$(get_tmux_option "@dracula-left-icon-padding" 1)
   show_military=$(get_tmux_option "@dracula-military-time" false)
   show_timezone=$(get_tmux_option "@dracula-show-timezone" true)
   show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
@@ -56,14 +57,18 @@ main()
   # Handle left icon configuration
   case $show_left_icon in
       smiley)
-          left_icon="☺ ";;
+          left_icon="☺";;
       session)
-          left_icon="#S ";;
+          left_icon="#S";;
       window)
-	  left_icon="#W ";;
+          left_icon="#W";;
       *)
-          left_icon="$show_left_icon ";;
+          left_icon=$show_left_icon;;
   esac
+
+  # Handle left icon padding
+  padding="$(seq -f " " -s '' $show_left_icon_padding)"
+  left_icon="$left_icon$padding"
 
   # Handle powerline option
   if $show_powerline; then
