@@ -23,7 +23,10 @@ get_percent()
 		;;
 		
 		Darwin)
-			percent=$(ps -A -o %cpu | awk '{s+=$1} END {print s "%"}')
+			cpuvalue=$(ps -A -o %cpu | awk -F. '{s+=$1} END {print s}')
+			cpucores=$(sysctl -n hw.logicalcpu)
+			cpuusage=$(( cpuvalue / cpucores ))
+			percent="$cpuusage%"
 			echo $percent
 		;;
 
