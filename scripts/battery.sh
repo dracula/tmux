@@ -67,7 +67,7 @@ battery_status()
 		;;
 
 		Darwin)
-			status=$(pmset -g batt | sed -n 2p | cut -d ';' -f 2)
+			status=$(pmset -g batt | sed -n 2p | cut -d ';' -f 2 | tr -d " ")
 		;;
 
 		FreeBSD)
