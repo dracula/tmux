@@ -47,6 +47,8 @@ programs.tmux = {
 Customize the status bar by adding any of these lines to your .tmux.conf as desired:  
 * Disable battery functionality: `set -g @dracula-show-battery false`
 * Disable network functionality: `set -g @dracula-show-network false`
+* Enable network bandwith functionality: `set -g @dracula-network-bandwith $network_name`
+  - You could get the `$network_name` through the command: `sudo lshw -class network -short | grep wl | awk '{print $2}'`
 * Disable weather functionality: `set -g @dracula-show-weather false`
 * Disable time functionality: `set -g @dracula-show-time false`
 * Disable location information: `set -g @dracula-show-location false`
