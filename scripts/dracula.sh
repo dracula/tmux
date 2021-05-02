@@ -114,7 +114,7 @@ main()
 
   # set length
   tmux set-option -g status-left-length 100
-  tmux set-option -g status-right-length 250 
+  tmux set-option -g status-right-length 100 
 
   # pane border styling
   if $show_border_contrast; then
@@ -169,6 +169,7 @@ main()
       fi
 
       if [[ "$show_network_bandwith" != "" ]]; then # network bandwith
+        tmux set-option -g status-right-length 250 
         tmux set-option -ga status-right "#[fg=${green},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${green}] #($current_dir/network_bandwith.sh)"
         powerbg=${green}
       fi
@@ -218,6 +219,7 @@ main()
       fi
 
       if [[ "$show_network_bandwith" != "" ]]; then # network bandwith
+        tmux set-option -g status-right-length 250 
         tmux set-option -ga status-right "#[fg=${dark_gray},bg=${green}] #($current_dir/network_bandwith.sh) "
       fi
 
