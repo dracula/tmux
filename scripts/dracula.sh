@@ -20,6 +20,7 @@ main()
 
   # set configuration option variables
   show_battery=$(get_tmux_option "@dracula-show-battery" true)
+  show_git=$(get_tmux_option "@dracula-show-git" true)
   show_network=$(get_tmux_option "@dracula-show-network" true)
   show_weather=$(get_tmux_option "@dracula-show-weather" true)
   show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
@@ -142,8 +143,13 @@ main()
       tmux set-option -g  status-right ""
       powerbg=${gray}
 
+      if $show_git; then # git
+        tmux set-option -g  status-right "#[fg=${green},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=#($current_dir/git.sh 0 #{pane_current_path}),bg=${green}] #($current_dir/git.sh 1 #{pane_current_path})"
+        powerbg=${green}
+      fi
+
       if $show_battery; then # battery
-        tmux set-option -g  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh)"
+        tmux set-option -ga  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh)"
         powerbg=${pink}
       fi
 
@@ -192,8 +198,11 @@ main()
 
     tmux set-option -g  status-right ""
 
+      if $show_git; then      
+  tmux set-option -g status-right "#[fg=#($current_dir/git.sh 0 #{pane_current_path}),bg=${green}] #($current_dir/git.sh 1 #{pane_current_path})"
+      fi
       if $show_battery; then # battery
-        tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
+        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
       fi
       if $show_ram_usage; then
 	tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] #($current_dir/ram_info.sh) "
