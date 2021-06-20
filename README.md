@@ -17,7 +17,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 * Support for powerline
 * Day, date, time, timezone
 * Current location based on network with temperature and forecast icon (if available)
-* Network connection status and SSID
+* Network connection status, bandwith and SSID
 * Battery percentage and AC power connection status
 * Refresh rate control
 * CPU usage

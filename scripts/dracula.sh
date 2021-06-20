@@ -39,6 +39,7 @@ main()
   show_day_month=$(get_tmux_option "@dracula-day-month" false)
   show_time=$(get_tmux_option "@dracula-show-time" true)
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
+  show_network_bandwith=$(get_tmux_option "@dracula-network-bandwith" "")
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -113,7 +114,7 @@ main()
 
   # set length
   tmux set-option -g status-left-length 100
-  tmux set-option -g status-right-length 100
+  tmux set-option -g status-right-length 100 
 
   # pane border styling
   if $show_border_contrast; then
@@ -167,6 +168,12 @@ main()
         powerbg=${cyan}
       fi
 
+      if [[ "$show_network_bandwith" != "" ]]; then # network bandwith
+        tmux set-option -g status-right-length 250 
+        tmux set-option -ga status-right "#[fg=${green},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${green}] #($current_dir/network_bandwith.sh)"
+        powerbg=${green}
+      fi
+
       if $show_weather; then # weather
         tmux set-option -ga status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt)"
         powerbg=${orange}
@@ -209,6 +216,11 @@ main()
 
       if $show_network; then # network
         tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] #($current_dir/network.sh) "
+      fi
+
+      if [[ "$show_network_bandwith" != "" ]]; then # network bandwith
+        tmux set-option -g status-right-length 250 
+        tmux set-option -ga status-right "#[fg=${dark_gray},bg=${green}] #($current_dir/network_bandwith.sh) "
       fi
 
       if $show_weather; then # weather
