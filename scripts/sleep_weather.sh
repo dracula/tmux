@@ -8,6 +8,7 @@ fahrenheit=$1
 location=$2
 
 LOCKFILE=/tmp/.dracula-tmux-weather.lock
+DATAFILE=/tmp/.dracula-tmux-data
 
 ensure_single_process()
 {
@@ -22,15 +23,15 @@ main()
 
 	current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-	if [ ! -f $current_dir/../data/weather.txt ]; then
-		printf "Loading..." > $current_dir/../data/weather.txt
+	if [ ! -f $DATAFILE ]; then
+		printf "Loading..." > $DATAFILE
 	fi
 
-	$current_dir/weather.sh > $current_dir/../data/weather.txt
+	$current_dir/weather.sh > $DATAFILE
 
 	while tmux has-session &> /dev/null
 	do
-		$current_dir/weather.sh $fahrenheit $location > $current_dir/../data/weather.txt
+		$current_dir/weather.sh $fahrenheit $location > $DATAFILE
 		if tmux has-session &> /dev/null
 		then
 			sleep 1200
