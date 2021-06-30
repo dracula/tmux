@@ -15,6 +15,8 @@ get_tmux_option() {
 
 main()
 {
+  datafile=/tmp/.dracula-tmux-data
+
   # set current directory variable
   current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -130,9 +132,9 @@ main()
   # status bar
   tmux set-option -g status-style "bg=${gray},fg=${white}"
 
-  # wait unit data/weather.txt exists just to avoid errors
+  # wait unit $datafile exists just to avoid errors
   # this should almost never need to wait unless something unexpected occurs
-  while $show_weather && [ ! -f $current_dir/../data/weather.txt ]; do
+  while $show_weather && [ ! -f $datafile ]; do
       sleep 0.01
   done
 
@@ -175,7 +177,7 @@ main()
       fi
 
       if $show_weather; then # weather
-        tmux set-option -ga status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt)"
+        tmux set-option -ga status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #(cat $datafile)"
         powerbg=${orange}
       fi
 
@@ -224,7 +226,7 @@ main()
       fi
 
       if $show_weather; then # weather
-          tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(cat $current_dir/../data/weather.txt) "
+          tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(cat $datafile) "
       fi
 
       if $show_time; then
