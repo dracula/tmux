@@ -4,14 +4,14 @@ export LC_ALL=en_US.UTF-8
 
 # function for getting the refresh rate
 get_tmux_option() {
-  local option=$1
-  local default_value=$2
-  local option_value=$(tmux show-option -gqv "$option")
-  if [ -z $option_value ]; then
-    echo $default_value
-  else
-    echo $option_value
-  fi
+	local option=$1
+	local default_value=$2
+	local option_value=$(tmux show-option -gqv "$option")
+	if [ -z $option_value ]; then
+		echo $default_value
+	else
+		echo $option_value
+	fi
 }
 
 get_percent()
@@ -33,7 +33,7 @@ get_percent()
 				memory_usage=$(free -g | awk '/^Mem/ {print $3}')
 				echo $memory_usage\G\B/$total_mem\G\B
 			fi
-		;;
+			;;
 
 		Darwin)
 			# percent=$(ps -A -o %mem | awk '{mem += $1} END {print mem}')
@@ -46,8 +46,8 @@ get_percent()
 				memory=$(($used_mem/1024))
 				echo $memory\G\B/$total_mem
 			fi
-		;;
-		
+			;;
+
 		FreeBSD)
 			# Looked at the code from neofetch
 			hw_pagesize="$(sysctl -n hw.pagesize)"
@@ -65,11 +65,11 @@ get_percent()
 				memory=$(($used_mem/1024))
 				echo $memory\G\B/$total_mem
 			fi
-		;;
+			;;
 
 		CYGWIN*|MINGW32*|MSYS*|MINGW*)
 			# TODO - windows compatability
-		;;
+			;;
 	esac
 }
 
@@ -77,8 +77,9 @@ main()
 {
 	# storing the refresh rate in the variable RATE, default is 5
 	RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
+	ram_label=$(get_tmux_option "@dracula-ram-label" "GPU")
 	ram_percent=$(get_percent)
-	echo "RAM $ram_percent"
+	echo "$ram_label $ram_percent"
 	sleep $RATE
 }
 
