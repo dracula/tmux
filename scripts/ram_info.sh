@@ -28,10 +28,10 @@ get_percent()
 				echo $memory_usage\M\B/$total_mem_mb\M\B
 			elif (( $used_mem == 0 )); then
 				memory_usage=$(free -m | awk '/^Mem/ {print $3}')
-				echo $memory_usage\M\B/$total_mem\G\B
+				echo $memory_usage\M\B/$total_mem_gb\G\B
 			else
 				memory_usage=$(free -g | awk '/^Mem/ {print $3}')
-				echo $memory_usage\G\B/$total_mem\G\B
+				echo $memory_usage\G\B/$total_mem_gb\G\B
 			fi
 		;;
 
