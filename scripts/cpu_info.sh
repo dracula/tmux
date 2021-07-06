@@ -34,7 +34,6 @@ main()
   cpu_label=$(get_tmux_option "@dracula-cpu-usage-label" "CPU")
   cpu_percent=$(get_percent)
   echo "$cpu_label $cpu_percent"
-  # echo "$current_dir"
   sleep $RATE
 }
 
