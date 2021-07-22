@@ -113,12 +113,6 @@ main()
   # status bar
   tmux set-option -g status-style "bg=${gray},fg=${white}"
 
-  # wait unit $datafile exists just to avoid errors
-  # this should almost never need to wait unless something unexpected occurs
-  while $show_weather && [ ! -f $datafile ]; do
-    sleep 0.01
-  done
-
   # Status left
   if $show_powerline; then
     tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
@@ -164,6 +158,12 @@ main()
     fi
 
     if [ $plugin = "weather" ]; then
+      # wait unit $datafile exists just to avoid errors
+      # this should almost never need to wait unless something unexpected occurs
+      while [ ! -f $datafile ]; do
+        sleep 0.01
+      done
+
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-weather-colors" "orange dark_gray")
       script="#(cat $datafile)"
     fi
