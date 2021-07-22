@@ -23,6 +23,7 @@ main()
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
   show_day_month=$(get_tmux_option "@dracula-day-month" false)
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
+  IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -64,7 +65,7 @@ main()
   fi
 
   # start weather script in background
-  if $show_weather; then
+  if [[ "${plugins[@]}" =~ "weather" ]]; then
     $current_dir/sleep_weather.sh $show_fahrenheit $show_location &
   fi
 
@@ -123,7 +124,6 @@ main()
 
   # Status right
   tmux set-option -g status-right ""
-  IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
 
   for plugin in "${plugins[@]}"; do
     if [ $plugin = "battery" ]; then
