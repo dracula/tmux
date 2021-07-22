@@ -2,28 +2,14 @@
 # setting the locale, some users have issues with different locales, this forces the correct one
 export LC_ALL=en_US.UTF-8
 
-get_tmux_option() {
-  local option=$1
-  local default_value=$2
-  local option_value=$(tmux show-option -gqv "$option")
-  if [ -z $option_value ]; then
-    echo $default_value
-  else
-    echo $option_value
-  fi
-}
+current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $current_dir/utils.sh
 
 main()
 {
   datafile=/tmp/.dracula-tmux-data
 
-  # set current directory variable
-  current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
   # set configuration option variables
-  show_battery=$(get_tmux_option "@dracula-show-battery" true)
-  show_network=$(get_tmux_option "@dracula-show-network" true)
-  show_weather=$(get_tmux_option "@dracula-show-weather" true)
   show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
   show_location=$(get_tmux_option "@dracula-show-location" true)
   show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
@@ -35,13 +21,9 @@ main()
   show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
   show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
-  show_cpu_usage=$(get_tmux_option "@dracula-cpu-usage" false)
-  show_ram_usage=$(get_tmux_option "@dracula-ram-usage" false)
-  show_gpu_usage=$(get_tmux_option "@dracula-gpu-usage" false)
   show_day_month=$(get_tmux_option "@dracula-day-month" false)
-  show_time=$(get_tmux_option "@dracula-show-time" true)
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
-  show_network_bandwith=$(get_tmux_option "@dracula-network-bandwith" "")
+  IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -59,40 +41,40 @@ main()
 
   # Handle left icon configuration
   case $show_left_icon in
-      smiley)
-          left_icon="☺";;
-      session)
-          left_icon="#S";;
-      window)
-          left_icon="#W";;
-      *)
-          left_icon=$show_left_icon;;
+    smiley)
+      left_icon="☺";;
+    session)
+      left_icon="#S";;
+    window)
+      left_icon="#W";;
+    *)
+      left_icon=$show_left_icon;;
   esac
 
   # Handle left icon padding
   padding=""
   if [ "$show_left_icon_padding" -gt "0" ]; then
-	  padding="$(printf '%*s' $show_left_icon_padding)"
+    padding="$(printf '%*s' $show_left_icon_padding)"
   fi
   left_icon="$left_icon$padding"
 
   # Handle powerline option
   if $show_powerline; then
-      right_sep="$show_right_sep"
-      left_sep="$show_left_sep"
+    right_sep="$show_right_sep"
+    left_sep="$show_left_sep"
   fi
 
   # start weather script in background
-  if $show_weather; then
+  if [[ "${plugins[@]}" =~ "weather" ]]; then
     $current_dir/sleep_weather.sh $show_fahrenheit $show_location &
   fi
 
   # Set timezone unless hidden by configuration
   case $show_timezone in
-      false)
-          timezone="";;
-      true)
-          timezone="#(date +%Z)";;
+    false)
+      timezone="";;
+    true)
+      timezone="#(date +%Z)";;
   esac
 
   case $show_flags in
@@ -109,14 +91,14 @@ main()
 
   # set the prefix + t time format
   if $show_military; then
-	tmux set-option -g clock-mode-style 24
+    tmux set-option -g clock-mode-style 24
   else
-	tmux set-option -g clock-mode-style 12
+    tmux set-option -g clock-mode-style 12
   fi
 
   # set length
   tmux set-option -g status-left-length 100
-  tmux set-option -g status-right-length 100 
+  tmux set-option -g status-right-length 100
 
   # pane border styling
   if $show_border_contrast; then
@@ -132,117 +114,88 @@ main()
   # status bar
   tmux set-option -g status-style "bg=${gray},fg=${white}"
 
-  # wait unit $datafile exists just to avoid errors
-  # this should almost never need to wait unless something unexpected occurs
-  while $show_weather && [ ! -f $datafile ]; do
-      sleep 0.01
-  done
-
-  # Powerline Configuration
+  # Status left
   if $show_powerline; then
-
-      tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
-      tmux set-option -g  status-right ""
-      powerbg=${gray}
-
-      if $show_battery; then # battery
-        tmux set-option -g  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh)"
-        powerbg=${pink}
-      fi
-
-      if $show_ram_usage; then
-	 tmux set-option -ga status-right "#[fg=${cyan},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${cyan}] #($current_dir/ram_info.sh)"
-	 powerbg=${cyan}
-      fi
-
-      if $show_cpu_usage; then
-	 tmux set-option -ga status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/cpu_info.sh)"
-	 powerbg=${orange}
-      fi
-
-      if $show_gpu_usage; then
-	 tmux set-option -ga status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/gpu_usage.sh)"
-	 powerbg=${pink}
-      fi
-
-      if $show_network; then # network
-        tmux set-option -ga status-right "#[fg=${cyan},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${cyan}] #($current_dir/network.sh)"
-        powerbg=${cyan}
-      fi
-
-      if [[ "$show_network_bandwith" != "" ]]; then # network bandwith
-        tmux set-option -g status-right-length 250 
-        tmux set-option -ga status-right "#[fg=${green},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${green}] #($current_dir/network_bandwith.sh)"
-        powerbg=${green}
-      fi
-
-      if $show_weather; then # weather
-        tmux set-option -ga status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #(cat $datafile)"
-        powerbg=${orange}
-      fi
-
-      if $show_time; then
-        if $show_day_month && $show_military ; then # military time and dd/mm
-          tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %d/%m %R ${timezone} "
-        elif $show_military; then # only military time
-          tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %R ${timezone} "
-        elif $show_day_month; then # only dd/mm
-          tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %d/%m %I:%M %p ${timezone} "
-        else
-          tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p ${timezone} "
-        fi
-      fi
-
-      tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=${gray}]${left_sep}"
-
-  # Non Powerline Configuration
+    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
+    powerbg=${gray}
   else
     tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon}"
+  fi
 
-    tmux set-option -g  status-right ""
+  # Status right
+  tmux set-option -g status-right ""
 
-      if $show_battery; then # battery
-        tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
+  for plugin in "${plugins[@]}"; do
+    if [ $plugin = "battery" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-battery-colors" "pink dark_gray")
+      script="#($current_dir/battery.sh)"
+    fi
+
+    if [ $plugin = "gpu-usage" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-gpu-usage-colors" "pink dark_gray")
+      script="#($current_dir/gpu_usage.sh)"
+    fi
+
+    if [ $plugin = "cpu-usage" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-cpu-usage-colors" "orange dark_gray")
+      script="#($current_dir/cpu_info.sh)"
+    fi
+
+    if [ $plugin = "ram-usage" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-ram-usage-colors" "cyan dark_gray")
+      script="#($current_dir/ram_info.sh)"
+    fi
+
+    if [ $plugin = "network" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-network-colors" "cyan dark_gray")
+      script="#($current_dir/network.sh)"
+    fi
+
+    if [ $plugin = "network-bandwith" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-network-bandwith-colors" "cyan dark_gray")
+      tmux set-option -g status-right-length 250
+      script="#($current_dir/network_bandwith.sh)"
+    fi
+
+    if [ $plugin = "weather" ]; then
+      # wait unit $datafile exists just to avoid errors
+      # this should almost never need to wait unless something unexpected occurs
+      while [ ! -f $datafile ]; do
+        sleep 0.01
+      done
+
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-weather-colors" "orange dark_gray")
+      script="#(cat $datafile)"
+    fi
+
+    if [ $plugin = "time" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-weather-colors" "dark_purple white")
+      if $show_day_month && $show_military ; then # military time and dd/mm
+        script="%a %d/%m %R ${timezone} "
+      elif $show_military; then # only military time
+        script="%a %m/%d %R ${timezone} "
+      elif $show_day_month; then # only dd/mm
+        script="%a %d/%m %I:%M %p ${timezone} "
+      else
+        script="%a %m/%d %I:%M %p ${timezone} "
       fi
-      if $show_ram_usage; then
-	tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] #($current_dir/ram_info.sh) "
-      fi
+    fi
 
-      if $show_cpu_usage; then
-	tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/cpu_info.sh) "
-      fi
+    if $show_powerline; then
+      tmux set-option -ga status-right "#[fg=${!colors[0]},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script"
+      powerbg=${!colors[0]}
+    else
+      tmux set-option -ga status-right "#[fg=${!colors[1]},bg=${!colors[0]}] $script"
+    fi
+  done
 
-      if $show_gpu_usage; then
-	tmux set-option -ga status-right "#[fg=${dark_gray},bg=${pink}] #($current_dir/gpu_usage.sh) "
-      fi
+  tmux set-option -ga status-right " "
 
-      if $show_network; then # network
-        tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] #($current_dir/network.sh) "
-      fi
-
-      if [[ "$show_network_bandwith" != "" ]]; then # network bandwith
-        tmux set-option -g status-right-length 250 
-        tmux set-option -ga status-right "#[fg=${dark_gray},bg=${green}] #($current_dir/network_bandwith.sh) "
-      fi
-
-      if $show_weather; then # weather
-          tmux set-option -ga status-right "#[fg=${dark_gray},bg=${orange}] #(cat $datafile) "
-      fi
-
-      if $show_time; then
-        if $show_day_month && $show_military ; then # military time and dd/mm
-          tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %d/%m %R ${timezone} "
-        elif $show_military; then # only military time
-          tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %R ${timezone} "
-        elif $show_day_month; then # only dd/mm
-          tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %d/%m %I:%M %p ${timezone} "
-        else
-          tmux set-option -ga status-right "#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p ${timezone} "
-        fi
-      fi
-
-      tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W${current_flags} "
-
+  # Window option
+  if $show_powerline; then
+    tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=${gray}]${left_sep}"
+  else
+    tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W${current_flags} "
   fi
 
   tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${gray}] #I #W${flags}"
@@ -252,3 +205,4 @@ main()
 
 # run main function
 main
+
