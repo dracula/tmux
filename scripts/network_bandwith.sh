@@ -4,16 +4,44 @@ INTERVAL="1"  # update interval in seconds
 
 network_name=$(tmux show-option -gqv "@dracula-network-bandwith")
 
+download_bytes() {
+  case $(uname -s) in
+    Linux)
+      cat "/sys/class/net/$network_name/statistics/rx_bytes"
+      ;;
+    Darwin)
+      netstat -I "$network_name" -b | tail -n 1 | awk '{print $7}'
+      ;;
+    CYGWIN*|MINGW32*|MSYS*|MINGW*)
+      # TODO - windows compatibility
+      ;;
+  esac
+}
+
+upload_bytes() {
+  case $(uname -s) in
+    Linux)
+      cat "/sys/class/net/$network_name/statistics/rx_bytes"
+      ;;
+    Darwin)
+      netstat -I "$network_name" -b | tail -n 1 | awk '{print $10}'
+      ;;
+    CYGWIN*|MINGW32*|MSYS*|MINGW*)
+      # TODO - windows compatibility
+      ;;
+  esac
+}
+
 main() {
   while true
   do
-    initial_download=$(cat /sys/class/net/$network_name/statistics/rx_bytes)
-    initial_upload=$(cat /sys/class/net/$network_name/statistics/tx_bytes)
+    initial_download=$(download_bytes)
+    initial_upload=$(upload_bytes)
 
     sleep $INTERVAL
 
-    final_download=$(cat /sys/class/net/$network_name/statistics/rx_bytes)
-    final_upload=$(cat /sys/class/net/$network_name/statistics/tx_bytes)
+    final_download=$(download_bytes)
+    final_upload=$(upload_bytes)
 
     total_download_bps=$(expr $final_download - $initial_download)
     total_upload_bps=$(expr $final_upload - $initial_upload)
