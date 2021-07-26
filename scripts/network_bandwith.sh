@@ -46,8 +46,8 @@ main() {
     total_download_bps=$(expr $final_download - $initial_download)
     total_upload_bps=$(expr $final_upload - $initial_upload)
 
-    total_download_kbps=$(echo "scale=2; $total_download_bps / 1024" | bc)
-    total_upload_kbps=$(echo "scale=2; $total_upload_bps / 1024" | bc)
+    total_download_kbps=$(echo "scale=0; $total_download_bps / 1024" | bc)
+    total_upload_kbps=$(echo "scale=0; $total_upload_bps / 1024" | bc)
 
     echo "↓ $total_download_kbps kB/s • ↑ $total_upload_kbps kB/s"
   done
