@@ -49,7 +49,7 @@ main() {
     total_download_kbps=$(echo "scale=0; $total_download_bps / 1024" | bc)
     total_upload_kbps=$(echo "scale=0; $total_upload_bps / 1024" | bc)
 
-    echo "↓ $total_download_kbps kB/s • ↑ $total_upload_kbps kB/s"
+    echo "$(printf "%8skB/s • %8skB/s" "↓$total_download_kbps" "↑$total_upload_kbps")"
   done
 }
 main
