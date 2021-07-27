@@ -8,38 +8,39 @@ fahrenheit=$1
 location=$2
 
 LOCKFILE=/tmp/.dracula-tmux-weather.lock
+DATAFILE=/tmp/.dracula-tmux-data
 
 ensure_single_process()
 {
-	# check for another running instance of this script and terminate it if found
-	[ -f $LOCKFILE ] && ps -p "$(cat $LOCKFILE)" -o cmd= | grep -F " ${BASH_SOURCE[0]}" && kill "$(cat $LOCKFILE)"
-	echo $$ > $LOCKFILE
+  # check for another running instance of this script and terminate it if found
+  [ -f $LOCKFILE ] && ps -p "$(cat $LOCKFILE)" -o cmd= | grep -F " ${BASH_SOURCE[0]}" && kill "$(cat $LOCKFILE)"
+  echo $$ > $LOCKFILE
 }
 
 main()
 {
-	ensure_single_process
+  ensure_single_process
 
-	current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-	if [ ! -f $current_dir/../data/weather.txt ]; then
-		printf "Loading..." > $current_dir/../data/weather.txt
-	fi
+  if [ ! -f $DATAFILE ]; then
+    printf "Loading..." > $DATAFILE
+  fi
 
-	$current_dir/weather.sh > $current_dir/../data/weather.txt
+  $current_dir/weather.sh > $DATAFILE
 
-	while tmux has-session &> /dev/null
-	do
-		$current_dir/weather.sh $fahrenheit $location > $current_dir/../data/weather.txt
-		if tmux has-session &> /dev/null
-		then
-			sleep 1200
-		else
-			break
-		fi
-	done
+  while tmux has-session &> /dev/null
+  do
+    $current_dir/weather.sh $fahrenheit $location > $DATAFILE
+    if tmux has-session &> /dev/null
+    then
+      sleep 1200
+    else
+      break
+    fi
+  done
 
-	rm $LOCKFILE
+  rm $LOCKFILE
 }
 
 #run main driver function
