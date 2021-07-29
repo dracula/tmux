@@ -38,7 +38,6 @@ main()
   pink='#ff79c6'
   yellow='#f1fa8c'
 
-
   # Handle left icon configuration
   case $show_left_icon in
     smiley)
@@ -126,6 +125,12 @@ main()
   tmux set-option -g status-right ""
 
   for plugin in "${plugins[@]}"; do
+
+    if [ $plugin = "git" ]; then
+      IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-git-colors" "green dark_gray")
+        script="#($current_dir/git.sh)"     
+    fi
+
     if [ $plugin = "battery" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-battery-colors" "pink dark_gray")
       script="#($current_dir/battery.sh)"
@@ -188,7 +193,7 @@ main()
       tmux set-option -ga status-right "#[fg=${!colors[1]},bg=${!colors[0]}] $script"
     fi
   done
-
+  
   tmux set-option -ga status-right " "
 
   # Window option

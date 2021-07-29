@@ -155,6 +155,32 @@ Enable military time
 set -g @dracula-military-time true
 ```
 
+#### git options
+
+Hide details of git changes
+```bash
+set -g @dracula-git-disable-status true
+```
+
+Set symbol to use for when branch is up to date with HEAD
+```bash
+# default is ✓. Avoid using non unicode characters that bash uses like $, * and ! 
+set -g @dracula-git-show-current-symbol ✓
+```
+
+Set symbol to use for when branch diverges from HEAD
+```bash
+# default is unicode !. Avoid bash special characters 
+set -g @dracula-git-show-diff-symbol !
+```
+
+Set symbol or message to use when the current pane has no git repo
+```bash
+# default is unicode no message
+set -g @dracula-git-no-repo-message ""
+```
+
+
 #### weather options
 
 Switch from default fahrenheit to celsius
