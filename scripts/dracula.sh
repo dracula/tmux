@@ -125,6 +125,19 @@ main()
   # Status right
   tmux set-option -g status-right ""
 
+  # deprecated status right options (note spelling)
+  dep_bandwith_colors=$(get_tmux_option "@dracula-network-bandwith-colors")
+  if [ -n "$dep_bandwith_colors" ]; then
+    tmux set-option -g -o "@dracula-network-bandwidth-colors" "$dep_bandwith_colors"
+    tmux set-option -u "@dracula-network-bandwith-colors" 
+  fi
+
+  dep_bandwith=$(get_tmux_option "@dracula-network-bandwith")
+  if [ -n "$dep_bandwith" ]; then
+    tmux set-option -g -o "@dracula-network-bandwidth" "$dep_bandwith"
+    tmux set-option -u "@dracula-network-bandwith"
+  fi
+
   for plugin in "${plugins[@]}"; do
     if [ $plugin = "battery" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-battery-colors" "pink dark_gray")
@@ -152,9 +165,13 @@ main()
     fi
 
     if [ $plugin = "network-bandwith" ]; then
-      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-network-bandwith-colors" "cyan dark_gray")
+      plugin="network-bandwidth"
+    fi
+
+    if [ $plugin = "network-bandwidth" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-network-bandwidth-colors" "cyan dark_gray")
       tmux set-option -g status-right-length 250
-      script="#($current_dir/network_bandwith.sh)"
+      script="#($current_dir/network_bandwidth.sh)"
     fi
 
     if [ $plugin = "weather" ]; then
