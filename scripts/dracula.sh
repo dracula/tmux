@@ -187,14 +187,12 @@ main()
     fi
 
     if $show_powerline; then
-      tmux set-option -ga status-right "#[fg=${!colors[0]},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script"
+      tmux set-option -ga status-right "#[fg=${!colors[0]},bg=${powerbg},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script "
       powerbg=${!colors[0]}
     else
-      tmux set-option -ga status-right "#[fg=${!colors[1]},bg=${!colors[0]}] $script"
+      tmux set-option -ga status-right "#[fg=${!colors[1]},bg=${!colors[0]}] $script "
     fi
   done
-  
-  tmux set-option -ga status-right " "
 
   # Window option
   if $show_powerline; then
@@ -210,4 +208,3 @@ main()
 
 # run main function
 main
-
