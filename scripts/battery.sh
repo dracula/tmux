@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # setting the locale, some users have issues with different locales, this forces the correct one
 export LC_ALL=en_US.UTF-8
+export SELECTED_BATTERY="$1"
 
 linux_acpi() {
   arg=$1
-  BAT=$(ls -d /sys/class/power_supply/BAT* | head -1)
+  BAT=$(ls -d "/sys/class/power_supply/BAT$SELECTED_BATTERY" | head -1)
   if [ ! -x "$(which acpi 2> /dev/null)" ];then
     case "$arg" in
       status)
@@ -21,10 +22,10 @@ linux_acpi() {
   else
     case "$arg" in
       status)
-        acpi | cut -d: -f2- | cut -d, -f1 | tr -d ' '
+        acpi | grep "Battery $SELECTED_BATTERY" | cut -d: -f2- | cut -d, -f1 | tr -d ' '
         ;;
       percent)
-        acpi | cut -d: -f2- | cut -d, -f2 | tr -d '% '
+        acpi | grep "Battery $SELECTED_BATTERY" | cut -d: -f2- | cut -d, -f2 | tr -d '% '
         ;;
       *)
         ;;
