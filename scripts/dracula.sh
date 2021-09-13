@@ -156,10 +156,10 @@ main()
       script="#($current_dir/network.sh)"
     fi
 
-    if [ $plugin = "network-bandwith" ]; then
-      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-network-bandwith-colors" "cyan dark_gray")
+    if [ $plugin = "network-bandwidth" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-network-bandwidth-colors" "cyan dark_gray")
       tmux set-option -g status-right-length 250
-      script="#($current_dir/network_bandwith.sh)"
+      script="#($current_dir/network_bandwidth.sh)"
     fi
 
     if [ $plugin = "weather" ]; then

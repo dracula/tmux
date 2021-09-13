@@ -2,7 +2,7 @@
 
 INTERVAL="1"  # update interval in seconds
 
-network_name=$(tmux show-option -gqv "@dracula-network-bandwith")
+network_name=$(tmux show-option -gqv "@dracula-network-bandwidth")
 
 main() {
   while true
