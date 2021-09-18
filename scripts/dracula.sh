@@ -25,7 +25,7 @@ main()
   show_day_month=$(get_tmux_option "@dracula-day-month" false)
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
   use_arbitrary_time_format=$(get_tmux_option "@dracula-arbitrary-time-format" false)
-  time_format=$(get_tmux_option "@dracula-time-format" "Y-%m-%d(%a) %H:%M:%S")
+  time_format=$(get_tmux_option "@dracula-time-format" "%Y-%m-%d(%a) %H:%M")
   IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
 
   # Dracula Color Pallette
