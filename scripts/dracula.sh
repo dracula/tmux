@@ -183,10 +183,8 @@ main()
 
     if [ $plugin = "time" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-time-colors" "dark_purple white")
-      case $use_arbitrary_time_format in 
+      case $use_arbitrary_time_format in
         false)
-          script=${time_format}
-        true)
           if $show_day_month && $show_military ; then # military time and dd/mm
             script="%a %d/%m %R ${timezone} "
           elif $show_military; then # only military time
@@ -196,6 +194,8 @@ main()
           else
             script="%a %m/%d %I:%M %p ${timezone} "
           fi
+        true)
+          script=${time_format}
       esac
     fi
 
