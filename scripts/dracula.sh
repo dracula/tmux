@@ -24,6 +24,8 @@ main()
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
   show_day_month=$(get_tmux_option "@dracula-day-month" false)
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
+  use_arbitrary_time_format=$(get_tmux_option "@arbitrary_time_format" false)
+  time_format=$(get_tmux_option "@time_format" "Y-%m-%d(%a) %H:%M:%S")
   IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
 
   # Dracula Color Pallette
@@ -181,15 +183,20 @@ main()
 
     if [ $plugin = "time" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-time-colors" "dark_purple white")
-      if $show_day_month && $show_military ; then # military time and dd/mm
-        script="%a %d/%m %R ${timezone} "
-      elif $show_military; then # only military time
-        script="%a %m/%d %R ${timezone} "
-      elif $show_day_month; then # only dd/mm
-        script="%a %d/%m %I:%M %p ${timezone} "
-      else
-        script="%a %m/%d %I:%M %p ${timezone} "
-      fi
+      case $use_arbitrary_time_format in 
+        false)
+          script=${time_format}
+        true)
+          if $show_day_month && $show_military ; then # military time and dd/mm
+            script="%a %d/%m %R ${timezone} "
+          elif $show_military; then # only military time
+            script="%a %m/%d %R ${timezone} "
+          elif $show_day_month; then # only dd/mm
+            script="%a %d/%m %I:%M %p ${timezone} "
+          else
+            script="%a %m/%d %I:%M %p ${timezone} "
+          fi
+      esac
     fi
 
     if $show_powerline; then
