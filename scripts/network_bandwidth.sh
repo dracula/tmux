@@ -24,12 +24,21 @@ get_bytes()
   esac
 }
 
-get_bandwidth() {
-  output_download=""
-  output_upload=""
-  output_download_unit=""
-  output_upload_unit=""
+format_bytes()
+{
+  if [ $1 -gt 1073741824 ]; then
+    format_num=$(echo "$1 1024" | awk '{printf "%.2f \n", $1/($2 * $2 * $2)}')
+    echo "$format_num gB/s"
+  elif [ $1 -gt 1073741824 ]; then
+    format_num=$(echo "$1 1024" | awk '{printf "%.2f \n", $1/($2 * $2)}')
+    echo "$format_num mB/s"
+  else
+    format_num=$(echo "$1 1024" | awk '{printf "%.2f \n", $1/$2}')
+    echo "$format_num kB/s"
+  fi
+}
 
+get_bandwidth() {
   read initial_download initial_upload < <(get_bytes $2)
 
   sleep $1
@@ -39,29 +48,10 @@ get_bandwidth() {
   total_download_bps=$(echo "$final_download $initial_download $1" | awk '{printf "%.0f \n", ($1 - $2) / $3}')
   total_upload_bps=$(echo "$final_upload $initial_upload $1" | awk '{printf "%.0f \n", ($1 - $2) / $3}')
 
-  if [ $total_download_bps -gt 1073741824 ]; then
-      output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2 * $2)}')
-      output_download_unit="gB/s"
-  elif [ $total_download_bps -gt 1048576 ]; then
-      output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2)}')
-      output_download_unit="mB/s"
-  else
-      output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/$2}')
-      output_download_unit="kB/s"
-  fi
+  output_download=$(format_bytes $total_download_bps)
+  output_upload=$(format_bytes $total_upload_bps)
 
-  if [ $total_upload_bps -gt 1073741824 ]; then
-      output_upload=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2 * $2)}')
-      output_upload_unit="gB/s"
-  elif [ $total_upload_bps -gt 1048576 ]; then
-      output_upload=$(echo "$total_upload_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2)}')
-      output_upload_unit="mB/s"
-  else
-      output_upload=$(echo "$total_upload_bps 1024" | awk '{printf "%.2f \n", $1/$2}')
-      output_upload_unit="kB/s"
-  fi
-
-  echo "↓ $output_download $output_download_unit • ↑ $output_upload $output_upload_unit"
+  echo "↓ $output_download • ↑ $output_upload"
 }
 
 main()
