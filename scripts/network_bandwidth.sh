@@ -29,7 +29,7 @@ format_bytes()
   if [ $1 -gt 1073741824 ]; then
     format_num=$(echo "$1 1024" | awk '{printf "%.2f \n", $1/($2 * $2 * $2)}')
     echo "$format_num gB/s"
-  elif [ $1 -gt 1073741824 ]; then
+  elif [ $1 -gt 1048576 ]; then
     format_num=$(echo "$1 1024" | awk '{printf "%.2f \n", $1/($2 * $2)}')
     echo "$format_num mB/s"
   else
