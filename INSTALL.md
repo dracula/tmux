@@ -111,6 +111,20 @@ Enable high contrast pane border
 set -g @dracula-border-contrast true
 ```
 
+#### battery options
+
+Customize label
+
+```bash
+set -g @dracula-battery-label "♥"
+```
+
+(macOS only) Show time remaining until fully charged
+
+```bash
+set -g @dracula-battery-show-charging-time true
+```
+
 #### cpu-usage options
 
 Customize label
@@ -164,13 +178,13 @@ set -g @dracula-git-disable-status true
 
 Set symbol to use for when branch is up to date with HEAD
 ```bash
-# default is ✓. Avoid using non unicode characters that bash uses like $, * and ! 
+# default is ✓. Avoid using non unicode characters that bash uses like $, * and !
 set -g @dracula-git-show-current-symbol ✓
 ```
 
 Set symbol to use for when branch diverges from HEAD
 ```bash
-# default is unicode !. Avoid bash special characters 
+# default is unicode !. Avoid bash special characters
 set -g @dracula-git-show-diff-symbol !
 ```
 
@@ -188,4 +202,3 @@ Switch from default fahrenheit to celsius
 ```bash
 set -g @dracula-show-fahrenheit false
 ```
-

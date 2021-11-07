@@ -67,9 +67,9 @@ battery_time_left()
 {
   # Check OS
   case $(uname -s) in
-    Darwin) # regex test: https://regex101.com/r/Yju8Wa/1
+    Darwin) # regex test: https://regex101.com/r/yU4wn9/1
       time=$(pmset -g batt | \
-             grep -Eo '([1-9][0-9]:[0-5][0-9]|[1-9]:[0-5][0-9]|0:[1-5][0-9]|0:0[1-9])')
+             grep -Eo '((([1-9][0-9]*|[1-9]):[0-5][0-9])|(0:[1-5][0-9])|(0:0[1-9]))')
       ;;
     Linux|FreeBSD)
       # leaving empty - TODO
