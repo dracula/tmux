@@ -21,7 +21,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 * Git branch and status
 * Battery percentage and AC power connection status
 * Refresh rate control
-* CPU usage
+* CPU usage (percentage or load average)
 * RAM usage
 * GPU usage
 * Color code based on if prefix is active or not

@@ -119,6 +119,15 @@ Customize label
 set -g @dracula-cpu-usage-label "CPU"
 ```
 
+Show system load average instead of CPU usage percentage (default)
+
+```bash
+set -g @dracula-cpu-display-load true
+```
+
+CPU usage percentage (default) - in percentage (output: %)
+Load average – is the average system load calculated over a given period of time of 1, 5 and 15 minutes (output: x.x x.x x.x)
+
 #### gpu-usage options
 
 Customize label
