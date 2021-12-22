@@ -119,6 +119,12 @@ Customize label
 set -g @dracula-cpu-usage-label "CPU"
 ```
 
+Show load average instead of percentage
+
+```bash
+set -g @dracula-cpu-display-load true
+```
+
 #### gpu-usage options
 
 Customize label
