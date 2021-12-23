@@ -163,6 +163,11 @@ main()
       script="#($current_dir/network_bandwidth.sh)"
     fi
 
+    if [ $plugin = "network-ping" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-network-ping-colors" "cyan dark_gray")
+      script="#($current_dir/network_ping.sh)"
+    fi
+
     if [ $plugin = "weather" ]; then
       # wait unit $datafile exists just to avoid errors
       # this should almost never need to wait unless something unexpected occurs
