@@ -15,7 +15,27 @@ get_bytes()
       ;;
 
     Darwin)
-      # TODO - Darwin/Mac compatability
+      down_up_load=$(netstat -nI $1 -b | tail -n1 | awk '{print $7,$10}')
+      echo "$down_up_load"
+      ;;
+
+    CYGWIN*|MINGW32*|MSYS*|MINGW*)
+      # TODO - windows compatability
+      ;;
+  esac
+}
+
+get_network_name()
+{
+  case $(uname -s) in
+    Linux)
+      default_network_name=$(ip route | grep default | sed -e "s/^.*dev.//" -e "s/.proto.*//")
+      echo "$default_network_name"
+      ;;
+
+    Darwin)
+      default_network_name=$(route -n get default | grep 'interface:' | awk '{print $2}')
+      echo "$default_network_name"
       ;;
 
     CYGWIN*|MINGW32*|MSYS*|MINGW*)
@@ -58,7 +78,7 @@ main()
 {
   # storing the refresh rate in the variable RATE, default is 5
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-  default_network_name=$(ip route | grep default | sed -e "s/^.*dev.//" -e "s/.proto.*//")
+  default_network_name=$( get_network_name )
   network_name=$(get_tmux_option "@dracula-network-bandwith" "$default_network_name")
   network_bandwidth=$(get_bandwidth "$RATE" "$network_name")
   echo "$network_bandwidth"
