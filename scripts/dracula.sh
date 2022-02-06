@@ -192,6 +192,11 @@ main()
       fi
     fi
 
+    if [ $plugin = "pwd" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-pwd-colors" "dark_purple white")
+      script="#{pane_current_path}"
+    fi
+
     if $show_powerline; then
       tmux set-option -ga status-right "#[fg=${!colors[0]},bg=${powerbg},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script "
       powerbg=${!colors[0]}
