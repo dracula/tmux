@@ -24,6 +24,7 @@ main()
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
   show_day_month=$(get_tmux_option "@dracula-day-month" false)
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
+  show_kubernetes_context_label=$(get_tmux_option "@dracula-kubernetes-context-label" "")
   IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
 
   # Dracula Color Pallette
@@ -166,6 +167,11 @@ main()
     if [ $plugin = "network-ping" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-network-ping-colors" "cyan dark_gray")
       script="#($current_dir/network_ping.sh)"
+    fi
+
+    if [ $plugin = "kubernetes-context" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-kubernetes-context-colors" "cyan dark_gray")
+      script="#($current_dir/kubernetes_context.sh $show_kubernetes_context_label)"
     fi
 
     if [ $plugin = "weather" ]; then
