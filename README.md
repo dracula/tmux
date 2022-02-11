@@ -29,6 +29,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 * When prefix is enabled smiley face turns from green to yellow
 * When charging, 'AC' is displayed
 * If forecast information is available, a ☀, ☁, ☂, or ❄ unicode character corresponding with the forecast is displayed alongside the temperature
+* Spotify playback (needs the tool spotify-tui installed)
 
 ## Compatibility
 
