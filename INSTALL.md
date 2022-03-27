@@ -201,9 +201,20 @@ set -g @dracula-git-no-repo-message ""
 
 #### weather options
 
-Switch from default fahrenheit to celsius
+Switch from default fahrenheit to celsius (default: Fahrenheit)
 
 ```bash
 set -g @dracula-show-fahrenheit false
 ```
 
+Set your location manually (default: it tries to guess your location with your IP)
+
+```bash
+set -g @dracula-fixed-location "Some City"
+```
+
+Hide your location (default: true)
+
+```bash
+set -g @dracula-show-location false
+```
