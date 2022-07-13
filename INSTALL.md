@@ -215,3 +215,14 @@ Switch from default fahrenheit to celsius
 set -g @dracula-show-fahrenheit false
 ```
 
+Set your location manually
+
+```bash
+set -g @dracula-fixed-location "Some City"
+```
+
+Hide your location
+
+```bash
+set -g @dracula-show-location false
+```
