@@ -24,6 +24,7 @@ main()
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
   show_day_month=$(get_tmux_option "@dracula-day-month" false)
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
+  selected_battery=$(get_tmux_option "@dracula-battery" 0)
   IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
 
   # Dracula Color Pallette
@@ -134,7 +135,7 @@ main()
 
     if [ $plugin = "battery" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-battery-colors" "pink dark_gray")
-      script="#($current_dir/battery.sh)"
+      script="#($current_dir/battery.sh $selected_battery)"
     fi
 
     if [ $plugin = "gpu-usage" ]; then
