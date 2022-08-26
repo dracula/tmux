@@ -48,7 +48,7 @@ To enable plugins set up the `@dracula-plugins` option in you `.tmux.conf` file,
 The order that you define the plugins will be the order on the status bar left to right.
 
 ```bash
-# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, network, network-bandwidth, network-ping, weather, time
+# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, network, network-bandwidth, network-ping, network-vpn, weather, time
 set -g @dracula-plugins "cpu-usage gpu-usage ram-usage"
 ```
 
@@ -190,13 +190,13 @@ set -g @dracula-git-disable-status true
 
 Set symbol to use for when branch is up to date with HEAD
 ```bash
-# default is ✓. Avoid using non unicode characters that bash uses like $, * and ! 
+# default is ✓. Avoid using non unicode characters that bash uses like $, * and !
 set -g @dracula-git-show-current-symbol ✓
 ```
 
 Set symbol to use for when branch diverges from HEAD
 ```bash
-# default is unicode !. Avoid bash special characters 
+# default is unicode !. Avoid bash special characters
 set -g @dracula-git-show-diff-symbol !
 ```
 
