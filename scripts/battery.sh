@@ -89,10 +89,10 @@ battery_status()
     discharging|Discharging)
       echo ''
       ;;
-    high)
+    high|Full)
       echo ''
       ;;
-    charging)
+    charging|Charging)
       echo 'AC'
       ;;
     *)
