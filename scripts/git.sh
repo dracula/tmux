@@ -17,7 +17,7 @@ getChanges()
    declare -i updated=0;
    declare -i deleted=0;
 
-for i in $(git -C $path status -s)
+for i in $(git -C $path --no-optional-locks status -s)
 
     do
       case $i in 
@@ -80,7 +80,7 @@ checkForChanges()
 {
     [ $no_untracked_files == "false" ] && no_untracked="" || no_untracked="-uno"
     if [ "$(checkForGitDir)" == "true" ]; then
-        if [ "$(git -C $path status -s $no_untracked)" != "" ]; then
+        if [ "$(git -C $path --no-optional-locks status -s $no_untracked)" != "" ]; then
             echo "true"
         else
             echo "false"
