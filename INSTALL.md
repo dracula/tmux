@@ -111,20 +111,6 @@ Enable high contrast pane border
 set -g @dracula-border-contrast true
 ```
 
-#### battery options
-
-Customize label
-
-```bash
-set -g @dracula-battery-label "♥"
-```
-
-(macOS only) Show time remaining until fully charged
-
-```bash
-set -g @dracula-battery-show-charging-time true
-```
-
 #### cpu-usage options
 
 Customize label
@@ -148,6 +134,12 @@ Customize label
 
 ```bash
 set -g @dracula-battery-label "Battery"
+```
+
+(macOS only) Show time remaining until fully charged
+
+```bash
+set -g @dracula-battery-show-charging-time true
 ```
 
 #### gpu-usage options
