@@ -136,6 +136,12 @@ Customize label
 set -g @dracula-battery-label "Battery"
 ```
 
+(macOS only) Show time remaining until fully charged
+
+```bash
+set -g @dracula-battery-show-charging-time true
+```
+
 #### gpu-usage options
 
 Customize label
@@ -190,13 +196,13 @@ set -g @dracula-git-disable-status true
 
 Set symbol to use for when branch is up to date with HEAD
 ```bash
-# default is ✓. Avoid using non unicode characters that bash uses like $, * and ! 
+# default is ✓. Avoid using non unicode characters that bash uses like $, * and !
 set -g @dracula-git-show-current-symbol ✓
 ```
 
 Set symbol to use for when branch diverges from HEAD
 ```bash
-# default is unicode !. Avoid bash special characters 
+# default is unicode !. Avoid bash special characters
 set -g @dracula-git-show-diff-symbol !
 ```
 

@@ -61,6 +61,32 @@ battery_percent()
   esac
 }
 
+battery_time_left()
+{
+  # Check OS
+  case $(uname -s) in
+    Darwin) # regex test: https://regex101.com/r/yU4wn9/1
+      time=$(pmset -g batt | \
+             grep -Eo '((([1-9][0-9]*|[1-9]):[0-5][0-9])|(0:[1-5][0-9])|(0:0[1-9]))')
+      ;;
+    Linux|FreeBSD)
+      # leaving empty - TODO
+      ;;
+    CYGWIN*|MINGW32*|MSYS*|MINGW*)
+      # leaving empty - TODO - windows compatability
+      ;;
+    *)
+      ;;
+  esac
+  if ! $show_charging_time; then
+    echo ''
+  elif [ -z "$time" ]; then
+    echo ''
+  else
+    echo "($time)"
+  fi
+}
+
 battery_status()
 {
   # Check OS
@@ -114,16 +140,18 @@ main()
   bat_label=$(get_tmux_option "@dracula-battery-label" "♥")
   bat_stat=$(battery_status)
   bat_perc=$(battery_percent)
+  bat_time=$(battery_time_left)
 
   if [ -z "$bat_stat" ]; then # Test if status is empty or not
     echo "$bat_label $bat_perc"
   elif [ -z "$bat_perc" ]; then # In case it is a desktop with no battery percent, only AC power
     echo "$bat_label $bat_stat"
-  else
+  elif [ -z "$bat_time" ]; then # Battery is fully charged
     echo "$bat_label $bat_stat $bat_perc"
+  else
+    echo "$bat_label $bat_stat $bat_perc $bat_time"
   fi
 }
 
 #run main driver program
 main
-
