@@ -48,7 +48,7 @@ To enable plugins set up the `@dracula-plugins` option in you `.tmux.conf` file,
 The order that you define the plugins will be the order on the status bar left to right.
 
 ```bash
-# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, network, network-bandwidth, weather, time
+# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, network, network-bandwidth, network-ping, weather, time
 set -g @dracula-plugins "cpu-usage gpu-usage ram-usage"
 ```
 
@@ -133,6 +133,23 @@ Customize label
 set -g @dracula-cpu-usage-label "CPU"
 ```
 
+Show system load average instead of CPU usage percentage (default)
+
+```bash
+set -g @dracula-cpu-display-load true
+```
+
+CPU usage percentage (default) - in percentage (output: %)
+Load average – is the average system load calculated over a given period of time of 1, 5 and 15 minutes (output: x.x x.x x.x)
+
+#### battery options
+
+Customize label
+
+```bash
+set -g @dracula-battery-label "Battery"
+```
+
 #### gpu-usage options
 
 Customize label
@@ -147,6 +164,15 @@ Customize label
 
 ```bash
 set -g @dracula-ram-usage-label "RAM"
+```
+
+#### network-ping options
+
+You can configure which server (hostname, IP) you want to ping and at which rate (in seconds). Default is google.com at every 5 seconds.
+
+```bash
+set -g @dracula-ping-server "google.com"
+set -g @dracula-ping-rate 5
 ```
 
 #### time options
@@ -201,4 +227,16 @@ Switch from default fahrenheit to celsius
 
 ```bash
 set -g @dracula-show-fahrenheit false
+```
+
+Set your location manually
+
+```bash
+set -g @dracula-fixed-location "Some City"
+```
+
+Hide your location
+
+```bash
+set -g @dracula-show-location false
 ```

@@ -12,6 +12,7 @@ main()
   # set configuration option variables
   show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
   show_location=$(get_tmux_option "@dracula-show-location" true)
+  fixed_location=$(get_tmux_option "@dracula-fixed-location")
   show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
   show_flags=$(get_tmux_option "@dracula-show-flags" false)
   show_left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
@@ -23,6 +24,7 @@ main()
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
   show_day_month=$(get_tmux_option "@dracula-day-month" false)
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
+  show_charging_time=$(get_tmux_option "@dracula-battery-show-charging-time" "false")
   IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
 
   # Dracula Color Pallette
@@ -65,7 +67,7 @@ main()
 
   # start weather script in background
   if [[ "${plugins[@]}" =~ "weather" ]]; then
-    $current_dir/sleep_weather.sh $show_fahrenheit $show_location &
+    $current_dir/sleep_weather.sh $show_fahrenheit $show_location $fixed_location &
   fi
 
   # Set timezone unless hidden by configuration
@@ -128,7 +130,7 @@ main()
 
     if [ $plugin = "git" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-git-colors" "green dark_gray")
-        script="#($current_dir/git.sh)"     
+        script="#($current_dir/git.sh)"
     fi
 
     if [ $plugin = "battery" ]; then
@@ -160,6 +162,11 @@ main()
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-network-bandwidth-colors" "cyan dark_gray")
       tmux set-option -g status-right-length 250
       script="#($current_dir/network_bandwidth.sh)"
+    fi
+
+    if [ $plugin = "network-ping" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-network-ping-colors" "cyan dark_gray")
+      script="#($current_dir/network_ping.sh)"
     fi
 
     if [ $plugin = "weather" ]; then

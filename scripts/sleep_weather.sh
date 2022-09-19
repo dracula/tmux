@@ -6,6 +6,7 @@ export LC_ALL=en_US.UTF-8
 
 fahrenheit=$1
 location=$2
+fixedlocation=$3
 
 LOCKFILE=/tmp/.dracula-tmux-weather.lock
 DATAFILE=/tmp/.dracula-tmux-data
@@ -31,7 +32,7 @@ main()
 
   while tmux has-session &> /dev/null
   do
-    $current_dir/weather.sh $fahrenheit $location > $DATAFILE
+    $current_dir/weather.sh $fahrenheit $location $fixedlocation > $DATAFILE
     if tmux has-session &> /dev/null
     then
       sleep 1200

@@ -5,8 +5,6 @@ export LC_ALL=en_US.UTF-8
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
 
-IFS=' ' read -r -a show_charging_time <<< $(get_tmux_option "@dracula-battery-show-charging-time" "false")
-
 linux_acpi() {
   arg=$1
   BAT=$(ls -d /sys/class/power_supply/BAT* | head -1)
@@ -117,10 +115,10 @@ battery_status()
     discharging|Discharging)
       echo ''
       ;;
-    high)
+    high|Full)
       echo ''
       ;;
-    charging)
+    charging|Charging)
       echo 'AC'
       ;;
     *)
@@ -144,8 +142,8 @@ main()
   bat_perc=$(battery_percent)
   bat_time=$(battery_time_left)
 
-  if [ -z "$bat_stat"]; then # Test if status is empty or not
-    echo "$bat_label $bat_perc"
+  if [ -z "$bat_stat" ]; then # Test if status is empty or not
+    echo "$bat_label $bat_perc $bat_stat"
   elif [ -z "$bat_perc" ]; then # In case it is a desktop with no battery percent, only AC power
     echo "$bat_label $bat_stat"
   elif [ -z "$bat_time" ]; then # Battery is fully charged
