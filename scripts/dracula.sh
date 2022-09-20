@@ -129,7 +129,8 @@ main()
 
     if [ $plugin = "git" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-git-colors" "green dark_gray")
-        script="#($current_dir/git.sh)"     
+      tmux set-option -g status-right-length 250
+      script="#($current_dir/git.sh)"
     fi
 
     if [ $plugin = "battery" ]; then

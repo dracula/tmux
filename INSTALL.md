@@ -212,6 +212,12 @@ Hide untracked files from being displayed as local changes
 set -g @dracula-git-no-untracked-files true
 ```
 
+Show remote tracking branch together with diverge/sync state
+```bash
+# default is false
+set -g @dracula-git-show-remote-status true
+```
+
 #### weather options
 
 Switch from default fahrenheit to celsius
