@@ -206,6 +206,11 @@ Set symbol or message to use when the current pane has no git repo
 set -g @dracula-git-no-repo-message ""
 ```
 
+Hide untracked files from being displayed as local changes
+```bash
+# default is false
+set -g @dracula-git-no-untracked-files true
+```
 
 #### weather options
 
