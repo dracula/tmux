@@ -1,15 +1,28 @@
 #!/usr/bin/env bash
 # setting the locale, some users have issues with different locales, this forces the correct one
 export LC_ALL=en_US.UTF-8
+if command -v gdate &>/dev/null; then
+  DATE=gdate
+else
+  DATE=date
+fi
 
 # configuration
-# @dracula-continuum-mode default (default|alert|time)
+# @dracula-continuum-mode default (countdown|time|alert|interval)
 # @dracula-continuum-time-threshold 15
 
 alert_mode="@dracula-continuum-mode"
 time_threshold="@dracula-continuum-time-threshold"
-warn_threshold=15
+warn_threshold=360
+first_save="@dracula-continuum-first-save"
 
+# tmux-resurrect and tmux-continuum options
+if [ -d "$HOME/.tmux/resurrect" ]; then
+  default_resurrect_dir="$HOME/.tmux/resurrect"
+else
+  default_resurrect_dir="${XDG_DATA_HOME:-$HOME/.local/share}"/tmux/resurrect
+fi
+resurrect_dir_option="@resurrect-dir"
 last_auto_save_option="@continuum-save-last-timestamp"
 auto_save_interval_option="@continuum-save-interval"
 auto_save_interval_default="15"
@@ -21,55 +34,94 @@ current_timestamp() {
   echo "$(date +%s)"
 }
 
-time_since_last_run_passed() {
-  local last_saved_timestamp="$(get_tmux_option "$last_auto_save_option" "0")"
-  printf "%s" "$(($(current_timestamp) - last_saved_timestamp))"
+set_tmux_option() {
+  local option="$1"
+  local value="$2"
+  tmux set-option -gq "$option" "$value"
+}
+
+# tmux-resurrect dir
+resurrect_dir() {
+  if [ -z "$_RESURRECT_DIR" ]; then
+    local path="$(get_tmux_option "$resurrect_dir_option" "$default_resurrect_dir")"
+    # expands tilde, $HOME and $HOSTNAME if used in @resurrect-dir
+    echo "$path" | sed "s,\$HOME,$HOME,g; s,\$HOSTNAME,$(hostname),g; s,\~,$HOME,g"
+  else
+    echo "$_RESURRECT_DIR"
+  fi
+}
+_RESURRECT_DIR="$(resurrect_dir)"
+
+last_resurrect_file() {
+  echo "$(resurrect_dir)/last"
+}
+
+last_saved_timestamp() {
+  local last_saved_timestamp="$(get_tmux_option "$last_auto_save_option" "")"
+  local first_save_timestamp="$(get_tmux_option "$first_save" "")"
+  # continuum sets the last save timestamp to the current time on first load if auto_save_option is not set
+  # so we can outrace it and detect that last_uato_save_option is empty and the timestamp is a dummy save
+  if [ -z "$first_save_timestamp" ]; then
+    last_saved_timestamp="$($DATE -r "$(last_resurrect_file)" +%s)" || last_saved_timestamp=0
+    set_tmux_option "$first_save" "$last_saved_timestamp"
+  elif [ "$first_save_timestamp" != "done" ]; then
+    last_saved_timestamp="$($DATE -r "$(last_resurrect_file)" +%s)" || last_saved_timestamp=0
+    if [ "$last_saved_timestamp" -gt "$first_save_timestamp" ]; then
+      set_tmux_option "$first_save" "done"
+    else
+      last_saved_timestamp="$first_save_timestamp"
+    fi
+  fi
+  echo "$last_saved_timestamp"
 }
 
 print_status() {
-  local mode="$(get_tmux_option "$alert_mode" "default")"
-  local threshold="$(get_tmux_option "$time_threshold" "15")"
+  local mode="$(get_tmux_option "$alert_mode" "countdown")"
+  local info_threshold="$(get_tmux_option "$time_threshold" "15")"
   local save_int="$(get_tmux_option "$auto_save_interval_option" "$auto_save_interval_default")"
   local interval_seconds="$((save_int * 60))"
   local status=""
-  local time_delta="$(time_since_last_run_passed)"
+  local last_timestamp="$(last_saved_timestamp)"
+  local time_delta="$(($(current_timestamp) - last_timestamp))"
   local time_delta_minutes="$((time_delta / 60))"
 
-  case "$mode" in
-    time)
-      if [[ $save_int -gt 0 ]]; then
-        if [[ "$time_delta" -gt $((interval_seconds+warn_threshold)) ]]; then
-          status="no save after $time_delta_minutes minutes!"
-        else
-          status="$time_delta_minutes"
-        fi
-      else
-        status="off"
-      fi
-      ;;
+  if [[ $save_int -gt 0 ]]; then
+    if [[ "$time_delta" -gt $((interval_seconds + warn_threshold)) ]]; then
+      if [[ "$mode" == "countdown" ]]; then
+        # continuum timestamp may be different than file timestamp on first load
+        local last_continuum_timestamp="$(get_tmux_option "$last_auto_save_option" "")"
+        time_delta="$(($(current_timestamp) - last_continuum_timestamp))"
+        time_delta_minutes="$((time_delta / 60))"
 
-    alert)
-      if [[ "$time_delta" -gt $((interval_seconds+warn_threshold)) ]]; then
-        status="no save after $time_delta_minutes minutes!"
-      elif [[ "$time_delta" -le "$threshold" ]]; then
-        status="saved"
-      elif [[ $save_int -gt 0 ]]; then
-        status=""
+        status="last save: $($DATE -d "@$last_timestamp" '+%F %T'); next: T$(printf '%+d' "$((time_delta_minutes - save_int)) min")"
       else
-        status="off"
+        status="last save: $($DATE -d "@$last_timestamp" '+%F %T')"
       fi
-      ;;
+    elif [[ "$time_delta" -le "$info_threshold" ]]; then
+      status="saved"
+    else
+      case "$mode" in
+        countdown)
+          status="T$(printf '%+d' "$((time_delta_minutes - save_int))")min";
+          ;;
 
-    *)
-      if [[ "$time_delta" -le "$threshold" ]]; then
-        status="saved"
-      elif [[ $save_int -gt 0 ]]; then
-        status="$save_int"
-      else
-        status="off"
-      fi
-      ;;
-  esac
+        time)
+          status="$time_delta_minutes";
+          ;;
+
+        alert)
+          status=""
+          ;;
+
+        interval)
+          status="$save_int"
+          ;;
+      esac
+    fi
+  else
+    status="off"
+  fi
+
   echo "$status"
 }
 print_status

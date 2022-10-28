@@ -322,20 +322,17 @@ set -g @dracula-clients-plural clients
 
 #### continuum options
 
-Hide output if no save has been performed recently
-(otherwise, show the continuum save interval)
+Set the output mode. Options are:
+- **countdown**: Show a T- countdown to the next save (default)
+- **time**: Show the time since the last save
+- **alert**: Hide output if no save has been performed recently
+- **interval**: Show the continuum save interval
 
 ```bash
-set -g @dracula-continuum-mode alert
+set -g @dracula-continuum-mode countdown
 ```
 
-Show the time since the last continuum save
-
-```bash
-set -g @dracula-continuum-mode time
-```
-
-In alert mode, show if a the last save was performed less then one minute ago (default is 15 seconds)
+Show if the last save was performed less than 60 seconds ago (default threshold is 15 seconds)
 
 ```bash
 set -g @dracula-continuum-time-threshold 60
