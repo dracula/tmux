@@ -7,6 +7,7 @@ IFS=' ' read -r -a hide_status <<< $(get_tmux_option "@dracula-git-disable-statu
 IFS=' ' read -r -a current_symbol <<< $(get_tmux_option "@dracula-git-show-current-symbol" "✓")
 IFS=' ' read -r -a diff_symbol <<< $(get_tmux_option "@dracula-git-show-diff-symbol" "!")
 IFS=' ' read -r -a no_repo_message <<< $(get_tmux_option "@dracula-git-no-repo-message" "")
+IFS=' ' read -r -a no_untracked_files <<< $(get_tmux_option "@dracula-git-no-untracked-files" "false")
 
 # Get added, modified, updated and deleted files from git status
 getChanges()
@@ -16,7 +17,7 @@ getChanges()
    declare -i updated=0;
    declare -i deleted=0;
 
-for i in $(git -C $path status -s)
+for i in $(git -C $path --no-optional-locks status -s)
 
     do
       case $i in 
@@ -77,8 +78,9 @@ checkEmptySymbol()
 # check to see if the current repo is not up to date with HEAD
 checkForChanges()
 {
+    [ $no_untracked_files == "false" ] && no_untracked="" || no_untracked="-uno"
     if [ "$(checkForGitDir)" == "true" ]; then
-        if [ "$(git -C $path status -s)" != "" ]; then
+        if [ "$(git -C $path --no-optional-locks status -s $no_untracked)" != "" ]; then
             echo "true"
         else
             echo "false"
