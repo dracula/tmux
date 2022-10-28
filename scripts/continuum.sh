@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 # setting the locale, some users have issues with different locales, this forces the correct one
 export LC_ALL=en_US.UTF-8
-if command -v gdate &>/dev/null; then
-  DATE=gdate
-else
-  DATE=date
-fi
 
 # configuration
 # @dracula-continuum-mode default (countdown|time|alert|interval)
@@ -32,6 +27,42 @@ source $current_dir/utils.sh
 
 current_timestamp() {
   echo "$(date +%s)"
+}
+
+file_mtime() {
+  if [ ! -f "$1" ]; then
+    echo 0
+    return
+  fi
+  case $(uname -s) in
+    Linux|Darwin)
+      date -r "$1" +%s
+      ;;
+
+    FreeBSD)
+      stat -f %m "$1"
+      ;;
+
+    CYGWIN*|MINGW32*|MSYS*|MINGW*)
+      # TODO - windows compatability
+      ;;
+  esac
+}
+
+timestamp_date() {
+  case $(uname -s) in
+    Linux)
+      date -d "@$1" "$2"
+      ;;
+
+    Darwin|FreeBSD)
+      date -r "$1" "$2"
+      ;;
+
+    CYGWIN*|MINGW32*|MSYS*|MINGW*)
+      # TODO - windows compatability
+      ;;
+  esac
 }
 
 set_tmux_option() {
@@ -62,10 +93,10 @@ last_saved_timestamp() {
   # continuum sets the last save timestamp to the current time on first load if auto_save_option is not set
   # so we can outrace it and detect that last_uato_save_option is empty and the timestamp is a dummy save
   if [ -z "$first_save_timestamp" ]; then
-    last_saved_timestamp="$($DATE -r "$(last_resurrect_file)" +%s)" || last_saved_timestamp=0
+    last_saved_timestamp="$(file_mtime "$(last_resurrect_file)")" || last_saved_timestamp=0
     set_tmux_option "$first_save" "$last_saved_timestamp"
   elif [ "$first_save_timestamp" != "done" ]; then
-    last_saved_timestamp="$($DATE -r "$(last_resurrect_file)" +%s)" || last_saved_timestamp=0
+    last_saved_timestamp="$(file_mtime "$(last_resurrect_file)")" || last_saved_timestamp=0
     if [ "$last_saved_timestamp" -gt "$first_save_timestamp" ]; then
       set_tmux_option "$first_save" "done"
     else
@@ -93,9 +124,9 @@ print_status() {
         time_delta="$(($(current_timestamp) - last_continuum_timestamp))"
         time_delta_minutes="$((time_delta / 60))"
 
-        status="last save: $($DATE -d "@$last_timestamp" '+%F %T'); next: T$(printf '%+d' "$((time_delta_minutes - save_int)) min")"
+        status="last save: $(timestamp_date "$last_timestamp" '+%F %T'); next: T$(printf '%+d' "$((time_delta_minutes - save_int))")min"
       else
-        status="last save: $($DATE -d "@$last_timestamp" '+%F %T')"
+        status="last save: $(timestamp_date "$last_timestamp" '+%F %T')"
       fi
     elif [[ "$time_delta" -le "$info_threshold" ]]; then
       status="saved"
