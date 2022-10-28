@@ -9,7 +9,7 @@ get_percent()
 {
   case $(uname -s) in
     Linux)
-      percent=$(LC_NUMERIC=en_US.UTF-8 top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}')
+      percent=$(LC_NUMERIC=en_US.UTF-8 top -bn2 -d 0.01 | grep "Cpu(s)" | tail -1 | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}')
       normalize_percent_len $percent
       ;;
 
@@ -27,13 +27,30 @@ get_percent()
   esac
 }
 
-main()
-{
+get_load() {
+  case $(uname -s) in
+  Linux | Darwin)
+    loadavg=$(uptime | awk -F'[a-z]:' '{ print $2}' | sed 's/,//g')
+    echo $loadavg
+    ;;
+
+  CYGWIN* | MINGW32* | MSYS* | MINGW*)
+    # TODO - windows compatability
+    ;;
+  esac
+}
+
+main() {
   # storing the refresh rate in the variable RATE, default is 5
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-  cpu_label=$(get_tmux_option "@dracula-cpu-usage-label" "CPU")
-  cpu_percent=$(get_percent)
-  echo "$cpu_label $cpu_percent"
+  cpu_load=$(get_tmux_option "@dracula-cpu-display-load" false)
+  if [ "$cpu_load" = true ]; then
+    echo "$(get_load)"
+  else
+    cpu_label=$(get_tmux_option "@dracula-cpu-usage-label" "CPU")
+    cpu_percent=$(get_percent)
+    echo "$cpu_label $cpu_percent"
+  fi
   sleep $RATE
 }
 

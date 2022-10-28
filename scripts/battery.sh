@@ -2,6 +2,9 @@
 # setting the locale, some users have issues with different locales, this forces the correct one
 export LC_ALL=en_US.UTF-8
 
+current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $current_dir/utils.sh
+
 linux_acpi() {
   arg=$1
   BAT=$(ls -d /sys/class/power_supply/BAT* | head -1)
@@ -86,10 +89,10 @@ battery_status()
     discharging|Discharging)
       echo ''
       ;;
-    high)
+    high|Full)
       echo ''
       ;;
-    charging)
+    charging|Charging)
       echo 'AC'
       ;;
     *)
@@ -108,15 +111,16 @@ battery_status()
 
 main()
 {
+  bat_label=$(get_tmux_option "@dracula-battery-label" "♥")
   bat_stat=$(battery_status)
   bat_perc=$(battery_percent)
 
   if [ -z "$bat_stat" ]; then # Test if status is empty or not
-    echo "♥ $bat_perc"
+    echo "$bat_label $bat_perc"
   elif [ -z "$bat_perc" ]; then # In case it is a desktop with no battery percent, only AC power
-    echo "♥ $bat_stat"
+    echo "$bat_label $bat_stat"
   else
-    echo "♥ $bat_stat $bat_perc"
+    echo "$bat_label $bat_stat $bat_perc"
   fi
 }
 
