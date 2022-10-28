@@ -212,6 +212,10 @@ main()
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-terraform-colors" "light_purple dark_gray")
       script="#($current_dir/terraform.sh $terraform_label)"
 
+    elif [ $plugin = "continuum" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-continuum-colors" "cyan dark_gray")
+      script="#($current_dir/continuum.sh)"
+
     elif [ $plugin = "weather" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-weather-colors" "orange dark_gray")
       script="#($current_dir/weather_wrapper.sh $show_fahrenheit $show_location $fixed_location)"
