@@ -31,7 +31,7 @@ current_timestamp() {
 
 file_mtime() {
   if [ ! -f "$1" ]; then
-    echo 0
+    echo -1
     return
   fi
   case $(uname -s) in
@@ -93,10 +93,10 @@ last_saved_timestamp() {
   # continuum sets the last save timestamp to the current time on first load if auto_save_option is not set
   # so we can outrace it and detect that last_uato_save_option is empty and the timestamp is a dummy save
   if [ -z "$first_save_timestamp" ]; then
-    last_saved_timestamp="$(file_mtime "$(last_resurrect_file)")" || last_saved_timestamp=0
+    last_saved_timestamp="$(file_mtime "$(last_resurrect_file)")" || last_saved_timestamp=-1
     set_tmux_option "$first_save" "$last_saved_timestamp"
   elif [ "$first_save_timestamp" != "done" ]; then
-    last_saved_timestamp="$(file_mtime "$(last_resurrect_file)")" || last_saved_timestamp=0
+    last_saved_timestamp="$(file_mtime "$(last_resurrect_file)")" || last_saved_timestamp=-1
     if [ "$last_saved_timestamp" -gt "$first_save_timestamp" ]; then
       set_tmux_option "$first_save" "done"
     else
@@ -118,15 +118,18 @@ print_status() {
 
   if [[ $save_int -gt 0 ]]; then
     if [[ "$time_delta" -gt $((interval_seconds + warn_threshold)) ]]; then
+      if [[ "$last_timestamp" == -1 ]]; then
+        status="no save"
+      else
+        status="last save: $(timestamp_date "$last_timestamp" '+%F %T')"
+      fi
       if [[ "$mode" == "countdown" ]]; then
         # continuum timestamp may be different than file timestamp on first load
         local last_continuum_timestamp="$(get_tmux_option "$last_auto_save_option" "")"
         time_delta="$(($(current_timestamp) - last_continuum_timestamp))"
         time_delta_minutes="$((time_delta / 60))"
 
-        status="last save: $(timestamp_date "$last_timestamp" '+%F %T'); next: T$(printf '%+d' "$((time_delta_minutes - save_int))")min"
-      else
-        status="last save: $(timestamp_date "$last_timestamp" '+%F %T')"
+        status="$status; next: T$(printf '%+d' "$((time_delta_minutes - save_int))")min"
       fi
     elif [[ "$time_delta" -le "$info_threshold" ]]; then
       status="saved"
