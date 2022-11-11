@@ -129,7 +129,7 @@ print_status() {
         time_delta="$(($(current_timestamp) - last_continuum_timestamp))"
         time_delta_minutes="$((time_delta / 60))"
 
-        status="$status; next: T$(printf '%+d' "$((time_delta_minutes - save_int))")min"
+        status="$status; T$(printf '%+d' "$((time_delta_minutes - save_int))")min"
       fi
     elif [[ "$time_delta" -le "$info_threshold" ]]; then
       status="saved"
