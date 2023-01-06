@@ -15,7 +15,22 @@ readonly SIZE=(
   [1073741824]='GB/s'
 )
 
-network_name=$(tmux show-option -gqv "@dracula-network-bandwidth")
+# interface_get try to automaticaly get the used interface if network_name is empty
+interface_get() {
+  name="$(tmux show-option -gqv "@dracula-network-bandwidth")"
+
+  if [[ -z $name ]]; then
+    case "$(uname -s)" in
+    Linux)
+      if type ip >/dev/null; then
+        name="$(ip -o route get 192.168.0.0 | awk '{print $5}')"
+      fi
+      ;;
+    esac
+  fi
+
+  echo "$name"
+}
 
 # interface_bytes give interface name and signal tx/rx return Bytes
 interface_bytes() {
@@ -24,14 +39,14 @@ interface_bytes() {
 
 # get_bandwidth return the number of bytes exchanged for tx and rx
 get_bandwidth() {
-  upload="$(interface_bytes "$network_name" "tx")"
-  download="$(interface_bytes "$network_name" "rx")"
+  upload="$(interface_bytes "$1" "tx")"
+  download="$(interface_bytes "$1" "rx")"
 
   #wait the interval for Wait for interval to calculate the difference
   sleep "$INTERVAL"
 
-  upload="$(bc <<<"$(interface_bytes "$network_name" "tx") - $upload")"
-  download="$(bc <<<"$(interface_bytes "$network_name" "rx") - $download")"
+  upload="$(bc <<<"$(interface_bytes "$1" "tx") - $upload")"
+  download="$(bc <<<"$(interface_bytes "$1" "rx") - $download")"
 
   #set to 0 by default useful for non-existent interface
   echo "${upload:-0} ${download:-0}"
@@ -57,11 +72,30 @@ bandwidth_to_unit() {
 }
 
 main() {
+  counter=0
   bandwidth=()
 
+  network_name=""
+  show_interface="$(tmux show-option -gqv "@dracula-network-bandwidth-show-interface")"
+  interval_update="$(tmux show-option -gqv "@dracula-network-bandwidth-interval")"
+
+  if [[ -z $interval_update ]]; then
+    interval_update=0
+  fi
+
   while true; do
-    IFS=" " read -ra bandwidth <<<"$(get_bandwidth)"
+    if ((counter == 0)); then
+      counter=60
+      network_name="$(interface_get)"
+    fi
+
+    IFS=" " read -ra bandwidth <<<"$(get_bandwidth "$network_name")"
+
+    if [[ $show_interface == "true" ]]; then echo -n "[$network_name] "; fi
     echo "↓ $(bandwidth_to_unit "${bandwidth[$DOWNLOAD]}") • ↑ $(bandwidth_to_unit "${bandwidth[$UPLOAD]}")"
+
+    ((counter = counter - 1))
+    sleep "$interval_update"
   done
 }
 
