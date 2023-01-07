@@ -9,20 +9,11 @@ get_percent()
 {
   case $(uname -s) in
     Linux)
-      total_mem_gb=$(free -g | awk '/^Mem/ {print $2}')
-      used_mem=$(free -g | awk '/^Mem/ {print $3}')
-      total_mem=$(free -h | awk '/^Mem/ {print $2}')
-      if (( $total_mem_gb == 0)); then
-        memory_usage=$(free -m | awk '/^Mem/ {print $3}')
-        total_mem_mb=$(free -m | awk '/^Mem/ {print $2}')
-        echo $memory_usage\M\B/$total_mem_mb\M\B
-      elif (( $used_mem == 0 )); then
-        memory_usage=$(free -m | awk '/^Mem/ {print $3}')
-        echo $memory_usage\M\B/$total_mem_gb\G\B
-      else
-        memory_usage=$(free -g | awk '/^Mem/ {print $3}')
-        echo $memory_usage\G\B/$total_mem_gb\G\B
-      fi
+      usage="$(free -h | awk 'NR==2 {print $3}')"
+      total="$(free -h | awk 'NR==2 {print $2}')"
+      formated="${usage}/${total}"
+      
+      echo "${formated//i/B}"
       ;;
 
     Darwin)
