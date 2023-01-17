@@ -25,6 +25,7 @@ main()
   show_day_month=$(get_tmux_option "@dracula-day-month" false)
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
   show_kubernetes_context_label=$(get_tmux_option "@dracula-kubernetes-context-label" "")
+  trigger_continuum=$(get_tmux option "@dracula-continuum-trigger" false)
   IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
 
   # Dracula Color Pallette
@@ -210,6 +211,10 @@ main()
       tmux set-option -ga status-right "#[fg=${!colors[1]},bg=${!colors[0]}] $script "
     fi
   done
+
+  if $trigger_continuum; then
+    tmux set-option -ga status-right "#(~/.tmux/plugins/tmux-continuum/scripts/continuum_save.sh)"
+  fi
 
   # Window option
   if $show_powerline; then
