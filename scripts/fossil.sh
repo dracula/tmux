@@ -79,9 +79,8 @@ checkEmptySymbol()
 # check to see if the current repo is not up to date with HEAD
 checkForChanges()
 {
-    [ $no_untracked_files == "false" ] && no_untracked="" || no_untracked="-uno"
     if [ "$(checkForFossilDir)" == "true" ]; then
-        if [ "$(fossil changes --differ --extra)" != "" ]; then
+        if [ "$(cd $path; fossil changes --differ)" != "" ]; then
             echo "true"
         else
             echo "false"
