@@ -18,7 +18,7 @@ getChanges()
    declare -i updated=0;
    declare -i deleted=0;
 
-for i in $(cd $path; fossil changes --differ)
+for i in $(cd $path; fossil changes --differ|cut -f1 -d' ')
 
     do
       case $i in 
