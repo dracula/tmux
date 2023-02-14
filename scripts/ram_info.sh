@@ -60,9 +60,14 @@ get_percent()
       # vmstat -s | grep "pages managed" | sed -ne 's/^ *\([0-9]*\).*$/\1/p'
       # Looked at the code from neofetch
       hw_pagesize="$(pagesize)"
-      free_mem=$(($(vmstat -s | grep "pages free$" | sed -ne 's/^ *\([0-9]*\).*$/\1/p') * hw_pagesize / 1024 / 1024 ))
+      used_mem=$(( ( 
+$(vmstat -s | grep "pages active$" | sed -ne 's/^ *\([0-9]*\).*$/\1/p') +
+$(vmstat -s | grep "pages inactive$" | sed -ne 's/^ *\([0-9]*\).*$/\1/p') +
+$(vmstat -s | grep "pages wired$" | sed -ne 's/^ *\([0-9]*\).*$/\1/p') +
+$(vmstat -s | grep "pages zeroed$" | sed -ne 's/^ *\([0-9]*\).*$/\1/p') +
+0) * hw_pagesize / 1024 / 1024 ))
       total_mem=$(($(sysctl -n hw.physmem) / 1024 / 1024))
-      used_mem=$((total_mem - free_mem))
+      #used_mem=$((total_mem - free_mem))
       total_mem=$(($total_mem/1024))
       if (( $used_mem < 1024 )); then
         echo $used_mem\M\B/$total_mem\G\B
