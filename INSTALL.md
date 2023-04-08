@@ -152,6 +152,18 @@ Customize label
 set -g @dracula-ram-usage-label "RAM"
 ```
 
+#### network-bandwidth
+
+You can configure which network interface you want to view the bandwidth,
+Displaying of the interface name, The interval between each bandwidth update.
+The most common interfaces name are `eth0` for a wired connection and `wlan0` for a wireless connection.
+
+```bash
+set -g @dracula-network-bandwidth eth0
+set -g @dracula-network-bandwidth-interval 0
+set -g @dracula-network-bandwidth-show-interface true
+```
+
 #### network-ping options
 
 You can configure which server (hostname, IP) you want to ping and at which rate (in seconds). Default is google.com at every 5 seconds.
