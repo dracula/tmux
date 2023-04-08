@@ -48,7 +48,8 @@ To enable plugins set up the `@dracula-plugins` option in you `.tmux.conf` file,
 The order that you define the plugins will be the order on the status bar left to right.
 
 ```bash
-# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, network, network-bandwidth, network-ping, network-vpn, weather, time
+# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, network, network-bandwidth, network-ping, attached-clients, network-vpn, weather, time
+
 set -g @dracula-plugins "cpu-usage gpu-usage ram-usage"
 ```
 
@@ -111,6 +112,12 @@ Enable high contrast pane border
 set -g @dracula-border-contrast true
 ```
 
+Hide empty plugins
+
+```bash
+set -g @dracula-show-empty-plugins false
+```
+
 #### cpu-usage options
 
 Customize label
@@ -138,6 +145,8 @@ set -g @dracula-battery-label "Battery"
 
 #### gpu-usage options
 
+Note, currently only the Linux NVIDIA Proprietary drivers are supported. Nouveau and AMD Graphics Cards support are still under development.
+
 Customize label
 
 ```bash
@@ -150,6 +159,18 @@ Customize label
 
 ```bash
 set -g @dracula-ram-usage-label "RAM"
+```
+
+#### network-bandwidth
+
+You can configure which network interface you want to view the bandwidth,
+Displaying of the interface name, The interval between each bandwidth update.
+The most common interfaces name are `eth0` for a wired connection and `wlan0` for a wireless connection.
+
+```bash
+set -g @dracula-network-bandwidth eth0
+set -g @dracula-network-bandwidth-interval 0
+set -g @dracula-network-bandwidth-show-interface true
 ```
 
 #### network-ping options
@@ -206,6 +227,17 @@ Set symbol or message to use when the current pane has no git repo
 set -g @dracula-git-no-repo-message ""
 ```
 
+Hide untracked files from being displayed as local changes
+```bash
+# default is false
+set -g @dracula-git-no-untracked-files true
+```
+
+Show remote tracking branch together with diverge/sync state
+```bash
+# default is false
+set -g @dracula-git-show-remote-status true
+```
 
 #### weather options
 
@@ -225,4 +257,19 @@ Hide your location
 
 ```bash
 set -g @dracula-show-location false
+```
+
+#### attached-clients options
+
+Set the minimum number of clients to show (otherwise, show nothing)
+
+```bash
+set -g @dracula-clients-minimum 1
+```
+
+Set the label when there is one client, or more than one client
+
+```bash
+set -g @dracula-clients-singular client
+set -g @dracula-clients-plural clients
 ```
