@@ -138,6 +138,8 @@ set -g @dracula-battery-label "Battery"
 
 #### gpu-usage options
 
+Note, currently only the Linux NVIDIA Proprietary drivers are supported. Nouveau and AMD Graphics Cards support are still under development.
+
 Customize label
 
 ```bash
@@ -248,4 +250,31 @@ Hide your location
 
 ```bash
 set -g @dracula-show-location false
+
+set -g @dracula-plugins "cpu-usage ram-usage network network-bandwidth time"
+set -g @dracula-network-bandwidth enp5s0
+set -g @dracula-show-powerline true
+set -g @dracula-show-flags false
+set -g @dracula-refresh-rate 5
+set -g @dracula-show-left-icon session
+set -g @dracula-border-contrast true
+set -g @dracula-military-time true
+set -g @dracula-show-location false
+set -g @dracula-show-timezone false
+set -g @dracula-show-weather false
+
+
+
+# set -g @dracula-border-contrast true
+# set -g @dracula-cpu-usage true
+# set -g @dracula-military-time true
+# set -g @dracula-ram-usage true
+# set -g @dracula-refresh-rate 5
+# set -g @dracula-show-battery true
+# set -g @dracula-show-flags true
+# set -g @dracula-show-left-icon session
+# set -g @dracula-show-network false
+# set -g @dracula-show-powerline false
+# set -g @dracula-show-powerline true
+# set -g @dracula-show-weather false
 ```
