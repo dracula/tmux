@@ -128,6 +128,12 @@ main()
 
   for plugin in "${plugins[@]}"; do
 
+    if [ $plugin = "cwd" ]; then
+      IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-cwd-colors" "dark_gray white")
+      tmux set-option -g status-right-length 250
+      script="#($current_dir/cwd.sh)"
+    fi
+
     if [ $plugin = "git" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-git-colors" "green dark_gray")
       tmux set-option -g status-right-length 250
