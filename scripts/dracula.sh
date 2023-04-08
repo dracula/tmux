@@ -128,9 +128,16 @@ main()
 
   for plugin in "${plugins[@]}"; do
 
-    if [ $plugin = "git" ]; then
+    if [ $plugin = "cwd" ]; then
+      IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-cwd-colors" "dark_gray white")
+      tmux set-option -g status-right-length 250
+      script="#($current_dir/cwd.sh)"
+
+    elif [ $plugin = "git" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-git-colors" "green dark_gray")
-        script="#($current_dir/git.sh)"     
+      tmux set-option -g status-right-length 250
+      script="#($current_dir/git.sh)"
+    
 
     elif [ $plugin = "battery" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-battery-colors" "pink dark_gray")
