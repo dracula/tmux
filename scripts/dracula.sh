@@ -168,6 +168,10 @@ main()
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-network-ping-colors" "cyan dark_gray")
       script="#($current_dir/network_ping.sh)"
 
+    elif [ $plugin = "attached-clients" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-attached-clients-colors" "cyan dark_gray")
+      script="#($current_dir/attached_clients.sh)"
+
     elif [ $plugin = "spotify-tui" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-spotify-tui-colors" "green dark_gray")
       script="#($current_dir/spotify-tui.sh)"
