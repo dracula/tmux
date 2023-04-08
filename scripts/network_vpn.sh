@@ -7,7 +7,11 @@ source $current_dir/utils.sh
 
 vpn_function() {
   case $(uname -s) in
-  Linux | Darwin)
+  Linux)
+    # TODO
+  ;;
+  
+  Darwin)
     vpn=$(scutil --nc list | grep Connected)
 
     if [ -z $vpn ]; then
