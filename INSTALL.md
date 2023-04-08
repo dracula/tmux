@@ -138,6 +138,8 @@ set -g @dracula-battery-label "Battery"
 
 #### gpu-usage options
 
+Note, currently only the Linux NVIDIA Proprietary drivers are supported. Nouveau and AMD Graphics Cards support are still under development.
+
 Customize label
 
 ```bash
@@ -150,6 +152,18 @@ Customize label
 
 ```bash
 set -g @dracula-ram-usage-label "RAM"
+```
+
+#### network-bandwidth
+
+You can configure which network interface you want to view the bandwidth,
+Displaying of the interface name, The interval between each bandwidth update.
+The most common interfaces name are `eth0` for a wired connection and `wlan0` for a wireless connection.
+
+```bash
+set -g @dracula-network-bandwidth eth0
+set -g @dracula-network-bandwidth-interval 0
+set -g @dracula-network-bandwidth-show-interface true
 ```
 
 #### network-ping options
@@ -206,6 +220,17 @@ Set symbol or message to use when the current pane has no git repo
 set -g @dracula-git-no-repo-message ""
 ```
 
+Hide untracked files from being displayed as local changes
+```bash
+# default is false
+set -g @dracula-git-no-untracked-files true
+```
+
+Show remote tracking branch together with diverge/sync state
+```bash
+# default is false
+set -g @dracula-git-show-remote-status true
+```
 
 #### weather options
 
@@ -225,6 +250,33 @@ Hide your location
 
 ```bash
 set -g @dracula-show-location false
+
+set -g @dracula-plugins "cpu-usage ram-usage network network-bandwidth time"
+set -g @dracula-network-bandwidth enp5s0
+set -g @dracula-show-powerline true
+set -g @dracula-show-flags false
+set -g @dracula-refresh-rate 5
+set -g @dracula-show-left-icon session
+set -g @dracula-border-contrast true
+set -g @dracula-military-time true
+set -g @dracula-show-location false
+set -g @dracula-show-timezone false
+set -g @dracula-show-weather false
+
+
+
+# set -g @dracula-border-contrast true
+# set -g @dracula-cpu-usage true
+# set -g @dracula-military-time true
+# set -g @dracula-ram-usage true
+# set -g @dracula-refresh-rate 5
+# set -g @dracula-show-battery true
+# set -g @dracula-show-flags true
+# set -g @dracula-show-left-icon session
+# set -g @dracula-show-network false
+# set -g @dracula-show-powerline false
+# set -g @dracula-show-powerline true
+# set -g @dracula-show-weather false
 ```
 
 
