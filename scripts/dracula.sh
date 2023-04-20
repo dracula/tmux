@@ -7,8 +7,6 @@ source $current_dir/utils.sh
 
 main()
 {
-  datafile=/tmp/.dracula-tmux-data
-
   # set configuration option variables
   show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
   show_location=$(get_tmux_option "@dracula-show-location" true)
@@ -65,11 +63,6 @@ main()
   if $show_powerline; then
     right_sep="$show_right_sep"
     left_sep="$show_left_sep"
-  fi
-
-  # start weather script in background
-  if [[ "${plugins[@]}" =~ "weather" ]]; then
-    $current_dir/sleep_weather.sh $show_fahrenheit $show_location $fixed_location &
   fi
 
   # Set timezone unless hidden by configuration
@@ -186,14 +179,8 @@ main()
       script="#($current_dir/kubernetes_context.sh $show_kubernetes_context_label)"
 
     elif [ $plugin = "weather" ]; then
-      # wait unit $datafile exists just to avoid errors
-      # this should almost never need to wait unless something unexpected occurs
-      while [ ! -f $datafile ]; do
-        sleep 0.01
-      done
-
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-weather-colors" "orange dark_gray")
-      script="#(cat $datafile)"
+      script="#($current_dir/weather_wrapper.sh $show_fahrenheit $show_location $fixed_location)"
 
     elif [ $plugin = "time" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-time-colors" "dark_purple white")
