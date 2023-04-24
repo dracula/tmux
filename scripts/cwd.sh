@@ -3,28 +3,27 @@
 # return current working directory of tmux pane
 getPaneDir()
 {
-  nextone="false"
-  for i in $(tmux list-panes -F "#{pane_active} #{pane_current_path}");
-  do
-    if [ "$nextone" == "true" ]; then
-      echo $i
-      return
-    fi 
-    if [ "$i" == "1" ]; then
-      nextone="true"
-    fi
-  done
+    nextone="false"
+    for i in $(tmux list-panes -F "#{pane_active} #{pane_current_path}");
+    do
+        if [ "$nextone" == "true" ]; then
+            echo $i
+            return
+        fi
+        if [ "$i" == "1" ]; then
+            nextone="true"
+        fi
+    done
 }
 
-main()
-{
-  path=$(getPaneDir)
+. ~/.vim/buf
 
-  # change '/home/user' to '~'
-  cwd=$(echo $path | sed "s;$HOME;~;g")
+path=$vim_buf
+if [ -z "$path" ]; then
+    path=$(getPaneDir)
+fi
 
-  echo $cwd
-}
+# change '/home/user' to '~'
+cwd=$(echo $path | sed "s;$HOME;~;g")
 
-#run main driver program
-main
+echo $cwd
