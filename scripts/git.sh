@@ -7,6 +7,8 @@ IFS=' ' read -r -a hide_status <<< $(get_tmux_option "@dracula-git-disable-statu
 IFS=' ' read -r -a current_symbol <<< $(get_tmux_option "@dracula-git-show-current-symbol" "✓")
 IFS=' ' read -r -a diff_symbol <<< $(get_tmux_option "@dracula-git-show-diff-symbol" "!")
 IFS=' ' read -r -a no_repo_message <<< $(get_tmux_option "@dracula-git-no-repo-message" "")
+IFS=' ' read -r -a no_untracked_files <<< $(get_tmux_option "@dracula-git-no-untracked-files" "false")
+IFS=' ' read -r -a show_remote_status <<< $(get_tmux_option "@dracula-git-show-remote-status" "false")
 
 # Get added, modified, updated and deleted files from git status
 getChanges()
@@ -16,7 +18,7 @@ getChanges()
    declare -i updated=0;
    declare -i deleted=0;
 
-for i in $(git -C $path status -s)
+for i in $(git -C $path --no-optional-locks status -s)
 
     do
       case $i in 
@@ -77,8 +79,9 @@ checkEmptySymbol()
 # check to see if the current repo is not up to date with HEAD
 checkForChanges()
 {
+    [ $no_untracked_files == "false" ] && no_untracked="" || no_untracked="-uno"
     if [ "$(checkForGitDir)" == "true" ]; then
-        if [ "$(git -C $path status -s)" != "" ]; then
+        if [ "$(git -C $path --no-optional-locks status -s $no_untracked)" != "" ]; then
             echo "true"
         else
             echo "false"
@@ -108,37 +111,59 @@ getBranch()
     fi
 }
 
+getRemoteInfo()
+{
+    base=$(git -C $path for-each-ref --format='%(upstream:short) %(upstream:track)' "$(git -C $path symbolic-ref -q HEAD)")
+    remote=$(echo "$base" | cut -d" " -f1)
+    out=""
+
+    if [ -n "$remote" ]; then
+        out="...$remote"
+        ahead=$(echo "$base" | grep -E -o 'ahead[ [:digit:]]+' | cut -d" " -f2)
+        behind=$(echo "$base" | grep -E -o 'behind[ [:digit:]]+' | cut -d" " -f2)
+
+        [ -n "$ahead" ] && out+=" +$ahead"
+        [ -n "$behind" ] && out+=" -$behind"
+    fi
+
+    echo "$out"
+}
+
 # return the final message for the status bar
 getMessage()
 {
     if [ $(checkForGitDir) == "true" ]; then
         branch="$(getBranch)"
-        
+        output=""
+
         if [ $(checkForChanges) == "true" ]; then 
             
             changes="$(getChanges)" 
             
             if [ "${hide_status}" == "false" ]; then
                 if [ $(checkEmptySymbol $diff_symbol) == "true" ]; then
-                    echo "${changes} $branch"                    
+		     output=$(echo "${changes} $branch")
                 else
-                    echo "$diff_symbol ${changes} $branch"
+		     output=$(echo "$diff_symbol ${changes} $branch")
                 fi
             else
                 if [ $(checkEmptySymbol $diff_symbol) == "true" ]; then
-                    echo "$branch"
+		     output=$(echo "$branch")
                 else
-                    echo "$diff_symbol $branch"                    
+		     output=$(echo "$diff_symbol $branch")
                 fi
             fi
 
         else
             if [ $(checkEmptySymbol $current_symbol) == "true" ]; then
-                echo "$branch"
+	         output=$(echo "$branch")
             else
-                echo "$current_symbol $branch"
+		 output=$(echo "$current_symbol $branch")
             fi
         fi
+
+        [ "$show_remote_status" == "true" ] && output+=$(getRemoteInfo)
+        echo "$output"
     else
         echo $no_repo_message
     fi
