@@ -15,7 +15,7 @@ main()
     exit 1
   fi
 
-  FORMAT=$(get_tmux_option "@dracula-spotify-tui-format" "%t - %a")
+  FORMAT=$(get_tmux_option "@dracula-spotify-tui-format" "%f %s %t - %a")
   spotify_playback=$(spt playback -f "${FORMAT}")
   echo ${spotify_playback}
 
