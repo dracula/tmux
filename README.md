@@ -24,6 +24,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 - CPU usage (percentage or load average)
 - RAM usage
 - GPU usage
+- Custom status texts from external scripts
 - GPU VRAM usage
 - GPU power draw
 - Color code based on if prefix is active or not
