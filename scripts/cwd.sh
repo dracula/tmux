@@ -7,23 +7,17 @@ getPaneDir()
     for i in $(tmux list-panes -F "#{pane_active} #{pane_current_path}");
     do
         if [ "$nextone" == "true" ]; then
-            echo $i
+            echo "$i"
             return
         fi
-        if [ "$i" == "1" ]; then
-            nextone="true"
-        fi
+        [ "$i" == "1" ] && nextone="true"
     done
 }
 
-. ~/.vim/buf
+source "$HOME/.vim/buf"
 
-path=$vim_buf
-if [ -z "$path" ]; then
-    path=$(getPaneDir)
-fi
+path="$vim_buf"
+[ -z "$path" ] && path=$(getPaneDir)
 
 # change '/home/user' to '~'
-cwd=$(echo $path | sed "s;$HOME;~;g")
-
-echo $cwd
+echo "${path/"$HOME"/'~'}"
