@@ -4,14 +4,14 @@
 getPaneDir()
 {
     nextone="false"
+    ret=""
     for i in $(tmux list-panes -F "#{pane_active} #{pane_current_path}");
     do
-        if [ "$nextone" == "true" ]; then
-            echo "$i"
-            return
-        fi
-        [ "$i" == "1" ] && nextone="true"
+        [ "$i" == "1" ] && nextone="true" && continue
+        [ "$i" == "0" ] && nextone="false"
+        [ "$nextone" == "true" ] && ret+="$i "
     done
+    echo "${ret%?}"
 }
 
 source "$HOME/.vim/buf"
