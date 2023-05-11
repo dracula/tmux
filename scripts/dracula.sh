@@ -217,6 +217,10 @@ main()
         fi
       fi
 
+    elif [ $plugin = "network-public-ip" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-network-public-ip-colors" "cyan dark_gray")
+      script="#($current_dir/network-public-ip.sh)"
+
     else
       continue
     fi
