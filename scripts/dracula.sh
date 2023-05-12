@@ -74,7 +74,7 @@ main()
     fi
 
     # start weather script in background
-    if [[ "${plugins[@]}" =~ "weather" ]]; then
+    if [[ "${plugins[*]}" =~ "weather" ]]; then
         $current_dir/sleep_weather.sh $show_fahrenheit $show_location $fixed_location &
     fi
 
@@ -125,7 +125,7 @@ main()
 
     # Status left
     if $show_powerline; then
-        tmux set-option -g status-left "#[bg=${cyan},fg=${dark_gray}]#{?client_prefix,#[bg=${light_purple}],} ${left_icon} #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
+        tmux set-option -g status-left "#[bg=${cyan},fg=${dark_gray}]#{?client_prefix,#[bg=${green}],} ${left_icon} #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
         powerbg=${gray}
     else
         tmux set-option -g status-left "#[bg=${cyan},fg=${dark_gray}]#{?client_prefix,#[bg=${light_purple}],} ${left_icon}"
