@@ -8,6 +8,7 @@ source $current_dir/utils.sh
 main()
 {
   # set configuration option variables
+  terraform_label=$(get_tmux_option "@dracula-terraform-label" "")
   show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
   show_location=$(get_tmux_option "@dracula-show-location" true)
   fixed_location=$(get_tmux_option "@dracula-fixed-location")
@@ -196,6 +197,10 @@ main()
     elif [ $plugin = "kubernetes-context" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-kubernetes-context-colors" "cyan dark_gray")
       script="#($current_dir/kubernetes_context.sh $show_kubernetes_context_label)"
+
+    elif [ $plugin = "terraform" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-terraform-colors" "light_purple dark_gray")
+      script="#($current_dir/terraform.sh $terraform_label)"
 
     elif [ $plugin = "weather" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-weather-colors" "orange dark_gray")
