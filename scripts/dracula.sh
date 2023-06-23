@@ -6,29 +6,21 @@ current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
 
 main()
-{
-  # set configuration option variables
-  terraform_label=$(get_tmux_option "@dracula-terraform-label" "")
-  show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
-  show_location=$(get_tmux_option "@dracula-show-location" true)
-  fixed_location=$(get_tmux_option "@dracula-fixed-location")
-  show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
-  show_flags=$(get_tmux_option "@dracula-show-flags" false)
-  show_left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
-  show_left_icon_padding=$(get_tmux_option "@dracula-left-icon-padding" 1)
-  show_military=$(get_tmux_option "@dracula-military-time" false)
-  show_timezone=$(get_tmux_option "@dracula-show-timezone" true)
-  show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
-  show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
-  show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
-  show_day_month=$(get_tmux_option "@dracula-day-month" false)
-  show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
-  time_format=$(get_tmux_option "@dracula-time-format" "")
-  show_kubernetes_context_label=$(get_tmux_option "@dracula-kubernetes-context-label" "")
-  IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
-  show_empty_plugins=$(get_tmux_option "@dracula-show-empty-plugins" true)
 
-  # Dracula Color Pallette
+# # Main Structure
+# - Color Pallette
+# - Get Tmux Option Variables
+#   - General
+#   - For Left Icon
+#   - For Window
+#   - For Plugins
+# - Left Icon Area
+# - Window Area
+# - Right Plugins Area
+
+{
+
+# Dracula Color Pallette{
   white='#f8f8f2'
   gray='#44475a'
   dark_gray='#282a36'
@@ -40,57 +32,58 @@ main()
   red='#ff5555'
   pink='#ff79c6'
   yellow='#f1fa8c'
+# }
 
-  # Handle left icon configuration
-  case $show_left_icon in
-    smiley)
-      left_icon="☺";;
-    session)
-      left_icon="#S";;
-    window)
-      left_icon="#W";;
-    *)
-      left_icon=$show_left_icon;;
-  esac
 
-  # Handle left icon padding
-  padding=""
-  if [ "$show_left_icon_padding" -gt "0" ]; then
-    padding="$(printf '%*s' $show_left_icon_padding)"
-  fi
-  left_icon="$left_icon$padding"
+# Get Tmux Option Variables {
+
+  # general
+  show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
+  show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
+  show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
+  show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
+
+  # left icon area
+  show_left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
+  show_left_icon_padding=$(get_tmux_option "@dracula-left-icon-padding" 1)
+
+  # window area
+  show_flags=$(get_tmux_option "@dracula-show-flags" false)
+
+  # right plugins area
+  # plugins general
+  show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
+  show_empty_plugins=$(get_tmux_option "@dracula-show-empty-plugins" true)
+
+  # terraform
+  terraform_label=$(get_tmux_option "@dracula-terraform-label" "")
+
+  # weather
+  show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
+  show_location=$(get_tmux_option "@dracula-show-location" true)
+  fixed_location=$(get_tmux_option "@dracula-fixed-location")
+
+  # time
+  show_military=$(get_tmux_option "@dracula-military-time" false)
+  show_timezone=$(get_tmux_option "@dracula-show-timezone" true)
+  show_day_month=$(get_tmux_option "@dracula-day-month" false)
+  time_format=$(get_tmux_option "@dracula-time-format" "")
+
+  # kubernetes-context
+  show_kubernetes_context_label=$(get_tmux_option "@dracula-kubernetes-context-label" "")
+  IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
+# }
+
+
+# General Settings {
+
+  # sets refresh interval to every 5 seconds
+  tmux set-option -g status-interval $show_refresh
 
   # Handle powerline option
   if $show_powerline; then
     right_sep="$show_right_sep"
     left_sep="$show_left_sep"
-  fi
-
-  # Set timezone unless hidden by configuration
-  case $show_timezone in
-    false)
-      timezone="";;
-    true)
-      timezone="#(date +%Z)";;
-  esac
-
-  case $show_flags in
-    false)
-      flags=""
-      current_flags="";;
-    true)
-      flags="#{?window_flags,#[fg=${dark_purple}]#{window_flags},}"
-      current_flags="#{?window_flags,#[fg=${light_purple}]#{window_flags},}"
-  esac
-
-  # sets refresh interval to every 5 seconds
-  tmux set-option -g status-interval $show_refresh
-
-  # set the prefix + t time format
-  if $show_military; then
-    tmux set-option -g clock-mode-style 24
-  else
-    tmux set-option -g clock-mode-style 12
   fi
 
   # set length
@@ -110,6 +103,28 @@ main()
 
   # status bar
   tmux set-option -g status-style "bg=${gray},fg=${white}"
+# }
+
+
+# Left Icon Area {
+  # Handle left icon configuration
+  case $show_left_icon in
+    smiley)
+      left_icon="☺";;
+    session)
+      left_icon="#S";;
+    window)
+      left_icon="#W";;
+    *)
+      left_icon=$show_left_icon;;
+  esac
+
+  # Handle left icon padding
+  padding=""
+  if [ "$show_left_icon_padding" -gt "0" ]; then
+    padding="$(printf '%*s' $show_left_icon_padding)"
+  fi
+  left_icon="$left_icon$padding"
 
   # Status left
   if $show_powerline; then
@@ -118,9 +133,53 @@ main()
   else
     tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon}"
   fi
+# }
 
-  # Status right
+
+# Window Area {
+
+  # Handle window flags
+  case $show_flags in
+    false)
+      flags=""
+      current_flags="";;
+    true)
+      flags="#{?window_flags,#[fg=${dark_purple}]#{window_flags},}"
+      current_flags="#{?window_flags,#[fg=${light_purple}]#{window_flags},}"
+  esac
+
+  # Window option
+  if $show_powerline; then
+    tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=${gray}]${left_sep}"
+  else
+    tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W${current_flags} "
+  fi
+
+  tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${gray}] #I #W${flags}"
+
+  tmux set-window-option -g window-status-activity-style "bold"
+  tmux set-window-option -g window-status-bell-style "bold"
+
+# }
+
+# Right Plugins Area{
   tmux set-option -g status-right ""
+
+  # Set timezone unless hidden by configuration
+  case $show_timezone in
+    false)
+      timezone="";;
+    true)
+      timezone="#(date +%Z)";;
+  esac
+
+  # set the prefix + t time format
+  if $show_military; then
+    tmux set-option -g clock-mode-style 24
+  else
+    tmux set-option -g clock-mode-style 12
+  fi
+
 
   for plugin in "${plugins[@]}"; do
 
@@ -241,17 +300,6 @@ main()
       fi
     fi
   done
-
-  # Window option
-  if $show_powerline; then
-    tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=${gray}]${left_sep}"
-  else
-    tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W${current_flags} "
-  fi
-
-  tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${gray}] #I #W${flags}"
-  tmux set-window-option -g window-status-activity-style "bold"
-  tmux set-window-option -g window-status-bell-style "bold"
 }
 
 # run main function
