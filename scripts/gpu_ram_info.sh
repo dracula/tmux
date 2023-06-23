@@ -31,7 +31,7 @@ get_gpu()
   else
     usage='unknown'
   fi
-  normalize_percent_len $usage
+  normalize_string_length $usage
 }
 
 main()

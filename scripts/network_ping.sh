@@ -15,7 +15,9 @@ ping_function() {
     # storing the hostname/IP in the variable PINGSERVER, default is google.com
     pingserver=$(get_tmux_option "@dracula-ping-server" "google.com")
     pingtime=$(ping -c 1 "$pingserver" | tail -1 | awk '{print $4}' | cut -d '/' -f 2)
-    echo "${pingtime%.*}ms"  # Truncate the integer part
+    # Truncate the integer part
+    # Network ping doesn't always stable, so keep min length to 5(999ms).
+    normalize_string_length "${pingtime%.*}ms" 5
     ;;
 
   CYGWIN* | MINGW32* | MSYS* | MINGW*)

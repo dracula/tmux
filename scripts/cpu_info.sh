@@ -10,7 +10,7 @@ get_percent()
   case $(uname -s) in
     Linux)
       percent=$(LC_NUMERIC=en_US.UTF-8 top -bn2 -d 0.01 | grep "Cpu(s)" | tail -1 | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}')
-      normalize_percent_len $percent
+      normalize_string_length $percent
       ;;
 
     Darwin)
@@ -20,7 +20,7 @@ get_percent()
       percent="$cpuusage%"
       # a/b will get a integer, no decimal, like "1%" or "99%".
       # So set the length to 3 below.
-      normalize_percent_len $percent 3
+      normalize_string_length $percent 3
       ;;
 
     CYGWIN*|MINGW32*|MSYS*|MINGW*)

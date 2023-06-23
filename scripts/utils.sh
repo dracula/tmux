@@ -15,7 +15,7 @@ get_tmux_option() {
 # $1 percentage string
 # $2 max length, default is 3 (99%)
 # $3 align (left, center, right), default is right
-normalize_percent_len() {
+normalize_string_length() {
   # the max length that the percent can reach, which happens for a two digit number with a decimal house: "99.9%".
   percent_len=${#1}
   max_len=${2:-5}  # default
