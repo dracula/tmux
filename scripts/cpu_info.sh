@@ -18,7 +18,9 @@ get_percent()
       cpucores=$(sysctl -n hw.logicalcpu)
       cpuusage=$(( cpuvalue / cpucores ))
       percent="$cpuusage%"
-      normalize_percent_len $percent
+      # a/b will get a integer, no decimal, like "1%" or "99%".
+      # So set the length to 3 below.
+      normalize_percent_len $percent 3
       ;;
 
     CYGWIN*|MINGW32*|MSYS*|MINGW*)
