@@ -56,12 +56,23 @@ main()
 
   # window area
   show_flags=$(get_tmux_option "@dracula-show-flags" false)
-  IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
+  window_bg=$(get_tmux_option "@dracula-window-bg" gray)
+  window_fg=$(get_tmux_option "@dracula-window-fg" white)
+  window_current_bg=$(get_tmux_option "@dracula-window-current-bg" dark_purple)
+  window_current_fg=$(get_tmux_option "@dracula-window-current-fg" white)
+  window_padding_left=$(get_tmux_option "@dracula-window-padding-left" 1)
+  window_padding_right=$(get_tmux_option "@dracula-window-padding-right" 1)
+  window_margin_right=$(get_tmux_option "@dracula-window-margin-right" 0)
+  window_left_sep=$(get_tmux_option "@dracula-window-left-sep" "")
+  window_right_sep=$(get_tmux_option "@dracula-window-right-sep" "")
+  window_left_sep_invert=$(get_tmux_option "@dracula-window-left-sep-invert" true)
+  window_disabled=$(get_tmux_option "@dracula-window-disabled" false)
 
   # right plugins area
   # plugins general
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
   show_empty_plugins=$(get_tmux_option "@dracula-show-empty-plugins" true)
+  IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
 
   # terraform
   terraform_label=$(get_tmux_option "@dracula-terraform-label" "")
@@ -163,24 +174,63 @@ ${icon_mg_r}"
 
 # Window Area {
 
+  # Handle window tabs padding & margin
+  win_pd_l=""
+  if [ "$window_padding_left" -gt "0" ]; then
+    win_pd_l="$(printf '%*s' $window_padding_left)"
+  fi
+  win_pd_r=""
+  if [ "$window_padding_right" -gt "0" ]; then
+    win_pd_r="$(printf '%*s' $window_padding_right)"
+  fi
+  win_mg_r=""
+  if [ "$window_margin_right" -gt "0" ]; then
+    win_mg_r="$(printf '%*s' $window_margin_right)"
+  fi
+
+  # Handle window sep mark
+  # If window's separator not set, use the general separators.
+  if [ "$window_left_sep" = "" ]; then
+    window_left_sep=$left_sep
+  fi
+  if [ "$window_right_sep" = "" ]; then
+    window_right_sep=$left_sep
+  fi
+
+  # Handle left separator if invert color
+  if $window_left_sep_invert; then
+    win_left_sep="#[bg=${!window_bg},fg=${!status_bg}]${window_left_sep}"
+    win_current_left_sep="#[bg=${!window_current_bg},fg=${!status_bg}]${window_left_sep}"
+  else
+    win_left_sep="#[bg=${!status_bg},fg=${!window_bg}]${window_left_sep}"
+    win_current_left_sep="#[bg=${!status_bg},fg=${!window_current_bg}]${window_left_sep}"
+  fi
+
   # Handle window flags
   case $show_flags in
     false)
-      flags=""
-      current_flags="";;
+      win_flags="";;
     true)
-      flags="#{?window_flags,#[fg=${dark_purple}]#{window_flags},}"
-      current_flags="#{?window_flags,#[fg=${light_purple}]#{window_flags},}"
+      win_flags=" #{?window_flags,#{window_flags},}";;
   esac
 
-  # Window option
-  if $show_powerline; then
-    tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=${gray}]${left_sep}"
-  else
-    tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W${current_flags} "
-  fi
+  # Merge window tab
+  # If window disable, window won't be set, you can set it in tmux.conf.
+  if ! $window_disabled; then
+    tmux set-window-option -g window-status-format "\
+#[nobold,nounderscore,noitalics]\
+${win_left_sep}\
+#[fg=${!window_fg},bg=${!window_bg}]\
+${win_pd_l}#I #W${win_flags}${win_pd_r}\
+#[fg=${!window_bg},bg=${!status_bg}]${window_right_sep}${win_mg_r}"
 
-  tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${gray}] #I #W${flags}"
+    tmux set-window-option -g window-status-current-format "\
+#[nobold,nounderscore,noitalics]\
+${win_current_left_sep}\
+#[fg=${!window_current_fg},bg=${!window_current_bg}]\
+${win_pd_l}#I #W${win_flags}${win_pd_r}\
+#[fg=${!window_current_bg},bg=${!status_bg}]${window_right_sep}${win_mg_r}"
+  fi
 
   tmux set-window-option -g window-status-activity-style "bold"
   tmux set-window-option -g window-status-bell-style "bold"
