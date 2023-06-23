@@ -6,6 +6,7 @@ current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
 
 main()
+{
 
 # # Main Structure
 # - Color Pallette
@@ -18,7 +19,6 @@ main()
 # - Window Area
 # - Right Plugins Area
 
-{
 
 # Dracula Color Pallette{
   white='#f8f8f2'
@@ -42,13 +42,21 @@ main()
   show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
   show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
+  status_bg=$(get_tmux_option "@dracula-status-bg" gray)
 
   # left icon area
-  show_left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
-  show_left_icon_padding=$(get_tmux_option "@dracula-left-icon-padding" 1)
+  left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
+  left_icon_bg=$(get_tmux_option "@dracula-left-icon-bg" green)
+  left_icon_fg=$(get_tmux_option "@dracula-left-icon-fg" dark_gray)
+  left_icon_prefix_bg=$(get_tmux_option "@dracula-left-icon-prefix-on-bg" red)
+  left_icon_prefix_fg=$(get_tmux_option "@dracula-left-icon-prefix-on-fg" white)
+  left_icon_padding_left=$(get_tmux_option "@dracula-left-icon-padding-left" 1)
+  left_icon_padding_right=$(get_tmux_option "@dracula-left-icon-padding-right" 1)
+  left_icon_margin_right=$(get_tmux_option "@dracula-left-icon-margin-right" 1)
 
   # window area
   show_flags=$(get_tmux_option "@dracula-show-flags" false)
+  IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
 
   # right plugins area
   # plugins general
@@ -71,7 +79,6 @@ main()
 
   # kubernetes-context
   show_kubernetes_context_label=$(get_tmux_option "@dracula-kubernetes-context-label" "")
-  IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
 # }
 
 
@@ -82,8 +89,13 @@ main()
 
   # Handle powerline option
   if $show_powerline; then
-    right_sep="$show_right_sep"
     left_sep="$show_left_sep"
+    right_sep="$show_right_sep"
+  else  # if disable powerline mark, equal to '', unify the logic of string.
+    left_sep=''
+    right_sep=''
+    window_left_sep=''
+    window_right_sep=''
   fi
 
   # set length
@@ -102,37 +114,50 @@ main()
   tmux set-option -g message-style "bg=${gray},fg=${white}"
 
   # status bar
-  tmux set-option -g status-style "bg=${gray},fg=${white}"
+  tmux set-option -g status-style "bg=${!status_bg},fg=${white}"
 # }
 
 
 # Left Icon Area {
   # Handle left icon configuration
-  case $show_left_icon in
+  case $left_icon in
     smiley)
-      left_icon="☺";;
+      left_icon_content="☺";;
     session)
-      left_icon="#S";;
+      left_icon_content="#S";;
     window)
-      left_icon="#W";;
+      left_icon_content="#W";;
     *)
-      left_icon=$show_left_icon;;
+      left_icon_content=$left_icon;;
   esac
 
   # Handle left icon padding
-  padding=""
-  if [ "$show_left_icon_padding" -gt "0" ]; then
-    padding="$(printf '%*s' $show_left_icon_padding)"
+  icon_pd_l=""
+  if [ "$left_icon_padding_left" -gt "0" ]; then
+    icon_pd_l="$(printf '%*s' $left_icon_padding_left)"
   fi
-  left_icon="$left_icon$padding"
+  icon_pd_r=""
+  if [ "$left_icon_padding_right" -gt "0" ]; then
+    icon_pd_r="$(printf '%*s' $left_icon_padding_right)"
+  fi
 
-  # Status left
-  if $show_powerline; then
-    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
-    powerbg=${gray}
-  else
-    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon}"
+  # Handle left icon margin
+  icon_mg_r=""
+  if [ "$left_icon_margin_right" -gt "0" ]; then
+    icon_mg_r="$(printf '%*s' $left_icon_margin_right)"
   fi
+
+  # Left icon, with prefix status
+  tmux set-option -g status-left "\
+#{?client_prefix,#[fg=${!left_icon_prefix_fg}],#[fg=${!left_icon_fg}]}\
+#{?client_prefix,#[bg=${!left_icon_prefix_bg}],#[bg=${!left_icon_bg}]}\
+${icon_pd_l}${left_icon_content}${icon_pd_r}\
+#{?client_prefix,#[fg=${!left_icon_prefix_bg}],#[fg=${!left_icon_bg}]}\
+#[bg=${!status_bg}]\
+${left_sep}\
+${icon_mg_r}"
+  powerbg=${!status_bg}
+
 # }
 
 
