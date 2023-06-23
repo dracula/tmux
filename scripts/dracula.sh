@@ -74,6 +74,10 @@ main()
   show_empty_plugins=$(get_tmux_option "@dracula-show-empty-plugins" true)
   IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
 
+  plugin_padding_left=$(get_tmux_option "@dracula-plugin-padding-left" 1)
+  plugin_padding_right=$(get_tmux_option "@dracula-plugin-padding-right" 1)
+  plugin_padding_rightmost=$(get_tmux_option "@dracula-plugin-padding-rightmost" 1)
+
   # terraform
   terraform_label=$(get_tmux_option "@dracula-terraform-label" "")
 
@@ -237,15 +241,30 @@ ${win_pd_l}#I #W${win_flags}${win_pd_r}\
 
 # }
 
+
 # Right Plugins Area{
-  tmux set-option -g status-right ""
+  tmux set-option -g status-right ""  # reset
+
+  # Handle plugins padding
+  plugin_pd_l=""
+  if [ "$plugin_padding_left" -gt "0" ]; then
+    plugin_pd_l="$(printf '%*s' $plugin_padding_left)"
+  fi
+  plugin_pd_r=""
+  if [ "$plugin_padding_right" -gt "0" ]; then
+    plugin_pd_r="$(printf '%*s' $plugin_padding_right)"
+  fi
+  plugin_pd_rm=""
+  if [ "$plugin_padding_rightmost" -gt "0" ]; then
+    plugin_pd_rm="$(printf '%*s' $plugin_padding_rightmost)"
+  fi
 
   # Set timezone unless hidden by configuration
   case $show_timezone in
     false)
       timezone="";;
     true)
-      timezone="#(date +%Z)";;
+      timezone=" #(date +%Z)";;
   esac
 
   # set the prefix + t time format
@@ -255,8 +274,13 @@ ${win_pd_l}#I #W${win_flags}${win_pd_r}\
     tmux set-option -g clock-mode-style 12
   fi
 
+  # Prepare for handle last one
+  length=${#plugins[@]}
+  index=0  # counter
 
+  # Loop add plugins
   for plugin in "${plugins[@]}"; do
+    index=$((index + 1))  # count
 
     if case $plugin in custom:*) true;; *) false;; esac; then
       script=${plugin#"custom:"}
@@ -346,13 +370,13 @@ ${win_pd_l}#I #W${win_flags}${win_pd_r}\
         script=${time_format}
       else
         if $show_day_month && $show_military ; then # military time and dd/mm
-          script="%a %d/%m %R ${timezone} "
+          script="%a %d/%m %R${timezone}"
         elif $show_military; then # only military time
-          script="%a %m/%d %R ${timezone} "
+          script="%a %m/%d %R${timezone}"
         elif $show_day_month; then # only dd/mm
-          script="%a %d/%m %I:%M %p ${timezone} "
+          script="%a %d/%m %I:%M %p${timezone}"
         else
-          script="%a %m/%d %I:%M %p ${timezone} "
+          script="%a %m/%d %I:%M %p${timezone}"
         fi
       fi
 
@@ -360,21 +384,30 @@ ${win_pd_l}#I #W${win_flags}${win_pd_r}\
       continue
     fi
 
-    if $show_powerline; then
-      if $show_empty_plugins; then
-        tmux set-option -ga status-right "#[fg=${!colors[0]},bg=${powerbg},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script "
-      else
-        tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[0]},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script }"
-      fi
-      powerbg=${!colors[0]}
+    # Last one padding right
+    if [[ "$index" -eq "$length" ]]; then
+      pd_r=$plugin_pd_rm
     else
-      if $show_empty_plugins; then
-        tmux set-option -ga status-right "#[fg=${!colors[1]},bg=${!colors[0]}] $script "
-      else
-        tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[1]},bg=${!colors[0]}] $script }"
-      fi
+      pd_r=$plugin_pd_r
     fi
+
+    # Merge plugin
+    if $show_empty_plugins; then
+      tmux set-option -ga status-right "\
+#[fg=${!colors[0]},bg=${powerbg}nobold,nounderscore,noitalics]\
+${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}]\
+${plugin_pd_l}$script${pd_r}"
+    else
+      tmux set-option -ga status-right "\
+#{?#{==:$script,},,#[fg=${!colors[0]},nobold,nounderscore,noitalics]\
+${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}]\
+${plugin_pd_l}$script${pd_r}}"
+    fi
+#[nobold,nounderscore,noitalics]\
+    powerbg=${!colors[0]}
+
   done
+# }
 }
 
 # run main function
