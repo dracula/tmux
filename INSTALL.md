@@ -239,6 +239,25 @@ Show remote tracking branch together with diverge/sync state
 set -g @dracula-git-show-remote-status true
 ```
 
+#### mercurial options
+
+Hide details of hg changes
+```bash
+set -g @dracula-hg-disable-status true
+```
+
+Set symbol or message to use when the current pane has no hg repo
+```bash
+# default is unicode no message
+set -g @dracula-hg-no-repo-message ""
+```
+
+Hide untracked files from being displayed as local changes
+```bash
+# default is false
+set -g @dracula-hg-no-untracked-files true
+```
+
 #### weather options
 
 Switch from default fahrenheit to celsius

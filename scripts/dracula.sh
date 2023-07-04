@@ -145,6 +145,11 @@ main()
       tmux set-option -g status-right-length 250
       script="#($current_dir/git.sh)"
 
+    elif [ $plugin = "hg" ]; then
+      IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-hg-colors" "green dark_gray")
+      tmux set-option -g status-right-length 250
+      script="#($current_dir/hg.sh)"
+
     elif [ $plugin = "battery" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-battery-colors" "pink dark_gray")
       script="#($current_dir/battery.sh)"
