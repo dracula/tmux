@@ -24,7 +24,7 @@ for i in $(hg -R $path status -admru)
       'A')
         added+=1
       ;;
-      'D')
+      '!')
        deleted+=1
       ;;
       'M')
