@@ -3,14 +3,14 @@
 export LC_ALL=en_US.UTF-8
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $current_dir/utils.sh
+source "$current_dir/utils.sh"
 
 get_cpids_linux() {
   local ppid="$1"
   local cpids
-  cpids="$(pgrep -P "$ppid")"
   local cpid
   echo "$ppid"
+  cpids="$(pgrep -P "$ppid")"
   for cpid in $cpids; do
     get_cpids_linux "$cpid"
   done
@@ -19,9 +19,9 @@ get_cpids_linux() {
 get_cpids_unix() {
   local ppid="$1"
   local cpids
-  cpids="$(pgrep -aP "$ppid")"
   local cpid
   echo "$ppid"
+  cpids="$(pgrep -aP "$ppid")"
   for cpid in $cpids; do
     get_cpids_unix "$cpid"
   done
@@ -29,7 +29,7 @@ get_cpids_unix() {
 
 kb_to_mb() {
   if [ $# == 0 ]; then
-    read num
+    read -r num
   else
     num="$1"
   fi
@@ -38,7 +38,7 @@ kb_to_mb() {
 
 kb_to_gb() {
   if [ $# == 0 ]; then
-    read num
+    read -r num
   else
     num="$1"
   fi
@@ -47,7 +47,7 @@ kb_to_gb() {
 
 round() {
   if [ $# == 1 ]; then
-    read num
+    read -r num
     scale="$1"
   elif [ $# == 2 ]; then
     num="$1"
@@ -59,9 +59,11 @@ round() {
 get_tmux_ram_usage()
 {
   local pid
-  pid="$(tmux display-message -pF '#{pid}')"
   local pids
   local total_mem_kb=0
+  local total_mem_mb=0
+  local total_mem_gb=0
+  pid="$(tmux display-message -pF '#{pid}')"
   case $(uname -s) in
     Linux)
       if command -v pstree > /dev/null; then
@@ -95,12 +97,12 @@ get_tmux_ram_usage()
       # TODO - windows compatability
       ;;
   esac
-  local total_mem_mb=$(echo "$total_mem_kb" | kb_to_mb | round 0)
-  local total_mem_gb=$(echo "$total_mem_kb" | kb_to_gb | round 0)
+  total_mem_mb=$(kb_to_mb "$total_mem_kb" | round 0)
+  total_mem_gb=$(kb_to_gb "$total_mem_kb" | round 0)
 
-  if (( $total_mem_gb > 0)); then
+  if (( total_mem_gb > 0)); then
     echo "${total_mem_gb}GB"
-  elif (( $total_mem_mb > 0 )); then
+  elif (( total_mem_mb > 0 )); then
     echo "${total_mem_mb}MB"
   else
     echo "${total_mem_kb}kB"
@@ -109,8 +111,6 @@ get_tmux_ram_usage()
 
 main()
 {
-  # storing the refresh rate in the variable RATE, default is 5
-  RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
   ram_label=$(get_tmux_option "@dracula-tmux-ram-usage-label" "MEM")
   ram_usage=$(get_tmux_ram_usage)
   echo "$ram_label $ram_usage"
