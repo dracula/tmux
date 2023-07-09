@@ -239,23 +239,35 @@ Show remote tracking branch together with diverge/sync state
 set -g @dracula-git-show-remote-status true
 ```
 
-#### mercurial options
+#### hg options
 
 Hide details of hg changes
 ```bash
 set -g @dracula-hg-disable-status true
 ```
 
+Set symbol to use for when branch is up to date with HEAD
+```bash
+#default is ✓.Avoid using non unicode characters that bash uses like $, * and !
+set -g @dracula-hg-show-current-symbol ✓
+```
+
+Set symbol to use for when branch diverges from HEAD
+```bash
+#default is unicode !.Avoid bash special characters
+set -g @dracula-hg-show-diff-symbol !
+```
+
 Set symbol or message to use when the current pane has no hg repo
 ```bash
-# default is unicode no message
+#default is unicode no message
 set -g @dracula-hg-no-repo-message ""
 ```
 
 Hide untracked files from being displayed as local changes
 ```bash
-# default is false
-set -g @dracula-hg-no-untracked-files true
+#default is false
+set -g @dracula-hg-no-untracked-files false
 ```
 
 #### weather options
@@ -292,3 +304,4 @@ Set the label when there is one client, or more than one client
 set -g @dracula-clients-singular client
 set -g @dracula-clients-plural clients
 ```
+
