@@ -22,7 +22,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 - Battery percentage and AC power connection status
 - Refresh rate control
 - CPU usage (percentage or load average)
-- RAM usage
+- RAM usage (system and/or tmux server)
 - GPU usage
 - Custom status texts from external scripts
 - GPU VRAM usage
