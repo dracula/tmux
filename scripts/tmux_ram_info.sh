@@ -5,6 +5,28 @@ export LC_ALL=en_US.UTF-8
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
 
+get_cpids_linux() {
+  local ppid="$1"
+  local cpids
+  cpids="$(pgrep -P "$ppid")"
+  local cpid
+  echo "$ppid"
+  for cpid in $cpids; do
+    get_cpids_linux "$cpid"
+  done
+}
+
+get_cpids_unix() {
+  local ppid="$1"
+  local cpids
+  cpids="$(pgrep -aP "$ppid")"
+  local cpid
+  echo "$ppid"
+  for cpid in $cpids; do
+    get_cpids_unix "$cpid"
+  done
+}
+
 kb_to_mb() {
   if [ $# == 0 ]; then
     read num
@@ -36,22 +58,36 @@ round() {
 
 get_tmux_ram_usage()
 {
-  local pid="$(tmux display-message -pF '#{pid}')"
+  local pid
+  pid="$(tmux display-message -pF '#{pid}')"
+  local pids
   local total_mem_kb=0
   case $(uname -s) in
     Linux)
-      local pids="$(pstree -p $pid | tr -d '\n' | sed -rn -e 's/[^()]*\(([0-9]+)\)[^()]*/\1,/g' -e 's/,$//p')"
+      if command -v pstree > /dev/null; then
+        pids="$(pstree -p "$pid" | tr -d '\n' | sed -rn -e 's/[^()]*\(([0-9]+)\)[^()]*/\1,/g' -e 's/,$//p')"
+      else
+        pids="$(get_cpids_linux "$pid" | tr '\n' ',')"
+      fi
       total_mem_kb="$(ps -o rss= -p "$pids" | paste -sd+ | bc)"
       ;;
 
     Darwin)
-      local pids="$(pstree $pid | sed -En 's/[^0-9]+([0-9]+) .*/\1/p' | tr '\n' ',')"
+      if command -v pstree > /dev/null; then
+        pids="$(pstree "$pid" | sed -En 's/[^0-9]+([0-9]+) .*/\1/p' | tr '\n' ',')"
+      else
+        pids="$(get_cpids_unix "$pid" | tr '\n' ',')"
+      fi
       total_mem_kb="$(ps -o rss= -p "$pids" | paste -sd+ - | bc)"
       ;;
 
     FreeBSD)
       # TODO check FreeBSD compatibility
-      local pids="$(pstree $pid | sed -En 's/[^0-9]+([0-9]+) .*/\1/p' | tr '\n' ',')"
+      if command -v pstree > /dev/null; then
+        pids="$(pstree "$pid" | sed -En 's/[^0-9]+([0-9]+) .*/\1/p' | tr '\n' ',')"
+      else
+        pids="$(get_cpids_unix "$pid" | tr '\n' ',')"
+      fi
       total_mem_kb="$(ps -o rss= -p "$pids" | paste -sd+ - | bc)"
       ;;
 
