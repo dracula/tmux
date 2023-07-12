@@ -48,7 +48,7 @@ To enable plugins set up the `@dracula-plugins` option in you `.tmux.conf` file,
 The order that you define the plugins will be the order on the status bar left to right.
 
 ```bash
-# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, attached-clients, network-vpn, weather, time, spotify-tui, kubernetes-context
+# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, attached-clients, network-vpn, weather, time, spotify-tui, kubernetes-context, synchronize-panes
 
 set -g @dracula-plugins "cpu-usage gpu-usage ram-usage"
 ```
@@ -298,6 +298,13 @@ Hide your location
 set -g @dracula-show-location false
 ```
 
+#### synchronize-panes options
+
+Customize label
+
+```bash
+set -g @dracula-synchronize-panes-label "Sync"
+```
 #### attached-clients options
 
 Set the minimum number of clients to show (otherwise, show nothing)
@@ -312,4 +319,3 @@ Set the label when there is one client, or more than one client
 set -g @dracula-clients-singular client
 set -g @dracula-clients-plural clients
 ```
-
