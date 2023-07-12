@@ -5,35 +5,26 @@ export LC_ALL=en_US.UTF-8
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
 
-get_percent()
+get_ratio()
 {
   case $(uname -s) in
     Linux)
-      total_mem_gb=$(free -g | awk '/^Mem/ {print $2}')
-      used_mem=$(free -g | awk '/^Mem/ {print $3}')
-      total_mem=$(free -h | awk '/^Mem/ {print $2}')
-      if (( $total_mem_gb == 0)); then
-        memory_usage=$(free -m | awk '/^Mem/ {print $3}')
-        total_mem_mb=$(free -m | awk '/^Mem/ {print $2}')
-        echo $memory_usage\M\B/$total_mem_mb\M\B
-      elif (( $used_mem == 0 )); then
-        memory_usage=$(free -m | awk '/^Mem/ {print $3}')
-        echo $memory_usage\M\B/$total_mem_gb\G\B
-      else
-        memory_usage=$(free -g | awk '/^Mem/ {print $3}')
-        echo $memory_usage\G\B/$total_mem_gb\G\B
-      fi
+      usage="$(free -h | awk 'NR==2 {print $3}')"
+      total="$(free -h | awk 'NR==2 {print $2}')"
+      formated="${usage}/${total}"
+      
+      echo "${formated//i/B}"
       ;;
 
     Darwin)
       # Get used memory blocks with vm_stat, multiply by page size to get size in bytes, then convert to MiB
       used_mem=$(vm_stat | grep ' active\|wired ' | sed 's/[^0-9]//g' | paste -sd ' ' - | awk -v pagesize=$(pagesize) '{printf "%d\n", ($1+$2) * pagesize / 1048576}')
       total_mem=$(system_profiler SPHardwareDataType | grep "Memory:" | awk '{print $2 $3}')
-      if (( $used_mem < 1024 )); then
-        echo $used_mem\M\B/$total_mem
+      if ((used_mem < 1024 )); then
+        echo "${used_mem}MB/$total_mem"
       else
-        memory=$(($used_mem/1024))
-        echo $memory\G\B/$total_mem
+        memory=$((used_mem/1024))
+        echo "${memory}GB/$total_mem"
       fi
       ;;
 
@@ -48,11 +39,11 @@ get_percent()
       total_mem=$(($(sysctl -n hw.physmem) / 1024 / 1024))
       used_mem=$((total_mem - free_mem))
       echo $used_mem
-      if (( $used_mem < 1024 )); then
-        echo $used_mem\M\B/$total_mem
+      if ((used_mem < 1024 )); then
+        echo "${used_mem}MB/$total_mem"
       else
-        memory=$(($used_mem/1024))
-        echo $memory\G\B/$total_mem
+        memory=$((used_mem/1024))
+        echo "${memory}GB/$total_mem"
       fi
       ;;
 
@@ -64,12 +55,9 @@ get_percent()
 
 main()
 {
-  # storing the refresh rate in the variable RATE, default is 5
-  RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
   ram_label=$(get_tmux_option "@dracula-ram-usage-label" "RAM")
-  ram_percent=$(get_percent)
-  echo "$ram_label $ram_percent"
-  sleep $RATE
+  ram_ratio=$(get_ratio)
+  echo "$ram_label $ram_ratio"
 }
 
 #run main driver
