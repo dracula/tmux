@@ -231,14 +231,11 @@ main()
           script="%a %m/%d %I:%M %p ${timezone} "
         fi
       fi
-
-    else
-      continue
-    fi
-    
-    if [ $plugin = "synchronize-panes" ]; then
+    elif [ $plugin = "synchronize-panes" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-synchronize-panes-colors" "cyan dark_gray")
       script="#($current_dir/synchronize_panes.sh $show_synchronize_panes_label)"
+    else
+      continue
     fi
 
     if $show_powerline; then
