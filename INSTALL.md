@@ -319,3 +319,21 @@ Set the label when there is one client, or more than one client
 set -g @dracula-clients-singular client
 set -g @dracula-clients-plural clients
 ```
+
+#### continuum options
+
+Set the output mode. Options are:
+- **countdown**: Show a T- countdown to the next save (default)
+- **time**: Show the time since the last save
+- **alert**: Hide output if no save has been performed recently
+- **interval**: Show the continuum save interval
+
+```bash
+set -g @dracula-continuum-mode countdown
+```
+
+Show if the last save was performed less than 60 seconds ago (default threshold is 15 seconds)
+
+```bash
+set -g @dracula-continuum-time-threshold 60
+```

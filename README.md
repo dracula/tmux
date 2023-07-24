@@ -35,6 +35,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 - Info if the Panes are synchronized
 - Spotify playback (needs the tool spotify-tui installed)
 - Current kubernetes context
+- Countdown to tmux-continuum save
 - Current working directory of tmux pane
 
 ## Compatibility
