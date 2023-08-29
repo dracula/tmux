@@ -9,7 +9,7 @@ get_platform()
 {
   case $(uname -s) in
     Linux)
-      gpu=$(lspci -v | grep VGA | head -n 1 | awk '{print $5}')
+      gpu=$(lspci -v | grep NVIDIA | grep VGA | head -n 1 | awk '{print $5}')
       echo $gpu
       ;;
 
