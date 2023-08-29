@@ -210,6 +210,12 @@ Enable military time
 set -g @dracula-military-time true
 ```
 
+Set custom time format e.g (2023-01-01 14:00)
+```bash
+set -g @dracula-time-format "%F %R"
+```
+See [[this page]](https://man7.org/linux/man-pages/man1/date.1.html) for other format symbols.
+
 #### git options
 
 Hide details of git changes
