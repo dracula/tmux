@@ -11,6 +11,17 @@ get_tmux_option() {
   fi
 }
 
+get_tmux_window_option() {
+  local option=$1
+  local default_value=$2
+  local option_value=$(tmux show-window-options -v "$option")
+  if [ -z "$option_value" ]; then
+    echo $default_value
+  else
+    echo $option_value
+  fi
+}
+
 # normalize the percentage string to always have a length of 5
 normalize_percent_len() {
   # the max length that the percent can reach, which happens for a two digit number with a decimal house: "99.9%"

@@ -22,15 +22,21 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 - Battery percentage and AC power connection status
 - Refresh rate control
 - CPU usage (percentage or load average)
-- RAM usage
+- RAM usage (system and/or tmux server)
 - GPU usage
+- Custom status texts from external scripts
+- GPU VRAM usage
+- GPU power draw
 - Color code based on if prefix is active or not
 - List of windows with current window highlighted
 - When prefix is enabled smiley face turns from green to yellow
 - When charging, 'AC' is displayed
 - If forecast information is available, a ☀, ☁, ☂, or ❄ unicode character corresponding with the forecast is displayed alongside the temperature
+- Info if the Panes are synchronized
 - Spotify playback (needs the tool spotify-tui installed)
 - Current kubernetes context
+- Countdown to tmux-continuum save
+- Current working directory of tmux pane
 
 ## Compatibility
 

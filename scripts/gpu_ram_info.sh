@@ -27,7 +27,7 @@ get_gpu()
 {
   gpu=$(get_platform)
   if [[ "$gpu" == NVIDIA ]]; then
-    usage=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{ sum += $0 } END { printf("%d%%\n", sum / NR) }')
+    usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk '{ used += $0; total +=$2 } END { printf("%dGB/%dGB\n", used / 1024, total / 1024) }')
   else
     usage='unknown'
   fi
@@ -38,7 +38,7 @@ main()
 {
   # storing the refresh rate in the variable RATE, default is 5
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-  gpu_label=$(get_tmux_option "@dracula-gpu-usage-label" "GPU")
+  gpu_label=$(get_tmux_option "@dracula-gpu-usage-label" "VRAM")
   gpu_usage=$(get_gpu)
   echo "$gpu_label $gpu_usage"
   sleep $RATE
