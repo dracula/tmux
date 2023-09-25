@@ -48,7 +48,7 @@ To enable plugins set up the `@dracula-plugins` option in you `.tmux.conf` file,
 The order that you define the plugins will be the order on the status bar left to right.
 
 ```bash
-# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, network, network-bandwidth, network-ping, attached-clients, network-vpn, weather, time, spotify-tui, kubernetes-context
+# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, attached-clients, network-vpn, weather, time, spotify-tui, kubernetes-context, synchronize-panes
 
 set -g @dracula-plugins "cpu-usage gpu-usage ram-usage"
 ```
@@ -161,6 +161,14 @@ Customize label
 set -g @dracula-ram-usage-label "RAM"
 ```
 
+#### tmux-ram-usage options
+
+Customize label
+
+```bash
+set -g @dracula-tmux-ram-usage-label "MEM"
+```
+
 #### network-bandwidth
 
 You can configure which network interface you want to view the bandwidth,
@@ -202,6 +210,12 @@ Enable military time
 set -g @dracula-military-time true
 ```
 
+Set custom time format e.g (2023-01-01 14:00)
+```bash
+set -g @dracula-time-format "%F %R"
+```
+See [[this page]](https://man7.org/linux/man-pages/man1/date.1.html) for other format symbols.
+
 #### git options
 
 Hide details of git changes
@@ -239,6 +253,37 @@ Show remote tracking branch together with diverge/sync state
 set -g @dracula-git-show-remote-status true
 ```
 
+#### hg options
+
+Hide details of hg changes
+```bash
+set -g @dracula-hg-disable-status true
+```
+
+Set symbol to use for when branch is up to date with HEAD
+```bash
+#default is ✓.Avoid using non unicode characters that bash uses like $, * and !
+set -g @dracula-hg-show-current-symbol ✓
+```
+
+Set symbol to use for when branch diverges from HEAD
+```bash
+#default is unicode !.Avoid bash special characters
+set -g @dracula-hg-show-diff-symbol !
+```
+
+Set symbol or message to use when the current pane has no hg repo
+```bash
+#default is unicode no message
+set -g @dracula-hg-no-repo-message ""
+```
+
+Hide untracked files from being displayed as local changes
+```bash
+#default is false
+set -g @dracula-hg-no-untracked-files false
+```
+
 #### weather options
 
 Switch from default fahrenheit to celsius
@@ -259,6 +304,13 @@ Hide your location
 set -g @dracula-show-location false
 ```
 
+#### synchronize-panes options
+
+Customize label
+
+```bash
+set -g @dracula-synchronize-panes-label "Sync"
+```
 #### attached-clients options
 
 Set the minimum number of clients to show (otherwise, show nothing)
@@ -298,4 +350,21 @@ Extract the account as a prefix to the cluster name - Available for EKS only (on
 
 ```
 set -g @dracula-kubernetes-eks-extract-account true
+
+#### continuum options
+
+Set the output mode. Options are:
+- **countdown**: Show a T- countdown to the next save (default)
+- **time**: Show the time since the last save
+- **alert**: Hide output if no save has been performed recently
+- **interval**: Show the continuum save interval
+
+```bash
+set -g @dracula-continuum-mode countdown
+```
+
+Show if the last save was performed less than 60 seconds ago (default threshold is 15 seconds)
+
+```bash
+set -g @dracula-continuum-time-threshold 60
 ```
