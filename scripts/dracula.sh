@@ -8,6 +8,10 @@ source $current_dir/utils.sh
 main()
 {
   # set configuration option variables
+  show_kubernetes_context_label=$(get_tmux_option "@dracula-kubernetes-context-label" "")
+  eks_hide_arn=$(get_tmux_option "@dracula-kubernetes-eks-hide-arn" false)
+  eks_extract_account=$(get_tmux_option "@dracula-kubernetes-eks-extract-account" false)
+  hide_kubernetes_user=$(get_tmux_option "@dracula-kubernetes-hide-user" false)
   terraform_label=$(get_tmux_option "@dracula-terraform-label" "")
   show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
   show_location=$(get_tmux_option "@dracula-show-location" true)
@@ -25,7 +29,6 @@ main()
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
   show_synchronize_panes_label=$(get_tmux_option "@dracula-synchronize-panes-label" "Sync")
   time_format=$(get_tmux_option "@dracula-time-format" "")
-  show_kubernetes_context_label=$(get_tmux_option "@dracula-kubernetes-context-label" "")
   IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
   show_empty_plugins=$(get_tmux_option "@dracula-show-empty-plugins" true)
 
@@ -206,7 +209,7 @@ main()
 
     elif [ $plugin = "kubernetes-context" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-kubernetes-context-colors" "cyan dark_gray")
-      script="#($current_dir/kubernetes_context.sh $show_kubernetes_context_label)"
+      script="#($current_dir/kubernetes_context.sh $eks_hide_arn $eks_extract_account $hide_kubernetes_user $show_kubernetes_context_label)"
 
     elif [ $plugin = "terraform" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-terraform-colors" "light_purple dark_gray")

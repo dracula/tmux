@@ -326,6 +326,31 @@ set -g @dracula-clients-singular client
 set -g @dracula-clients-plural clients
 ```
 
+#### Kubernetes options
+
+Add prefix label before the context
+
+```bash
+set -g @dracula-kubernetes-context-label "Some Label"
+```
+
+Hide user from the context string
+
+```
+set -g @dracula-kubernetes-hide-user true
+```
+
+Hide ARN (show only cluster name) - Available for EKS only (only available for cluster names that are ARNs)
+
+```
+set -g @dracula-kubernetes-eks-hide-arn true
+```
+
+Extract the account as a prefix to the cluster name - Available for EKS only (only available for cluster names that are ARNs)
+
+```
+set -g @dracula-kubernetes-eks-extract-account true
+
 #### continuum options
 
 Set the output mode. Options are:
