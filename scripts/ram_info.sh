@@ -47,6 +47,27 @@ get_ratio()
       fi
       ;;
 
+    OpenBSD)
+      # vmstat -s | grep "pages managed" | sed -ne 's/^ *\([0-9]*\).*$/\1/p'
+      # Looked at the code from neofetch
+      hw_pagesize="$(pagesize)"
+      used_mem=$(( ( 
+$(vmstat -s | grep "pages active$" | sed -ne 's/^ *\([0-9]*\).*$/\1/p') +
+$(vmstat -s | grep "pages inactive$" | sed -ne 's/^ *\([0-9]*\).*$/\1/p') +
+$(vmstat -s | grep "pages wired$" | sed -ne 's/^ *\([0-9]*\).*$/\1/p') +
+$(vmstat -s | grep "pages zeroed$" | sed -ne 's/^ *\([0-9]*\).*$/\1/p') +
+0) * hw_pagesize / 1024 / 1024 ))
+      total_mem=$(($(sysctl -n hw.physmem) / 1024 / 1024))
+      #used_mem=$((total_mem - free_mem))
+      total_mem=$(($total_mem/1024))
+      if (( $used_mem < 1024 )); then
+        echo $used_mem\M\B/$total_mem\G\B
+      else
+        memory=$(($used_mem/1024))
+        echo $memory\G\B/$total_mem\G\B
+      fi
+      ;;
+
     CYGWIN*|MINGW32*|MSYS*|MINGW*)
       # TODO - windows compatability
       ;;

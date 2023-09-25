@@ -21,6 +21,14 @@ get_percent()
       normalize_percent_len $percent
       ;;
 
+    OpenBSD)
+      cpuvalue=$(ps -A -o %cpu | awk -F. '{s+=$1} END {print s}')
+      cpucores=$(sysctl -n hw.ncpuonline)
+      cpuusage=$(( cpuvalue / cpucores ))
+      percent="$cpuusage%"
+      normalize_percent_len $percent
+      ;;
+
     CYGWIN*|MINGW32*|MSYS*|MINGW*)
       # TODO - windows compatability
       ;;
@@ -29,7 +37,7 @@ get_percent()
 
 get_load() {
   case $(uname -s) in
-  Linux | Darwin)
+  Linux | Darwin | OpenBSD)
     loadavg=$(uptime | awk -F'[a-z]:' '{ print $2}' | sed 's/,//g')
     echo $loadavg
     ;;

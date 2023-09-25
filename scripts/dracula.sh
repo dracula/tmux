@@ -21,6 +21,7 @@ main()
   show_left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
   show_left_icon_padding=$(get_tmux_option "@dracula-left-icon-padding" 1)
   show_military=$(get_tmux_option "@dracula-military-time" false)
+  timezone=$(get_tmux_option "@dracula-set-timezone" "")
   show_timezone=$(get_tmux_option "@dracula-show-timezone" true)
   show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
   show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
@@ -71,12 +72,14 @@ main()
   fi
 
   # Set timezone unless hidden by configuration
-  case $show_timezone in
-    false)
-      timezone="";;
-    true)
-      timezone="#(date +%Z)";;
-  esac
+  if [[ -z "$timezone" ]]; then
+    case $show_timezone in
+      false)
+        timezone="";;
+      true)
+        timezone="#(date +%Z)";;
+    esac
+  fi
 
   case $show_flags in
     false)
@@ -143,6 +146,11 @@ main()
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-cwd-colors" "dark_gray white")
       tmux set-option -g status-right-length 250
       script="#($current_dir/cwd.sh)"
+    
+    elif [ $plugin = "fossil" ]; then
+      IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-fossil-colors" "green dark_gray")
+      tmux set-option -g status-right-length 250
+      script="#($current_dir/fossil.sh)"
 
     elif [ $plugin = "git" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-git-colors" "green dark_gray")
