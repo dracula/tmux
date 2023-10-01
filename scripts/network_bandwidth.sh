@@ -83,6 +83,12 @@ main() {
     interval_update=0
   fi
 
+  if ! command -v bc &> /dev/null
+  then
+    echo "command bc could not be found!"
+    exit 1
+  fi
+
   while true; do
     if ((counter == 0)); then
       counter=60
