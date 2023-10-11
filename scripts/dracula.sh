@@ -30,6 +30,7 @@ main()
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
   show_synchronize_panes_label=$(get_tmux_option "@dracula-synchronize-panes-label" "Sync")
   time_format=$(get_tmux_option "@dracula-time-format" "")
+  show_ssh_session_port=$(get_tmux_option "@dracula-show-ssh-session-port" false)
   IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
   show_empty_plugins=$(get_tmux_option "@dracula-show-empty-plugins" true)
 
@@ -146,7 +147,7 @@ main()
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-cwd-colors" "dark_gray white")
       tmux set-option -g status-right-length 250
       script="#($current_dir/cwd.sh)"
-    
+
     elif [ $plugin = "fossil" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-fossil-colors" "green dark_gray")
       tmux set-option -g status-right-length 250
@@ -249,6 +250,11 @@ main()
     elif [ $plugin = "synchronize-panes" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-synchronize-panes-colors" "cyan dark_gray")
       script="#($current_dir/synchronize_panes.sh $show_synchronize_panes_label)"
+
+    elif [ $plugin = "ssh-session" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-ssh-session-colors" "green dark_gray")
+      script="#($current_dir/ssh_session.sh $show_ssh_session_port)"
+
     else
       continue
     fi
