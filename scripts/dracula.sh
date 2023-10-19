@@ -148,7 +148,7 @@ main()
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-cwd-colors" "dark_gray white")
       tmux set-option -g status-right-length 250
       script="#($current_dir/cwd.sh)"
-    
+
     elif [ $plugin = "fossil" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-fossil-colors" "green dark_gray")
       tmux set-option -g status-right-length 250
@@ -212,6 +212,10 @@ main()
     elif [ $plugin = "attached-clients" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-attached-clients-colors" "cyan dark_gray")
       script="#($current_dir/attached_clients.sh)"
+
+    elif [ $plugin = "mpc" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-spotify-tui-colors" "green dark_gray")
+      script="#($current_dir/mpc.sh)"
 
     elif [ $plugin = "spotify-tui" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-spotify-tui-colors" "green dark_gray")
