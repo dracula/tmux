@@ -48,7 +48,7 @@ To enable plugins set up the `@dracula-plugins` option in you `.tmux.conf` file,
 The order that you define the plugins will be the order on the status bar left to right.
 
 ```bash
-# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, attached-clients, network-vpn, weather, time, spotify-tui, kubernetes-context, synchronize-panes
+# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, attached-clients, network-vpn, weather, time, mpc, spotify-tui, kubernetes-context, synchronize-panes
 
 set -g @dracula-plugins "cpu-usage gpu-usage ram-usage"
 ```

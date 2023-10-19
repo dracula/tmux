@@ -34,6 +34,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 - If forecast information is available, a ☀, ☁, ☂, or ❄ unicode character corresponding with the forecast is displayed alongside the temperature
 - Info if the Panes are synchronized
 - Spotify playback (needs the tool spotify-tui installed)
+- Music Player Daemon status (needs the tool mpc installed)
 - Current kubernetes context
 - Countdown to tmux-continuum save
 - Current working directory of tmux pane
