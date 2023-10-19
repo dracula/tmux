@@ -15,8 +15,8 @@ main()
     exit 1
   fi
 
-  # FORMAT=$(get_tmux_option "@dracula-spotify-tui-format" "%f %s %t - %a")
-  mpc_playback=$(mpc current)
+  FORMAT=$(get_tmux_option "@dracula-mpc-format" "%title% - %artist%")
+  mpc_playback=$(mpc current -f "${FORMAT}")
   echo ${mpc_playback}
 
 }
