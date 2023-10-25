@@ -56,6 +56,8 @@ main()
       left_icon="#W";;
     hostname)
       left_icon="#H";;
+    shortname)
+      left_icon="#h";;
     *)
       left_icon=$show_left_icon;;
   esac
