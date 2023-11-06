@@ -30,7 +30,7 @@ get_ssh_user() {
       $1 = "";
       sub( /^[[:space:]]*/, "" );
       printf "%s|%s\n", host, $0;
-    }' .ssh/config`; do
+    }' /etc/ssh/ssh_config`; do
     local host_regex=${ssh_config%|*}
     local host_user=${ssh_config#*|}
     if [[ "$1" =~ $host_regex ]]; then
