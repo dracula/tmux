@@ -39,6 +39,26 @@ get_ssh_user() {
     fi
   done
 
+  for ssh_config in `awk '
+    $1 == "Host" {
+      gsub("\\\\.", "\\\\.", $2);
+      gsub("\\\\*", ".*", $2);
+      host = $2;
+      next;
+    }
+    $1 == "User" {
+      $1 = "";
+      sub( /^[[:space:]]*/, "" );
+      printf "%s|%s\n", host, $0;
+    }' .ssh/config`; do
+    local host_regex=${ssh_config%|*}
+    local host_user=${ssh_config#*|}
+    if [[ "$1" =~ $host_regex ]]; then
+      ssh_user=$host_user
+      break
+    fi
+  done
+
   echo $ssh_user
 }
 
