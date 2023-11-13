@@ -16,48 +16,41 @@ parse_ssh_port() {
   echo $port
 }
 
+search_ssh_user() {
+  for ssh_config in `awk '
+    $2 == "Host" {
+      gsub("\\\\.", "\\\\.", $3);
+      gsub("\\\\*", ".*", $3);
+      host = $3;
+      next;
+    }
+    $2 == "User" {
+      $2 = "";
+      sub( /^[[:space:]]*/, "" );
+      printf "%s|%s\n", host, $0;
+    }' $1`; do
+    local host_regex=${ssh_config%|*}
+    local host_user=${ssh_config#*|}
+    if [[ "$2" =~ $host_regex ]]; then
+      ssh_user=$host_user
+      break
+    fi
+  done
+
+  echo $ssh_user
+}
+
 get_ssh_user() {
+  # Set default ssh_user as current user
   local ssh_user=$(whoami)
 
-  for ssh_config in `awk '
-    $1 == "Host" {
-      gsub("\\\\.", "\\\\.", $2);
-      gsub("\\\\*", ".*", $2);
-      host = $2;
-      next;
-    }
-    $1 == "User" {
-      $1 = "";
-      sub( /^[[:space:]]*/, "" );
-      printf "%s|%s\n", host, $0;
-    }' /etc/ssh/ssh_config`; do
-    local host_regex=${ssh_config%|*}
-    local host_user=${ssh_config#*|}
-    if [[ "$1" =~ $host_regex ]]; then
-      ssh_user=$host_user
-      break
-    fi
-  done
+  # Search SSH User information in global configuration file
+  ssh_user=$(search_ssh_user /etc/ssh/ssh_config $1)
 
-  for ssh_config in `awk '
-    $1 == "Host" {
-      gsub("\\\\.", "\\\\.", $2);
-      gsub("\\\\*", ".*", $2);
-      host = $2;
-      next;
-    }
-    $1 == "User" {
-      $1 = "";
-      sub( /^[[:space:]]*/, "" );
-      printf "%s|%s\n", host, $0;
-    }' .ssh/config`; do
-    local host_regex=${ssh_config%|*}
-    local host_user=${ssh_config#*|}
-    if [[ "$1" =~ $host_regex ]]; then
-      ssh_user=$host_user
-      break
-    fi
-  done
+  if [ -f ~/.ssh/config ]; then
+    # Search SSH User information in user configuration file
+    ssh_user=$(search_ssh_user ~/.ssh/config $1)
+  fi
 
   echo $ssh_user
 }
