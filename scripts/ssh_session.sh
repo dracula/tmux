@@ -31,7 +31,7 @@ parse_ssh_config() {
     }' $1`; do
     local host_regex=${ssh_config%|*}
     local host_user=${ssh_config#*|}
-    if [[ "$2" == $host_regex ]]; then
+    if [ "$2" == "$host_regex" ]; then
       ssh_user_found=$host_user
       break
     fi
@@ -111,7 +111,7 @@ main() {
   user=$(get_info whoami)
 
   # Only show port info if ssh session connected (no localhost) and option enabled
-  if $(ssh_connected) && [[ $show_ssh_session_port == "true" ]] ; then
+  if $(ssh_connected) && [ "$show_ssh_session_port" == "true" ] ; then
     port=$(get_info port)
     echo $user@$hostname:$port
   else
