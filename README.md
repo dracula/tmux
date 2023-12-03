@@ -18,6 +18,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 - Day, date, time, timezone
 - Current location based on network with temperature and forecast icon (if available)
 - Network connection status, bandwidth and SSID
+- SSH session user, hostname and port of active tmux pane
 - Git branch and status
 - Battery percentage and AC power connection status
 - Refresh rate control
