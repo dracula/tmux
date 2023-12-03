@@ -75,7 +75,7 @@ Switch powerline symbols
 # for left
 set -g @dracula-show-left-sep 
 
-# for right symbol (can set any symbol you like as seperator)
+# for right symbol (can set any symbol you like as separator)
 set -g @dracula-show-right-sep 
 ```
 
@@ -95,7 +95,7 @@ set -g @dracula-refresh-rate 5
 Switch the left smiley icon
 
 ```bash
-# it can accept `session`, `smiley`, `window`, or any character.
+# it can accept `hostname` (full hostname), `session`, `shortname` (short name), `smiley`, `window`, or any character. 
 set -g @dracula-show-left-icon session
 ```
 
