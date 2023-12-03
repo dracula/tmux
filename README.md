@@ -28,13 +28,14 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 - Custom status texts from external scripts
 - GPU VRAM usage
 - GPU power draw
-- Color code based on if prefix is active or not
-- List of windows with current window highlighted
-- When prefix is enabled smiley face turns from green to yellow
+- Color code based on whether a prefix is active or not
+- List of windows with the current window highlighted
+- When prefix is enabled, a smiley face turns from green to yellow
 - When charging, 'AC' is displayed
 - If forecast information is available, a ☀, ☁, ☂, or ❄ unicode character corresponding with the forecast is displayed alongside the temperature
 - Info if the Panes are synchronized
 - Spotify playback (needs the tool spotify-tui installed)
+- Music Player Daemon status (needs the tool mpc installed)
 - Current kubernetes context
 - Countdown to tmux-continuum save
 - Current working directory of tmux pane

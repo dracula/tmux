@@ -57,6 +57,8 @@ main()
       left_icon="#W";;
     hostname)
       left_icon="#H";;
+    shortname)
+      left_icon="#h";;
     *)
       left_icon=$show_left_icon;;
   esac
@@ -213,6 +215,10 @@ main()
     elif [ $plugin = "attached-clients" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-attached-clients-colors" "cyan dark_gray")
       script="#($current_dir/attached_clients.sh)"
+
+    elif [ $plugin = "mpc" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-mpc-colors" "green dark_gray")
+      script="#($current_dir/mpc.sh)"
 
     elif [ $plugin = "spotify-tui" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-spotify-tui-colors" "green dark_gray")

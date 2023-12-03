@@ -48,8 +48,7 @@ To enable plugins set up the `@dracula-plugins` option in you `.tmux.conf` file,
 The order that you define the plugins will be the order on the status bar left to right.
 
 ```bash
-# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, ssh-session, attached-clients, network-vpn, weather, time, spotify-tui, kubernetes-context, synchronize-panes
-
+# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, ssh-session, attached-clients, network-vpn, weather, time, mpc, spotify-tui, kubernetes-context, synchronize-panes
 set -g @dracula-plugins "cpu-usage gpu-usage ram-usage"
 ```
 
@@ -75,7 +74,7 @@ Switch powerline symbols
 # for left
 set -g @dracula-show-left-sep 
 
-# for right symbol (can set any symbol you like as seperator)
+# for right symbol (can set any symbol you like as separator)
 set -g @dracula-show-right-sep 
 ```
 
@@ -95,7 +94,7 @@ set -g @dracula-refresh-rate 5
 Switch the left smiley icon
 
 ```bash
-# it can accept `session`, `smiley`, `window`, or any character.
+# it can accept `hostname` (full hostname), `session`, `shortname` (short name), `smiley`, `window`, or any character. 
 set -g @dracula-show-left-icon session
 ```
 
