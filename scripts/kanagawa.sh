@@ -7,18 +7,6 @@ source $current_dir/utils.sh
 
 main() {
   # set configuration option variables
-  # Dracula Color Pallette
-  white='#f8f8f2'
-  gray='#44475a'
-  dark_gray='#282a36'
-  light_purple='#bd93f9'
-  dark_purple='#6272a4'
-  cyan='#8be9fd'
-  green='#50fa7b'
-  orange='#ffb86c'
-  red='#ff5555'
-  pink='#ff79c6'
-  yellow='#f1fa8c'
   show_kubernetes_context_label=$(get_tmux_option "@kanagawa-kubernetes-context-label" "")
   eks_hide_arn=$(get_tmux_option "@kanagawa-kubernetes-eks-hide-arn" false)
   eks_extract_account=$(get_tmux_option "@kanagawa-kubernetes-eks-extract-account" false)
@@ -45,6 +33,18 @@ main() {
   IFS=' ' read -r -a plugins <<<$(get_tmux_option "@kanagawa-plugins" "battery network weather")
   show_empty_plugins=$(get_tmux_option "@kanagawa-show-empty-plugins" true)
 
+  # Kanagawa Color Pallette
+  white='#dcd7ba'        # fujiWhite
+  gray='#2a2a37'         # sumiInk4
+  dark_gray='#1a1a22'    # sumiInk2
+  light_purple='#363646' # sumiInk5
+  dark_purple='#54546D'  # sumiInk6
+  cyan='#6a9589'         # wave aqua
+  green='#938aa9'        # springViolet1
+  orange='#dca561'       # autumn orange
+  red='#e46876'          # wave red
+  pink='#d27e99'         # sakura pink
+  yellow='#ff9e3b'       # roninYellow
 
   # Handle left icon configuration
   case $show_left_icon in
