@@ -8,8 +8,8 @@ fahrenheit=$1
 location=$2
 fixedlocation=$3
 
-DATAFILE=/tmp/.dracula-tmux-data
-LAST_EXEC_FILE="/tmp/.dracula-tmux-weather-last-exec"
+DATAFILE=/tmp/.kanagawa-tmux-data
+LAST_EXEC_FILE="/tmp/.kanagawa-tmux-weather-last-exec"
 RUN_EACH=1200
 TIME_NOW=$(date +%s)
 TIME_LAST=$(cat "${LAST_EXEC_FILE}" 2>/dev/null || echo "0")

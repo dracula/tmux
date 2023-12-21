@@ -111,7 +111,7 @@ battery_status()
 
 main()
 {
-  bat_label=$(get_tmux_option "@dracula-battery-label" "♥")
+  bat_label=$(get_tmux_option "@kanagawa-battery-label" "♥")
   bat_stat=$(battery_status)
   bat_perc=$(battery_percent)
 

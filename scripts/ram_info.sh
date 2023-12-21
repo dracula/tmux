@@ -79,7 +79,7 @@ $(vmstat -s | grep "pages zeroed$" | sed -ne 's/^ *\([0-9]*\).*$/\1/p') +
 
 main()
 {
-  ram_label=$(get_tmux_option "@dracula-ram-usage-label" "RAM")
+  ram_label=$(get_tmux_option "@kanagawa-ram-usage-label" "RAM")
   ram_ratio=$(get_ratio)
   echo "$ram_label $ram_ratio"
 }
