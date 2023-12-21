@@ -4,7 +4,7 @@
 
 If you are a tpm user, you can install the theme and keep up to date by adding the following to your .tmux.conf file:
 
-	set -g @plugin 'dracula/tmux'
+    set -g @plugin 'Nybkox/tmux-kanagawa'
 
 Add any configuration options below this line in your tmux config.
 
@@ -21,7 +21,7 @@ programs.tmux = {
 		sensible
 		yank
 		{
-			plugin = dracula;
+			plugin = kanagawa;
 			extraConfig = ''
 				set -g @kanagawa-show-battery false
 				set -g @kanagawa-show-powerline true
@@ -38,7 +38,7 @@ programs.tmux = {
 
 #### Activating theme
 
-1. Make sure  `run -b '~/.tmux/plugins/tpm/tpm'` is at the bottom of your .tmux.conf
+1. Make sure `run -b '~/.tmux/plugins/tpm/tpm'` is at the bottom of your .tmux.conf
 2. Run tmux
 3. Use the tpm install command: `prefix + I` (default prefix is ctrl+b)
 
@@ -94,7 +94,7 @@ set -g @kanagawa-refresh-rate 5
 Switch the left smiley icon
 
 ```bash
-# it can accept `hostname` (full hostname), `session`, `shortname` (short name), `smiley`, `window`, or any character. 
+# it can accept `hostname` (full hostname), `session`, `shortname` (short name), `smiley`, `window`, or any character.
 set -g @kanagawa-show-left-icon session
 ```
 
@@ -188,6 +188,7 @@ You can configure which server (hostname, IP) you want to ping and at which rate
 set -g @kanagawa-ping-server "google.com"
 set -g @kanagawa-ping-rate 5
 ```
+
 ### ssh-session options
 
 Show SSH session port
@@ -217,43 +218,51 @@ set -g @kanagawa-military-time true
 ```
 
 Set custom time format e.g (2023-01-01 14:00)
+
 ```bash
 set -g @kanagawa-time-format "%F %R"
 ```
+
 See [[this page]](https://man7.org/linux/man-pages/man1/date.1.html) for other format symbols.
 
 #### git options
 
 Hide details of git changes
+
 ```bash
 set -g @kanagawa-git-disable-status true
 ```
 
 Set symbol to use for when branch is up to date with HEAD
+
 ```bash
 # default is ✓. Avoid using non unicode characters that bash uses like $, * and !
 set -g @kanagawa-git-show-current-symbol ✓
 ```
 
 Set symbol to use for when branch diverges from HEAD
+
 ```bash
 # default is unicode !. Avoid bash special characters
 set -g @kanagawa-git-show-diff-symbol !
 ```
 
 Set symbol or message to use when the current pane has no git repo
+
 ```bash
 # default is unicode no message
 set -g @kanagawa-git-no-repo-message ""
 ```
 
 Hide untracked files from being displayed as local changes
+
 ```bash
 # default is false
 set -g @kanagawa-git-no-untracked-files true
 ```
 
 Show remote tracking branch together with diverge/sync state
+
 ```bash
 # default is false
 set -g @kanagawa-git-show-remote-status true
@@ -262,29 +271,34 @@ set -g @kanagawa-git-show-remote-status true
 #### hg options
 
 Hide details of hg changes
+
 ```bash
 set -g @kanagawa-hg-disable-status true
 ```
 
 Set symbol to use for when branch is up to date with HEAD
+
 ```bash
 #default is ✓.Avoid using non unicode characters that bash uses like $, * and !
 set -g @kanagawa-hg-show-current-symbol ✓
 ```
 
 Set symbol to use for when branch diverges from HEAD
+
 ```bash
 #default is unicode !.Avoid bash special characters
 set -g @kanagawa-hg-show-diff-symbol !
 ```
 
 Set symbol or message to use when the current pane has no hg repo
+
 ```bash
 #default is unicode no message
 set -g @kanagawa-hg-no-repo-message ""
 ```
 
 Hide untracked files from being displayed as local changes
+
 ```bash
 #default is false
 set -g @kanagawa-hg-no-untracked-files false
@@ -317,6 +331,7 @@ Customize label
 ```bash
 set -g @kanagawa-synchronize-panes-label "Sync"
 ```
+
 #### attached-clients options
 
 Set the minimum number of clients to show (otherwise, show nothing)
@@ -354,7 +369,7 @@ set -g @kanagawa-kubernetes-eks-hide-arn true
 
 Extract the account as a prefix to the cluster name - Available for EKS only (only available for cluster names that are ARNs)
 
-```
+````
 set -g @kanagawa-kubernetes-eks-extract-account true
 
 #### continuum options
@@ -367,7 +382,7 @@ Set the output mode. Options are:
 
 ```bash
 set -g @kanagawa-continuum-mode countdown
-```
+````
 
 Show if the last save was performed less than 60 seconds ago (default threshold is 15 seconds)
 
