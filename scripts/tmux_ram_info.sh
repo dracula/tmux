@@ -111,7 +111,7 @@ get_tmux_ram_usage()
 
 main()
 {
-  ram_label=$(get_tmux_option "@dracula-tmux-ram-usage-label" "MEM")
+  ram_label=$(get_tmux_option "@kanagawa-tmux-ram-usage-label" "MEM")
   ram_usage=$(get_tmux_ram_usage)
   echo "$ram_label $ram_usage"
 }

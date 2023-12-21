@@ -37,8 +37,8 @@ get_gpu()
 main()
 {
   # storing the refresh rate in the variable RATE, default is 5
-  RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-  gpu_label=$(get_tmux_option "@dracula-gpu-usage-label" "GPU")
+  RATE=$(get_tmux_option "@kanagawa-refresh-rate" 5)
+  gpu_label=$(get_tmux_option "@kanagawa-gpu-usage-label" "GPU")
   gpu_usage=$(get_gpu)
   echo "$gpu_label $gpu_usage"
   sleep $RATE

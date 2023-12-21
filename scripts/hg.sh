@@ -3,11 +3,11 @@
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
 
-IFS=' ' read -r -a hide_status <<< $(get_tmux_option "@dracula-hg-disable-status" "false")
-IFS=' ' read -r -a current_symbol <<< $(get_tmux_option "@dracula-hg-show-current-symbol" "✓")
-IFS=' ' read -r -a diff_symbol <<< $(get_tmux_option "@dracula-hg-show-diff-symbol" "!")
-IFS=' ' read -r -a no_repo_message <<< $(get_tmux_option "@dracula-hg-no-repo-message" "")
-IFS=' ' read -r -a no_untracked_files <<< $(get_tmux_option "@dracula-hg-no-untracked-files" "false")
+IFS=' ' read -r -a hide_status <<< $(get_tmux_option "@kanagawa-hg-disable-status" "false")
+IFS=' ' read -r -a current_symbol <<< $(get_tmux_option "@kanagawa-hg-show-current-symbol" "✓")
+IFS=' ' read -r -a diff_symbol <<< $(get_tmux_option "@kanagawa-hg-show-diff-symbol" "!")
+IFS=' ' read -r -a no_repo_message <<< $(get_tmux_option "@kanagawa-hg-no-repo-message" "")
+IFS=' ' read -r -a no_untracked_files <<< $(get_tmux_option "@kanagawa-hg-no-untracked-files" "false")
 
 # Get added, modified, and removed files from hg status
 getChanges()
@@ -51,7 +51,7 @@ for i in $(hg -R $path status -admru)
 }
 
 
-# getting the #{pane_current_path} from dracula.sh is no longer possible
+# getting the #{pane_current_path} from kanagawa.sh is no longer possible
 getPaneDir()
 {
  nextone="false"

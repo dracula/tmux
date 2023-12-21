@@ -9,7 +9,7 @@ source $current_dir/utils.sh
 
 main() {
   # storing the refresh rate in the variable RATE, default is 5
-  RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
+  RATE=$(get_tmux_option "@kanagawa-refresh-rate" 5)
   OUTPUT_STRING="N/A" 
   terraform_dir="$(tmux display-message -p '#{pane_current_path}')/.terraform"
   if [ -d $terraform_dir ]; then
