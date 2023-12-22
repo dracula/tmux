@@ -20,7 +20,7 @@ main()
 
   if [ "$(expr ${TIME_LAST} + ${RUN_EACH})" -lt "${TIME_NOW}" ]; then
     # Run weather script here
-    $current_dir/weather.sh $fahrenheit $location $fixedlocation > "${DATAFILE}"
+    $current_dir/weather.sh $fahrenheit $location "$fixedlocation" > "${DATAFILE}"
     echo "${TIME_NOW}" > "${LAST_EXEC_FILE}"
   fi
 
