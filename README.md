@@ -47,6 +47,14 @@ Just replace all `dracula` occurrences with `kanagawa`.
 - Countdown to tmux-continuum save
 - Current working directory of tmux pane
 
+## Known issues
+You may need to manually give permission to plugin's scripts.
+```bash
+cd ~/.tmux/plugins/tmux-kanagawa
+chmod u+x kanagawa.tmux
+chmod u+x ./**/*.sh
+```
+
 ## Compatibility
 
 Compatible with macOS and Linux. Tested on tmux 3.1b
