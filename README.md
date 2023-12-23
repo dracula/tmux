@@ -1,3 +1,4 @@
+
 # Kanagawa for [tmux](https://github.com/tmux/tmux/wiki)
 
 [Kanagawa](https://github.com/rebelot/kanagawa.nvim/tree/master) theme for TMUX with silent colors.
@@ -7,9 +8,10 @@ Forked from [dracula/tmux](https://github.com/dracula/tmux).
 ![Screenshot](./screenshot.png)
 
 ## Install
+To activate the theme add the following line to your `.tmux.conf`.
 
-All instructions can be found at [draculatheme.com/tmux](https://draculatheme.com/tmux).
-Just replace all `dracula` occurrences with `kanagawa`.
+    set -g @plugin 'Nybkox/tmux-kanagawa'
+For advanced instructions look at [INSTALL.md](https://github.com/Nybkox/tmux-kanagawa/blob/master/INSTALL.md) or check official instructions of [dracula/tmux](https://draculatheme.com/tmux).  Just replace all `dracula` occurrences with `kanagawa`.
 
 ## Configuration
 
