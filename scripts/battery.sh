@@ -7,7 +7,7 @@ source $current_dir/utils.sh
 
 linux_acpi() {
   arg=$1
-  BAT=$(ls -d /sys/class/power_supply/BAT* | head -1)
+  BAT=$(ls -d /sys/class/power_supply/*)
   if [ ! -x "$(which acpi 2> /dev/null)" ];then
     case "$arg" in
       status)
