@@ -26,6 +26,11 @@ interface_get() {
         name="$(ip -o route get 192.168.0.0 | awk '{print $5}')"
       fi
       ;;
+    Darwin)
+      if type route >/dev/null; then
+        name="$(route -n get 192.168.0.0 2>/dev/null | awk '/interface: / {print $2}')"
+      fi
+      ;;
     esac
   fi
 
