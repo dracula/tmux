@@ -85,7 +85,7 @@ bandwidth_to_unit() {
 
   local result="0.00"
   if (($1 != 0)); then
-    result="$(bc <<<"scale=2; $1 / $size")"
+    result="$(awk -v a="$1" -v b="$size" 'BEGIN { printf "%.2f\n", a / b }' </dev/null)"
   fi
 
   echo "$result ${SIZE[$size]}"
@@ -101,12 +101,6 @@ main() {
 
   if [[ -z $interval_update ]]; then
     interval_update=0
-  fi
-
-  if ! command -v bc &> /dev/null
-  then
-    echo "command bc could not be found!"
-    exit 1
   fi
 
   while true; do
