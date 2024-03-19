@@ -48,7 +48,7 @@ To enable plugins set up the `@dracula-plugins` option in you `.tmux.conf` file,
 The order that you define the plugins will be the order on the status bar left to right.
 
 ```bash
-# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, ssh-session, attached-clients, network-vpn, weather, time, mpc, spotify-tui, kubernetes-context, synchronize-panes
+# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, ssh-session, attached-clients, network-vpn, weather, time, mpc, spotify-tui, kubernetes-context, synchronize-panes, krbtgt
 set -g @dracula-plugins "cpu-usage gpu-usage ram-usage"
 ```
 
@@ -356,6 +356,15 @@ Extract the account as a prefix to the cluster name - Available for EKS only (on
 
 ```
 set -g @dracula-kubernetes-eks-extract-account true
+```
+
+### Kerberos TGT options
+
+Set the principal to check the TGT expiration date for (with or without the REALM)
+
+```
+set -g @dracula-krbtgt-principal "principal"
+```
 
 #### continuum options
 

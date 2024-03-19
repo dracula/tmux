@@ -8,6 +8,8 @@ source $current_dir/utils.sh
 main()
 {
   # set configuration option variables
+  show_krbtgt_label=$(get_tmux_option "@dracula-krbtgt-context-label" "")
+  krbtgt_principal=$(get_tmux_option "@dracula-krbtgt-principal" "")
   show_kubernetes_context_label=$(get_tmux_option "@dracula-kubernetes-context-label" "")
   eks_hide_arn=$(get_tmux_option "@dracula-kubernetes-eks-hide-arn" false)
   eks_extract_account=$(get_tmux_option "@dracula-kubernetes-eks-extract-account" false)
@@ -223,6 +225,10 @@ main()
     elif [ $plugin = "spotify-tui" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-spotify-tui-colors" "green dark_gray")
       script="#($current_dir/spotify-tui.sh)"
+
+    elif [ $plugin = "krbtgt" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-krbtgt-colors" "cyan dark_gray")
+      script="#($current_dir/krbtgt.sh $krbtgt_principal $show_krbtgt_label)"
 
     elif [ $plugin = "kubernetes-context" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-kubernetes-context-colors" "cyan dark_gray")
