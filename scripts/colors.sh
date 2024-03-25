@@ -21,6 +21,7 @@
   sumi_ink_6='#54546D'  # sumiInk6
   wave_aqua='#6a9589'         # waveAqua
   dragon_green="#8a9a7b"        # dragonGreen2
+  dragon_aqua="#8ea4a2",         # dragonAqua
   autumn_orange='#dca561'       # autumnOrange
   wawe_red='#e46876'          # waveRed
   sakura_pink='#d27e99'         # sakuraPink
