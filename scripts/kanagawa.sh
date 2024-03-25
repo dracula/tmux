@@ -34,17 +34,18 @@ main() {
   show_empty_plugins=$(get_tmux_option "@kanagawa-show-empty-plugins" true)
 
   # Kanagawa Color Pallette
-  white='#dcd7ba'        # fujiWhite
+  white='#dcd7ba'        # fujiwhite
   gray='#2a2a37'         # sumiInk4
   dark_gray='#1a1a22'    # sumiInk2
   light_purple='#363646' # sumiInk5
   dark_purple='#54546D'  # sumiInk6
   cyan='#6a9589'         # wave aqua
-  green='#938aa9'        # springViolet1
+  violet='#938aa9'        # springViolet1
   orange='#dca561'       # autumn orange
   red='#e46876'          # wave red
   pink='#d27e99'         # sakura pink
   yellow='#ff9e3b'       # roninYellow
+  green="#8a9a7b"        # dragonGreen2
 
   # Handle left icon configuration
   case $show_left_icon in
@@ -134,10 +135,10 @@ main() {
 
   # Status left
   if $show_powerline; then
-    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
+    tmux set-option -g status-left "#[bg=${violet},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${violet},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
     powerbg=${gray}
   else
-    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon}"
+    tmux set-option -g status-left "#[bg=${violet},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon}"
   fi
 
   # Status right
@@ -162,17 +163,17 @@ main() {
       script="#($current_dir/cwd.sh)"
 
     elif [ $plugin = "fossil" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-fossil-colors" "green dark_gray")
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-fossil-colors" "violet dark_gray")
       tmux set-option -g status-right-length 250
       script="#($current_dir/fossil.sh)"
 
     elif [ $plugin = "git" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-git-colors" "green dark_gray")
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-git-colors" "violet dark_gray")
       tmux set-option -g status-right-length 250
       script="#($current_dir/git.sh)"
 
     elif [ $plugin = "hg" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-hg-colors" "green dark_gray")
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-hg-colors" "violet dark_gray")
       tmux set-option -g status-right-length 250
       script="#($current_dir/hg.sh)"
 
@@ -189,7 +190,7 @@ main() {
       script="#($current_dir/gpu_ram_info.sh)"
 
     elif [ $plugin = "gpu-power-draw" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-gpu-power-draw-colors" "green dark_gray")
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-gpu-power-draw-colors" "violet dark_gray")
       script="#($current_dir/gpu_power.sh)"
 
     elif [ $plugin = "cpu-usage" ]; then
@@ -226,11 +227,11 @@ main() {
       script="#($current_dir/attached_clients.sh)"
 
     elif [ $plugin = "mpc" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-mpc-colors" "green dark_gray")
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-mpc-colors" "violet dark_gray")
       script="#($current_dir/mpc.sh)"
 
     elif [ $plugin = "spotify-tui" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-spotify-tui-colors" "green dark_gray")
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-spotify-tui-colors" "violet dark_gray")
       script="#($current_dir/spotify-tui.sh)"
 
     elif [ $plugin = "kubernetes-context" ]; then
@@ -269,7 +270,7 @@ main() {
       script="#($current_dir/synchronize_panes.sh $show_synchronize_panes_label)"
 
     elif [ $plugin = "ssh-session" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-ssh-session-colors" "green dark_gray")
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-ssh-session-colors" "violet dark_gray")
       script="#($current_dir/ssh_session.sh $show_ssh_session_port)"
 
     else
