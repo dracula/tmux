@@ -1,0 +1,14 @@
+name: Check Syntax
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@master
+    - name: syntax-check
+      run: for i in $(ls); do echo $i; if [ ! -z $(bash -n $i) ]; then $(exit 1); fi; done
+      working-directory: scripts
+      shell: bash
