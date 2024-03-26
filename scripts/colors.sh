@@ -58,4 +58,4 @@
   autumn_green='#76946a'     
   autumn_red='#c34043'        
   dragon_orange='#b6927b'
-\ndragon_gray='#a6a69c'
+  dragon_gray='#a6a69c'
