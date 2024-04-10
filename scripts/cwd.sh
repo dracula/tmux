@@ -16,7 +16,7 @@ main() {
   path=$(getPaneDir)
 
   # change '/home/user' to '~'
-  cwd="${path/"$HOME"/'~'}"
+  cwd="${path/"$HOME"/~}"
 
   echo "$cwd"
 }
