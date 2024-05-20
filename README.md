@@ -134,6 +134,10 @@ chmod u+x kanagawa.tmux
 chmod u+x ./**/*.sh
 ```
 
+## Todo
+- [ ] meaningful / semantic color names
+
+
 ## Compatibility
 
 Compatible with macOS and Linux. Tested on tmux 3.1b
