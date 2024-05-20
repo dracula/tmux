@@ -12,7 +12,7 @@ main() {
   theme=$(get_tmux_option "@kanagawa-theme" "")
 
   set_theme $theme
-  
+
   # set configuration option variables
   show_kubernetes_context_label=$(get_tmux_option "@kanagawa-kubernetes-context-label" "")
   eks_hide_arn=$(get_tmux_option "@kanagawa-kubernetes-eks-hide-arn" false)
@@ -142,7 +142,7 @@ main() {
   tmux set-option -g pane-border-style "fg=${gray}"
 
   # message styling
-  t mux set-option -g message-style "bg=${gray},fg=${white}"
+  tmux set-option -g message-style "bg=${gray},fg=${white}"
 
   # status bar
   tmux set-option -g status-style "bg=${!status_bg},fg=${white}"
