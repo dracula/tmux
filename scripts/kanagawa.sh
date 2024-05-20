@@ -5,8 +5,14 @@ export LC_ALL=en_US.UTF-8
 current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source $current_dir/utils.sh
 source $current_dir/colors.sh
+source $current_dir/theme.sh
 
 main() {
+  # set theme
+  theme=$(get_tmux_option "@kanagawa-theme" "")
+
+  set_theme $theme
+  
   # set configuration option variables
   show_kubernetes_context_label=$(get_tmux_option "@kanagawa-kubernetes-context-label" "")
   eks_hide_arn=$(get_tmux_option "@kanagawa-kubernetes-eks-hide-arn" false)
