@@ -13,7 +13,7 @@ hex_value="$2"
 colors_file=$current_dir/colors.sh
 
 # Validate color name is in snake_case for consistency
-if ! [[ $color_name =~ ^[a-z]+(_[a-z]+)*$ ]]; then
+if ! [[ $color_name =~ ^[a-z0-9]+(_[a-z0-9]+)*$ ]]; then
     echo "Error: Color name must be in snake_case."
     exit 4
 fi
