@@ -13,7 +13,7 @@ hex_value="$2"
 colors_file=$current_dir/colors.sh
 
 # Validate color name is in snake_case for consistency
-if ! [[ $color_name =~ ^[a-z]+(_[a-z]+)*$ ]]; then
+if ! [[ $color_name =~ ^[a-z0-9]+(_[a-z0-9]+)*$ ]]; then
     echo "Error: Color name must be in snake_case."
     exit 4
 fi
@@ -37,7 +37,7 @@ if grep -q "='${hex_value}'$" "$colors_file"; then
 fi
 
 
-echo -e "\n${color_name}='${hex_value}'" >> "${colors_file}"
+echo -e "\t${color_name}='${hex_value}'" >> "${colors_file}"
 
 svg_content="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
 <!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">
