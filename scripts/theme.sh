@@ -40,6 +40,4 @@ set_theme() {
       yellow=$ronin_yellow
       ;;
   esac
-
-  echo "white=$white gray=$gray dark_gray=$dark_gray light_purple=$light_purple dark_purple=$dark_purple cyan=$cyan green=$green orange=$orange red=$red pink=$pink yellow=$yellow bgcolor=$bgcolor" > logs.txt
 }
