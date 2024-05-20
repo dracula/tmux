@@ -37,7 +37,7 @@ if grep -q "='${hex_value}'$" "$colors_file"; then
 fi
 
 
-echo -e "\n${color_name}='${hex_value}'" >> "${colors_file}"
+echo -e "\t${color_name}='${hex_value}'" >> "${colors_file}"
 
 svg_content="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
 <!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">
