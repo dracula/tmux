@@ -103,7 +103,7 @@ The Kanagawa theme for tmux also supports an extended list of colors from the Ka
 
 </details><br>
 
-It is possible all color values are listed here. For the complete list, refer to [colors](./scripts/colors.sh).
+It is possible that not all color values are listed here. For the complete list, refer to [colors](./scripts/colors.sh).
 
 ## Features
 
