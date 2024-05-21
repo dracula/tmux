@@ -30,6 +30,12 @@ If you want to preserve your emulator background / foreground for window:
 ```
 set -g @kanagawa-ignore-window-colors true
 ```
+**Kanagawa Theme**
+![Default Theme](./assets/themes/default.png)
+**Dragon Theme**
+![Dragon Theme](./assets/themes/dragon.png)
+**Lotus Theme**
+![Lotus Theme](./assets/themes/lotus.png)
 
 The Kanagawa theme for tmux also supports an extended list of colors from the Kaganawa color palette. Below, you'll find a detailed list of these extra colors available.
 
