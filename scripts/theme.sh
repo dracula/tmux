@@ -6,8 +6,8 @@ set_theme() {
       dark_gray=$dragon_black_2
       light_purple=$dragon_orange
       dark_purple=$dragon_black_5
-      cyan=$dragon_ash
-      green=$dragon_teal
+      cyan=$dragon_teal
+      green=$dragon_ash
       orange=$dragon_yellow
       red=$dragon_red
       pink=$dragon_orange
