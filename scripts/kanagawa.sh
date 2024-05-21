@@ -10,6 +10,7 @@ source $current_dir/theme.sh
 main() {
   # set theme
   theme=$(get_tmux_option "@kanagawa-theme" "")
+  ignore_window_colors=$(get_tmux_option "@kanagawa-ignore-window-colors" false)
 
   set_theme $theme
 
@@ -310,6 +311,10 @@ main() {
     tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=${gray}]${left_sep}"
   else
     tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W${current_flags} "
+  fi
+
+  if ! $ignore_window_colors; then
+    tmux set-window-option -g window-style "fg=${white},bg=${dark_gray}"
   fi
 
   tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${gray}] #I #W${flags}"
