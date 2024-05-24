@@ -19,7 +19,7 @@ For advanced instructions look at [INSTALL.md](https://github.com/Nybkox/tmux-ka
 Configuration and options can be found at [draculatheme.com/tmux](https://draculatheme.com/tmux).
 Just replace all `dracula` occurrences with `kanagawa`.
 
-To set the theme (`lotus` or `dragon`) add the following line to your `.tmux.conf`. Otherwise, the base theme will be set.
+To set the theme flavor (`wave` (default), `lotus` or `dragon`) you can press prefix+T or add the following line to your `.tmux.conf`. Otherwise, the base theme will be set.
 
 ```
 set -g @kanagawa-theme '<theme>'
@@ -30,6 +30,7 @@ If you want to preserve your emulator background / foreground for window:
 ```
 set -g @kanagawa-ignore-window-colors true
 ```
+
 **Kanagawa Theme**
 ![Default Theme](./assets/themes/default.png)
 **Dragon Theme**
