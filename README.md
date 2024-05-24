@@ -140,16 +140,6 @@ It is possible that not all color values are listed here. For the complete list,
 - Countdown to tmux-continuum save
 - Current working directory of tmux pane
 
-## Known issues
-
-You may need to manually give permission to plugin's scripts.
-
-```bash
-cd ~/.tmux/plugins/tmux-kanagawa
-chmod u+x kanagawa.tmux
-chmod u+x ./**/*.sh
-```
-
 ## Todo
 
 - [ ] meaningful / semantic color names
