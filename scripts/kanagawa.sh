@@ -6,10 +6,9 @@ current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source $current_dir/utils.sh
 source $current_dir/colors.sh
 source $current_dir/theme.sh
-source $current_dir/menu.sh
 
 main() {
-  tmux bind-key -r T run-shell "#{MENU_COMMANDS_FILE} show_main_menu"
+  tmux bind-key -r T run-shell "source #{@kanagawa-root}/menu_items/main.sh"
 
   # set theme
   theme=$(get_tmux_option "@kanagawa-theme" "")
