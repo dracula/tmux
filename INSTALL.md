@@ -26,6 +26,9 @@ programs.tmux = {
 				set -g @kanagawa-show-battery false
 				set -g @kanagawa-show-powerline true
 				set -g @kanagawa-refresh-rate 10
+				set -g @kanagawa-show-battery false
+				set -g @kanagawa-show-powerline true
+				set -g @kanagawa-refresh-rate 10
 			'';
 		}
 	];
