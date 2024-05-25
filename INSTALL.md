@@ -26,6 +26,9 @@ programs.tmux = {
 				set -g @kanagawa-show-battery false
 				set -g @kanagawa-show-powerline true
 				set -g @kanagawa-refresh-rate 10
+				set -g @kanagawa-show-battery false
+				set -g @kanagawa-show-powerline true
+				set -g @kanagawa-refresh-rate 10
 			'';
 		}
 	];
@@ -353,11 +356,13 @@ Add prefix label before the context
 
 ```bash
 set -g @kanagawa-kubernetes-context-label "Some Label"
+set -g @kanagawa-kubernetes-context-label "Some Label"
 ```
 
 Hide user from the context string
 
 ```
+set -g @kanagawa-kubernetes-hide-user true
 set -g @kanagawa-kubernetes-hide-user true
 ```
 
@@ -365,10 +370,13 @@ Hide ARN (show only cluster name) - Available for EKS only (only available for c
 
 ```
 set -g @kanagawa-kubernetes-eks-hide-arn true
+set -g @kanagawa-kubernetes-eks-hide-arn true
 ```
 
 Extract the account as a prefix to the cluster name - Available for EKS only (only available for cluster names that are ARNs)
 
+````
+set -g @kanagawa-kubernetes-eks-extract-account true
 ````
 set -g @kanagawa-kubernetes-eks-extract-account true
 
