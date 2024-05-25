@@ -26,29 +26,49 @@ interface_get() {
         name="$(ip -o route get 192.168.0.0 | awk '{print $5}')"
       fi
       ;;
+    Darwin)
+      if type route >/dev/null; then
+        name="$(route -n get 192.168.0.0 2>/dev/null | awk '/interface: / {print $2}')"
+      fi
+      ;;
     esac
   fi
 
   echo "$name"
 }
 
-# interface_bytes give interface name and signal tx/rx return Bytes
+# interface_bytes give an interface name and return both tx/rx Bytes, separated by whitespace (upload first)
 interface_bytes() {
-  cat "/sys/class/net/$1/statistics/$2_bytes"
+  case "$(uname -s)" in
+  Linux)
+    upload=$(cat "/sys/class/net/$1/statistics/tx_bytes")
+    download=$(cat "/sys/class/net/$1/statistics/rx_bytes")
+
+    echo "$upload $download"
+    ;;
+  Darwin)
+    # column 7 is Ibytes (in bytes, rx, download) and column 10 is Obytes (out bytes, tx, upload)
+    netstat -nbI "$1" | tail -n1 | awk '{print $10 " " $7}'
+    ;;
+  esac
 }
 
 # get_bandwidth return the number of bytes exchanged for tx and rx
 get_bandwidth() {
-  upload="$(interface_bytes "$1" "tx")"
-  download="$(interface_bytes "$1" "rx")"
+  local upload=0
+  local download=0
 
-  #wait the interval for Wait for interval to calculate the difference
+  IFS=' ' read -r upload download <<< "$(interface_bytes "$1")"
+
+  # wait for interval to calculate the difference
   sleep "$INTERVAL"
 
-  upload="$(bc <<<"$(interface_bytes "$1" "tx") - $upload")"
-  download="$(bc <<<"$(interface_bytes "$1" "rx") - $download")"
+  IFS=' ' read -r new_upload new_download <<< "$(interface_bytes "$1")"
 
-  #set to 0 by default useful for non-existent interface
+  upload=$(( $new_upload - $upload ))
+  download=$(( $new_download - $download ))
+
+  # set to 0 by default
   echo "${upload:-0} ${download:-0}"
 }
 
@@ -65,7 +85,7 @@ bandwidth_to_unit() {
 
   local result="0.00"
   if (($1 != 0)); then
-    result="$(bc <<<"scale=2; $1 / $size")"
+    result="$(awk -v a="$1" -v b="$size" 'BEGIN { printf "%.2f\n", a / b }' </dev/null)"
   fi
 
   echo "$result ${SIZE[$size]}"
@@ -81,12 +101,6 @@ main() {
 
   if [[ -z $interval_update ]]; then
     interval_update=0
-  fi
-
-  if ! command -v bc &> /dev/null
-  then
-    echo "command bc could not be found!"
-    exit 1
   fi
 
   while true; do

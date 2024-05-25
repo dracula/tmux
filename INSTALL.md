@@ -26,6 +26,9 @@ programs.tmux = {
 				set -g @kanagawa-show-battery false
 				set -g @kanagawa-show-powerline true
 				set -g @kanagawa-refresh-rate 10
+				set -g @kanagawa-show-battery false
+				set -g @kanagawa-show-powerline true
+				set -g @kanagawa-refresh-rate 10
 			'';
 		}
 	];
@@ -48,7 +51,7 @@ To enable plugins set up the `@kanagawa-plugins` option in you `.tmux.conf` file
 The order that you define the plugins will be the order on the status bar left to right.
 
 ```bash
-# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, ssh-session, attached-clients, network-vpn, weather, time, mpc, spotify-tui, kubernetes-context, synchronize-panes
+# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, ssh-session, attached-clients, network-vpn, weather, time, mpc, spotify-tui, playerctl, kubernetes-context, synchronize-panes
 set -g @kanagawa-plugins "cpu-usage gpu-usage ram-usage"
 ```
 
@@ -369,8 +372,9 @@ set -g @kanagawa-kubernetes-eks-hide-arn true
 
 Extract the account as a prefix to the cluster name - Available for EKS only (only available for cluster names that are ARNs)
 
-````
+```
 set -g @kanagawa-kubernetes-eks-extract-account true
+``````
 
 #### continuum options
 
@@ -388,4 +392,12 @@ Show if the last save was performed less than 60 seconds ago (default threshold 
 
 ```bash
 set -g @kanagawa-continuum-time-threshold 60
+```
+
+#### Playerctl format
+
+Set the playerctl metadata format
+
+```
+set -g @kanagawa-playerctl-format "►  {{ artist }} - {{ title }}"
 ```

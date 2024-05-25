@@ -136,6 +136,7 @@ It is possible that not all color values are listed here. For the complete list,
 - Info if the Panes are synchronized
 - Spotify playback (needs the tool spotify-tui installed)
 - Music Player Daemon status (needs the tool mpc installed)
+- Playerctl, get current track metadata
 - Current kubernetes context
 - Countdown to tmux-continuum save
 - Current working directory of tmux pane

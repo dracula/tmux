@@ -137,7 +137,7 @@ main() {
   fi
 
   # set length
-  tmux set-option -g status-left-length 50
+  tmux set-option -g status-left-length 100
   tmux set-option -g status-right-length 100
 
   # pane border styling
@@ -252,6 +252,10 @@ main() {
     elif [ $plugin = "spotify-tui" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-spotify-tui-colors" "green dark_gray")
       script="#($current_dir/spotify-tui.sh)"
+
+    elif [ $plugin = "playerctl" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-playerctl-colors" "green dark_gray")
+      script="#($current_dir/playerctl.sh)"
 
     elif [ $plugin = "kubernetes-context" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-kubernetes-context-colors" "cyan dark_gray")
