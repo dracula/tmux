@@ -357,20 +357,21 @@ set -g @kanagawa-kubernetes-context-label "Some Label"
 
 Hide user from the context string
 
-```
+```bash
 set -g @kanagawa-kubernetes-hide-user true
 ```
 
 Hide ARN (show only cluster name) - Available for EKS only (only available for cluster names that are ARNs)
 
-```
+```bash
 set -g @kanagawa-kubernetes-eks-hide-arn true
 ```
 
 Extract the account as a prefix to the cluster name - Available for EKS only (only available for cluster names that are ARNs)
 
-````
+```bash
 set -g @kanagawa-kubernetes-eks-extract-account true
+```
 
 #### continuum options
 
