@@ -23,7 +23,7 @@ main() {
   eks_extract_account=$(get_tmux_option "@kanagawa-kubernetes-eks-extract-account" false)
   hide_kubernetes_user=$(get_tmux_option "@kanagawa-kubernetes-hide-user" false)
   terraform_label=$(get_tmux_option "@kanagawa-terraform-label" "")
-  show_fahrenheit=$(get_tmux_option "@kanagawa-show-fahrenheit" true)
+  show_fahrenheit=$(get_tmux_option "@kanagawa-show-fahrenheit" false)
   show_location=$(get_tmux_option "@kanagawa-show-location" true)
   fixed_location=$(get_tmux_option "@kanagawa-fixed-location")
   show_powerline=$(get_tmux_option "@kanagawa-show-powerline" false)
@@ -252,7 +252,7 @@ main() {
     elif [ $plugin = "spotify-tui" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-spotify-tui-colors" "green dark_gray")
       script="#($current_dir/spotify-tui.sh)"
-    
+
     elif [ $plugin = "playerctl" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-playerctl-colors" "green dark_gray")
       script="#($current_dir/playerctl.sh)"
