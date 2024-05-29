@@ -18,7 +18,7 @@ get_ratio()
 
     Darwin)
       # Get used memory blocks with vm_stat, multiply by page size to get size in bytes, then convert to MiB
-      used_mem=$(vm_stat | grep ' active\|wired ' | sed 's/[^0-9]//g' | paste -sd ' ' - | awk -v pagesize=$(pagesize) '{printf "%d\n", ($1+$2) * pagesize / 1048576}')
+      used_mem=$(vm_stat | grep ' active\|wired\|compressor\|speculative' | sed 's/[^0-9]//g' | paste -sd ' ' - | awk -v pagesize=$(pagesize) '{printf "%d\n", ($1+$2+$3+$5) * pagesize / 1048576}')
       # System Profiler performs an activation lock check, which can result in
       # time outs or a lagged response. (~10 seconds)
       # total_mem=$(system_profiler SPHardwareDataType | grep "Memory:" | awk '{print $2 $3}')
