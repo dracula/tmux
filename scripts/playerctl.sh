@@ -34,7 +34,6 @@ main() {
   playerctl_playback=$(playerctl metadata --format "${FORMAT}")
   playerctl_playback="${playerctl_playback} "
 
-  # Determine the length of the terminal window (not implemented here)
   # Adjust width of string
   terminal_width=25
 
@@ -45,13 +44,11 @@ main() {
   scrolling_text=""
 
   for ((start = 0; start <= len; start++)); do
-    # Slice the string starting from 'start' index and display 'terminal_width' characters
     scrolling_text=$(slice_loop "$playerctl_playback" "$start" "$terminal_width")
     echo -ne "\r"
     echo "$scrolling_text "
     echo -ne "\r"
 
-    # Sleep for RATE seconds before updating the display (adjust RATE as needed)
     sleep 0.08
   done
 
