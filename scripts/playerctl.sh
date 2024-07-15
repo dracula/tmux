@@ -22,15 +22,6 @@ function slice_loop() {
   echo "$result"
 }
 
-function update_playerctl_playback() {
-  FORMAT=$(get_tmux_option "@dracula-playerctl-format" "Now playing: {{ artist }} - {{ album }} - {{ title }}")
-
-  playerctl_playback=$(playerctl metadata --format "${FORMAT}")
-  msg="${playerctl_playback}"
-
-  len=${#msg}
-}
-
 main() {
   # storing the refresh rate in the variable RATE, default is 5
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
@@ -39,45 +30,35 @@ main() {
     exit 1
   fi
 
-  update_playerctl_playback
-  window_size=25 # Number of characters to display at once
-  begin=0
+  FORMAT=$(get_tmux_option "@dracula-playerctl-format" "Now playing: {{ artist }} - {{ album }} - {{ title }}")
+  playerctl_playback=$(playerctl metadata --format "${FORMAT}")
+  playerctl_playback="${playerctl_playback} "
 
-  while true; do
-    # Check if playerctl metadata command is available
-    if ! command -v playerctl metadata &>/dev/null; then
-      echo ""
-      exit 1
-    fi
+  # Determine the length of the terminal window (not implemented here)
+  # Adjust 'terminal_width' based on your actual terminal width
+  terminal_width=25
 
-    # Slice the message to display
-    if [ "$len" -le "$window_size" ]; then
-      # If msg length is smaller than window_size, display the entire msg
-      slice="$msg"
-    else
-      slice=$(slice_loop "$msg" $begin $window_size)
-    fi
+  # Initial start point for scrolling
+  start=0
+  len=${#playerctl_playback}
 
-    echo -ne " \r"
-    echo -n "$slice"
+  scrolling_text=""
+
+  for ((i = 0; i <= len; i++)); do
+    # Slice the string starting from 'start' index and display 'terminal_width' characters
+    scrolling_text=$(slice_loop "$playerctl_playback" "$start" "$terminal_width")
     echo -ne "\r"
-    sleep 0.1
+    echo "$scrolling_text"
+    echo -ne "\r"
 
-    ((begin++))
+    # Check if the beginning of the original string reappears at the start of the visible area
 
-    # Check if playerctl_playback has changed
-    updated_msg=$(playerctl metadata --format "${FORMAT}")
-    updated_msg="$updated_msg "
+    # Update the start index for the next iteration
+    ((start++))
 
-    if [ "$updated_msg" != "$playerctl_playback" ]; then
-      playerctl_playback="$updated_msg"
-      msg="$playerctl_playback"
-      len=${#msg}
-      begin=0
-      sleep 1
-    fi
+    # Sleep for RATE seconds before updating the display (adjust RATE as needed)
+    sleep 0.08
   done
-
 }
 
 # run the main driver
