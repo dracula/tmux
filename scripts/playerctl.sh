@@ -35,7 +35,7 @@ main() {
   playerctl_playback="${playerctl_playback} "
 
   # Determine the length of the terminal window (not implemented here)
-  # Adjust 'terminal_width' based on your actual terminal width
+  # Adjust width of string
   terminal_width=25
 
   # Initial start point for scrolling
@@ -44,21 +44,20 @@ main() {
 
   scrolling_text=""
 
-  for ((i = 0; i <= len; i++)); do
+  for ((start = 0; start <= len; start++)); do
     # Slice the string starting from 'start' index and display 'terminal_width' characters
     scrolling_text=$(slice_loop "$playerctl_playback" "$start" "$terminal_width")
     echo -ne "\r"
-    echo "$scrolling_text"
+    echo "$scrolling_text "
     echo -ne "\r"
-
-    # Check if the beginning of the original string reappears at the start of the visible area
-
-    # Update the start index for the next iteration
-    ((start++))
 
     # Sleep for RATE seconds before updating the display (adjust RATE as needed)
     sleep 0.08
   done
+
+  echo -ne "\r"
+  echo "$scrolling_text "
+  echo -ne "\r"
 }
 
 # run the main driver
