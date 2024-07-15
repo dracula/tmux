@@ -44,7 +44,20 @@ main() {
   begin=0
 
   while true; do
-    slice=$(slice_loop "$msg" $begin $window_size)
+    # Check if playerctl metadata command is available
+    if ! command -v playerctl metadata &>/dev/null; then
+      echo ""
+      exit 1
+    fi
+
+    # Slice the message to display
+    if [ "$len" -le "$window_size" ]; then
+      # If msg length is smaller than window_size, display the entire msg
+      slice="$msg"
+    else
+      slice=$(slice_loop "$msg" $begin $window_size)
+    fi
+
     echo -ne " \r"
     echo -n "$slice"
     echo -ne "\r"
@@ -58,15 +71,13 @@ main() {
 
     if [ "$updated_msg" != "$playerctl_playback" ]; then
       playerctl_playback="$updated_msg"
-
       msg="$playerctl_playback"
-
       len=${#msg}
-
       begin=0
       sleep 1
     fi
   done
+
 }
 
 # run the main driver
