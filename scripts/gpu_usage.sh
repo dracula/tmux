@@ -9,8 +9,14 @@ get_platform()
 {
   case $(uname -s) in
     Linux)
-      gpu=$(lspci -v | grep VGA | head -n 1 | awk '{print $5}')
-      echo $gpu
+      # use this option for when you know that there is an NVIDIA gpu, but you cant use lspci to determine
+      ignore_lspci=$(get_tmux_option "@dracula-ignore-lspci" false)
+      if [[ "$ignore_lspci" = true ]]; then
+        echo "NVIDIA"
+      else
+        gpu=$(lspci -v | grep VGA | head -n 1 | awk '{print $5}')
+        echo $gpu
+      fi
       ;;
 
     Darwin)
