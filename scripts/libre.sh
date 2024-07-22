@@ -220,31 +220,35 @@ get_cgm_data() {
     echo "$response"
 }
 
-# Function to calculate the trend based on the last CGM values
-# Input: Array of the last CGM values
-# Output: Trend indicator as a string
-calculate_trend() {
-    local last_values=("$@")
-
-    if [ ${#last_values[@]} -lt 3 ]; then
-        echo "🦋 ${last_values[0]} 🔄"
-        return
-    fi
-
-    trend="➡️"
-    if (( $(echo "${last_values[2]} > ${last_values[1]}" | bc -l) )) && (( $(echo "${last_values[1]} > ${last_values[0]}" | bc -l) )); then
-        trend="↗️"
-        if (( $(echo "${last_values[2]} - ${last_values[0]} > 1.0" | bc -l) )); then
-            trend="⬆️🔥"
-        fi
-    elif (( $(echo "${last_values[2]} < ${last_values[1]}" | bc -l) )) && (( $(echo "${last_values[1]} < ${last_values[0]}" | bc -l) )); then
-        trend="↘️"
-        if (( $(echo "${last_values[0]} - ${last_values[2]} > 1.0" | bc -l) )); then
-            trend="⬇️🔥"
-        fi
-    fi
-
-    echo "🦋 ${last_values[2]} $trend"
+# Function to get the emoji representing a trend based on a given input number
+# Input: A number between 1 and 5 representing the trend
+#        1 - SingleDown
+#        2 - FortyFiveDown
+#        3 - Flat
+#        4 - FortyFiveUp
+#        5 - SingleUp
+# Output: The corresponding emoji for the trend
+get_trend() {
+    case $1 in
+        1)
+            echo "⬇️" # SingleDown
+            ;;
+        2)
+            echo "↘️" # FortyFiveDown
+            ;;
+        3)
+            echo "➡️" # Flat
+            ;;
+        4)
+            echo "↗️" # FortyFiveUp
+            ;;
+        5)
+            echo "⬆️" # SingleUp
+            ;;
+        *)
+            echo "🤡"
+            ;;
+    esac
 }
 
 # Function to cache CGM data to a file
@@ -306,17 +310,11 @@ get_data() {
         cache_data "$cgm_data"
     fi
 
-    graph_data=$(echo "$cgm_data" | jq -c '.data.graphData' 2>/dev/null)
-    if [ -z "$graph_data" ] || [ "$(echo "$graph_data" | jq length)" -lt 3 ]; then
-        log "Not enough CGM data to determine trend"
-        echo "🦋 NO DATA ❌"
-        exit 1
-    fi
+    value=$(echo "$cgm_data" | jq -r '.data.connection.glucoseMeasurement.Value' 2>/dev/null)
+    trendarrow=$(echo "$cgm_data" | jq -r '.data.connection.glucoseMeasurement.TrendArrow' 2>/dev/null)
+    trend=$(get_trend "$trendarrow")
 
-    last_values=($(echo "$graph_data" | jq -r '.[-3:] | .[].Value' 2>/dev/null))
-    trend=$(calculate_trend "${last_values[@]}")
-
-    echo "$trend"
+    echo "🦋 $value $trend"
 }
 
 # Load config and execute the main logic
