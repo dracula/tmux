@@ -215,6 +215,12 @@ get_cgm_data() {
         exit 1
     fi
 
+    # TODO: just log and store ".data.data.connection.glucoseMeasurement"
+    # insted of the hole api response, something like this.
+    # glucoseMeasurement=$(echo "$response" | jq -r '.data.data.connection.glucoseMeasurement')
+    # log "glucoseMeasurement data from response: $glucoseMeasurement"
+    # echo "$glucoseMeasurement"
+
     log "CGM data response: $response"
 
     echo "$response"
