@@ -39,10 +39,10 @@
 # - gzip
 ################################################################################
 
-# setting the locale, some users have issues with different locales, this forces the correct one
+# Setting the locale, some users have issues with different locales, this forces the correct one
 export LC_ALL=en_US.UTF-8
 
-# load utils
+# Load utils
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
 
@@ -53,6 +53,7 @@ CACHE_DURATION=180  # Cache duration in seconds (3 minutes)
 LOG_FILE="/tmp/tmuxlibre.log"
 LOG_MAX_SIZE=2000000 # 2MB
 CONFIG_FILE="$HOME/.tmuxlibre.conf"
+TOKEN_FILE="/tmp/tmuxlibre_token.json" # File to store the token and its expiry
 
 HEADERS=(
     -H "accept-encoding: gzip"
@@ -141,11 +142,27 @@ EOL
 }
 
 # Function to log in to the LibreView API and retrieve an authentication token
+# This function also checks if a cached token is available and still valid
 # Input: Email and password as strings
 # Output: Authentication token as a string
 login() {
     local email=$1
     local password=$2
+
+    # Check for a cached token
+    if [ -f "$TOKEN_FILE" ]; then
+        token_data=$(cat "$TOKEN_FILE")
+        token=$(echo "$token_data" | jq -r '.token')
+        expires=$(echo "$token_data" | jq -r '.expires')
+
+        current_time=$(date +%s)
+        if (( current_time < expires )); then
+            echo "$token"
+            return
+        fi
+    fi
+
+    # No valid cached token, perform login
     local endpoint="/llu/auth/login"
     local payload="{\"email\": \"$email\", \"password\": \"$password\"}"
 
@@ -161,11 +178,14 @@ login() {
 
     response=$(echo "$response" | tr -d '\0' | tr -cd '\11\12\15\40-\176')
     token=$(echo "$response" | jq -r '.data.authTicket.token' 2>/dev/null)
+    expires=$(echo "$response" | jq -r '.data.authTicket.expires' 2>/dev/null)
     if [ -z "$token" ] || [ "$token" == "null" ]; then
         log "Failed to retrieve token from login response"
         echo "🦋 NO DATA ❌"
         exit 1
     fi
+
+    echo "{\"token\": \"$token\", \"expires\": $expires}" > "$TOKEN_FILE"
 
     echo "$token"
 }
@@ -214,12 +234,6 @@ get_cgm_data() {
         echo "🦋 NO DATA ❌"
         exit 1
     fi
-
-    # TODO: just log and store ".data.data.connection.glucoseMeasurement"
-    # insted of the hole api response, something like this.
-    # glucoseMeasurement=$(echo "$response" | jq -r '.data.data.connection.glucoseMeasurement')
-    # log "glucoseMeasurement data from response: $glucoseMeasurement"
-    # echo "$glucoseMeasurement"
 
     log "CGM data response: $response"
 
