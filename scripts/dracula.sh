@@ -31,6 +31,7 @@ main()
   show_synchronize_panes_label=$(get_tmux_option "@dracula-synchronize-panes-label" "Sync")
   time_format=$(get_tmux_option "@dracula-time-format" "")
   show_ssh_session_port=$(get_tmux_option "@dracula-show-ssh-session-port" false)
+  show_libreview=$(get_tmux_option "@dracula-show-libreview" false)
   IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
   show_empty_plugins=$(get_tmux_option "@dracula-show-empty-plugins" true)
 
@@ -262,6 +263,10 @@ main()
     elif [ $plugin = "synchronize-panes" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-synchronize-panes-colors" "cyan dark_gray")
       script="#($current_dir/synchronize_panes.sh $show_synchronize_panes_label)"
+
+    elif [ $plugin = "libreview" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-libre-colors" "white dark_gray")
+      script="#($current_dir/libre.sh $show_libreview)"
 
     elif [ $plugin = "ssh-session" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-ssh-session-colors" "green dark_gray")
