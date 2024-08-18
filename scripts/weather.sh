@@ -23,7 +23,13 @@ fetch_weather_information()
 {
   display_weather=$1
   # it gets the weather condition textual name (%C), and the temperature (%t)
-  curl -sL wttr.in/${fixedlocation// /%20}\?format="%C+%t$display_weather"
+  api_response=$(curl -sL wttr.in/${fixedlocation// /%20}\?format="%C+%t$display_weather")
+
+  if [[ $api_response = "Unknown location;"* ]]; then
+    echo "Unknown location error"
+  else
+    echo $api_response
+  fi
 }
 
 #get weather display
