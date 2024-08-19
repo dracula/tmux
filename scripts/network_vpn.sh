@@ -17,14 +17,47 @@ vpn_function() {
       echo "NO VPN"
     fi
   ;;
-  
-  Darwin)
-    vpn=$(scutil --nc list | grep Connected)
 
-    if [ -z $vpn ]; then
+  Darwin)
+
+    verbose=$(get_tmux_option "@dracula-network-vpn-verbose" false)
+
+    vpn="$(scutil --nc list | sed "s/\*//g" | grep Connected)"
+
+    is_not_tailscale=$(echo "$vpn" | grep -v Tailscale)
+
+    which -s tailscale > /dev/null
+    tailscale_installed=$?
+
+    if [ -z "$vpn" ]; then
       echo ""
+
+    elif [ $tailscale_installed ] && [ -z "$is_not_tailscale" ]; then
+      # if tailscale is installed and no other vpn is connected. this is because tailscale will
+      # always show as connected for some reason.
+      #
+      # https://www.reddit.com/r/Tailscale/comments/18dirro/is_there_a_way_i_can_tell_which_exit_node_i_am/
+      node=$(tailscale status --peers --json | jq '.ExitNodeStatus')
+      if [[ -z $node ]] || [[ "$node"  == 'null' ]]; then
+        # no tailscale exit node, no output, since trafic isnt actually rerouted
+        echo ""
+      else
+        exitnode=$(tailscale status | grep "; exit node" | cut -w -f 2)
+
+        if $verbose; then
+          echo "󰌘 $exitnode"
+        else
+          echo "Tailscale"
+        fi
+      fi
+
     else
-      echo "VPN"
+      if $verbose; then
+        vpn_name=$(echo $is_not_tailscale | sed "s/.*\"\(.*\)\".*/\1/g")
+        echo "󰌘 $vpn_name"
+      else
+        echo "VPN"
+      fi
     fi
     ;;
 
