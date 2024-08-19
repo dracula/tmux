@@ -37,7 +37,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
     `set -g @dracula-show-battery-status true`
 - If forecast information is available, a ☀, ☁, ☂, or ❄ unicode character corresponding with the forecast is displayed alongside the temperature
 - Info if the Panes are synchronized
-- Spotify playback (needs the tool spotify-tui installed)
+- Spotify playback (needs the tool spotify-tui installed). max-len can be configured.
 - Music Player Daemon status (needs the tool mpc installed)
 - Playerctl, get current track metadata
 - Current kubernetes context
