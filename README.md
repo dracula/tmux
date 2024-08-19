@@ -32,6 +32,9 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 - List of windows with the current window highlighted
 - When prefix is enabled, a smiley face turns from green to yellow
 - When charging, 'AC' is displayed
+    - Alternatively show battery level and whether its charging next to percentage by setting:
+    `set -g @dracula-battery-label false`
+    `set -g @dracula-show-battery-status true`
 - If forecast information is available, a ☀, ☁, ☂, or ❄ unicode character corresponding with the forecast is displayed alongside the temperature
 - Info if the Panes are synchronized
 - Spotify playback (needs the tool spotify-tui installed)

@@ -85,18 +85,57 @@ battery_status()
       ;;
   esac
 
+  tmp_bat_perc=$(battery_percent)
+  bat_perc="${tmp_bat_perc%\%}"
+
   case $status in
     discharging|Discharging)
-      echo ''
+      # discharging, no AC
+      declare -A battery_labels=(
+        [0]="󰂎"
+        [10]="󰁺"
+        [20]="󰁻"
+        [30]="󰁼"
+        [40]="󰁽"
+        [50]="󰁾"
+        [60]="󰁿"
+        [70]="󰂀"
+        [80]="󰂁"
+        [90]="󰂂"
+        [100]="󰁹"
+      )
+      echo "${battery_labels[$((bat_perc/10*10))]:-󰂃}"
       ;;
     high|Full)
-      echo ''
+      echo "󰁹"
       ;;
     charging|Charging)
-      echo 'AC'
+      # charging from AC
+      declare -A battery_labels=(
+        [0]="󰂎"
+        [10]="󰁺"
+        [20]="󰁻"
+        [30]="󰁼"
+        [40]="󰁽"
+        [50]="󰁾"
+        [60]="󰁿"
+        [70]="󰂀"
+        [80]="󰂁"
+        [90]="󰂂"
+        [100]="󰁹"
+      )
+      echo "${battery_labels[$((bat_perc/10*10))]:-󰂃}"
+      ;;
+    ACattached)
+      # drawing from AC but not charging
+      echo ''
+      ;;
+    finishingcharge)
+      echo '󰁹'
       ;;
     *)
-      echo 'AC'
+      # something wrong...
+      echo ''
       ;;
   esac
   ### Old if statements didn't work on BSD, they're probably not POSIX compliant, not sure
@@ -112,15 +151,25 @@ battery_status()
 main()
 {
   bat_label=$(get_tmux_option "@dracula-battery-label" "♥")
-  bat_stat=$(battery_status)
+  if [ "$bat_label" ]; then
+    bat_label=""
+  fi
+
+  show_bat_label=$(get_tmux_option "@dracula-show-battery-status" false)
+  if $show_bat_label; then
+    bat_stat=$(battery_status)
+  else
+    bat_stat=""
+  fi
+
   bat_perc=$(battery_percent)
 
   if [ -z "$bat_stat" ]; then # Test if status is empty or not
     echo "$bat_label $bat_perc"
   elif [ -z "$bat_perc" ]; then # In case it is a desktop with no battery percent, only AC power
-    echo "$bat_label $bat_stat"
+    echo ""
   else
-    echo "$bat_label $bat_stat $bat_perc"
+    echo "$bat_label$bat_stat $bat_perc"
   fi
 }
 
