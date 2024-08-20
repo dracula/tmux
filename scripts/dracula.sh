@@ -36,17 +36,17 @@ main()
   show_empty_plugins=$(get_tmux_option "@dracula-show-empty-plugins" true)
 
   # Dracula Color Pallette
-  white='#f8f8f2'
-  gray='#44475a'
-  dark_gray='#282a36'
-  light_purple='#bd93f9'
-  dark_purple='#6272a4'
-  cyan='#8be9fd'
-  green='#50fa7b'
-  orange='#ffb86c'
-  red='#ff5555'
-  pink='#ff79c6'
-  yellow='#f1fa8c'
+  white=$(get_tmux_option "@dracula-color-white" '#f8f8f2')
+  gray=$(get_tmux_option "@dracula-color-gray" '#44475a')
+  dark_gray=$(get_tmux_option "@dracula-color-dark_gray" '#282a36')
+  light_purple=$(get_tmux_option "@dracula-color-light_purple" '#bd93f9')
+  dark_purple=$(get_tmux_option "@dracula-color-dark_purple" '#6272a4')
+  cyan=$(get_tmux_option "@dracula-color-cyan" '#8be9fd')
+  green=$(get_tmux_option "@dracula-color-green" '#50fa7b')
+  orange=$(get_tmux_option "@dracula-color-orange" '#ffb86c')
+  red=$(get_tmux_option "@dracula-color-red" '#ff5555')
+  pink=$(get_tmux_option "@dracula-color-pink" '#ff79c6')
+  yellow=$(get_tmux_option "@dracula-color-yellow" '#f1fa8c')
 
   # Handle left icon configuration
   case $show_left_icon in
