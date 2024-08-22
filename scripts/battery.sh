@@ -41,7 +41,7 @@ battery_percent()
   case $(uname -s) in
     Linux)
       percent=$(linux_acpi percent)
-      [ -n "$percent" ] && echo " $percent"
+      [ -n "$percent" ] && echo "$percent%"
       ;;
 
     Darwin)
@@ -175,4 +175,3 @@ main()
 
 #run main driver program
 main
-
