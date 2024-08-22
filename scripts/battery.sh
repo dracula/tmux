@@ -112,17 +112,17 @@ battery_status()
     charging|Charging)
       # charging from AC
       declare -A battery_labels=(
-        [0]="󰂎"
-        [10]="󰁺"
-        [20]="󰁻"
-        [30]="󰁼"
-        [40]="󰁽"
-        [50]="󰁾"
-        [60]="󰁿"
-        [70]="󰂀"
-        [80]="󰂁"
-        [90]="󰂂"
-        [100]="󰁹"
+        [0]="󰢟"
+        [10]="󰢜"
+        [20]="󰂆"
+        [30]="󰂇"
+        [40]="󰂈"
+        [50]="󰢝"
+        [60]="󰂉"
+        [70]="󰢞"
+        [80]="󰂊"
+        [90]="󰂋"
+        [100]="󰂅"
       )
       echo "${battery_labels[$((bat_perc/10*10))]:-󰂃}"
       ;;
@@ -131,7 +131,7 @@ battery_status()
       echo ''
       ;;
     finishingcharge)
-      echo '󰁹'
+      echo '󰂅'
       ;;
     *)
       # something wrong...
