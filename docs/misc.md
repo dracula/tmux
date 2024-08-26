@@ -1,6 +1,16 @@
+"󰈀 "
+"󰣀 "
+"󱍢 "
+"󰉉 "
+
+
+
 ## left icon
 
-pretty example:
+The left icon can be set to anything static you'd like.
+However if you use tmux on multiple machines, it may be helpful to display the hostname.
+If you use multiple sessions simultaneously it can be good to name them and have the name in the left icon.
+the following example uses formatting to display "hostname | session_name":
 `set -g @dracula-show-left-icon "#h | #S"`
 
 formats:
@@ -11,20 +21,27 @@ more formats can be found here, though those without a shorthand like #H need to
 [tmux(1) - OpenBSD manual pages](https://man.openbsd.org/tmux.1#FORMATS)
 
 besides formats, any other string can be used.
+
 ## continuum
 
-alert_mode="@dracula-continuum-mode"
-time_threshold="@dracula-continuum-time-threshold"
-warn_threshold=360
-first_save="@dracula-continuum-first-save"
+@dracula-continuum-mode
+@dracula-continuum-time-threshold
+@dracula-continuum-first-save
+@resurrect-dir
+@continuum-save-last-timestamp
+@continuum-save-interval
 
 ## cpu_info
+Displays cpu usage in percent by default, but can display cpu load on linux, if the following flag is set to true:
+`set -g @dracula-cpu-display-load false`
+Additionally the label can be set to whatever you'd like.
+`set -g @dracula-cpu-usage-label "CPU"`
+If you're using nerdfonts, try one of the following.
+`   󰍛 󰘚 󰻟 󰻠 `
 
-  RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-  cpu_load=$(get_tmux_option "@dracula-cpu-display-load" false)
-  cpu_label=$(get_tmux_option "@dracula-cpu-usage-label" "CPU")
-
+`set -g @dracula-refresh-rate` affects this widget
 ## gpu_info
+"󰢮 "
 
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
   ignore_lspci=$(get_tmux_option "@dracula-ignore-lspci" false)
@@ -33,7 +50,7 @@ first_save="@dracula-continuum-first-save"
   gpu_label=$(get_tmux_option "@dracula-gpu-usage-label" "GPU")
 
 ## network
-**this will only display the wifi youre connected to, if it provides internet access!**
+**This will only display the wifi you're connected to, if it provides internet access!**
 ## network bandwidth
 tmux show-option -gqv "@dracula-network-bandwidth"
 ## network ping
