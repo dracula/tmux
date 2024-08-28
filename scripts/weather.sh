@@ -46,7 +46,7 @@ display_weather()
   temperature=$(echo $weather_information | rev | cut -d ' ' -f 1 | rev) # +31°C, -3°F, etc
   unicode=$(forecast_unicode $weather_condition)
 
-  echo "$unicode${temperature/+/}" # remove the plus sign to the temperature
+  echo "$unicode ${temperature/+/}" # remove the plus sign to the temperature
 }
 
 forecast_unicode()
@@ -69,7 +69,7 @@ forecast_unicode()
 main()
 {
   # process should be cancelled when session is killed
-  if ping -q -c 1 -W 1 ipinfo.io &>/dev/null; then
+  if (echo > /dev/tcp/ipinfo.io/443) >/dev/null 2>&1; then
     echo "$(display_weather)$(display_location)"
   else
     echo "Location Unavailable"
