@@ -3,8 +3,6 @@
 "󱍢 "
 "󰉉 "
 
-
-
 ## left icon
 
 The left icon can be set to anything static you'd like.
@@ -32,6 +30,7 @@ besides formats, any other string can be used.
 @continuum-save-interval
 
 ## cpu_info
+
 Displays cpu usage in percent by default, but can display cpu load on linux, if the following flag is set to true:
 `set -g @dracula-cpu-display-load false`
 Additionally the label can be set to whatever you'd like.
@@ -40,36 +39,82 @@ If you're using nerdfonts, try one of the following.
 `   󰍛 󰘚 󰻟 󰻠 `
 
 `set -g @dracula-refresh-rate` affects this widget
+
 ## gpu_info
+
+currently only works with NVIDIA gpus.
 "󰢮 "
 
-  RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-  ignore_lspci=$(get_tmux_option "@dracula-ignore-lspci" false)
-  gpu_label=$(get_tmux_option "@dracula-gpu-usage-label" "GPU")
-  gpu_label=$(get_tmux_option "@dracula-gpu-usage-label" "VRAM")
-  gpu_label=$(get_tmux_option "@dracula-gpu-usage-label" "GPU")
+if your gpu is not recognised, force the script to run anyways.
+`set -g @dracula-ignore-lspci false`
+
+```
+set -g @dracula-gpu-usage-label "GPU"
+set -g @dracula-gpu-vram-label "VRAM"
+set -g @dracula-gpu-power-label "GPU"
+```
+
+TODO:
+
+- switch from `lspci` to `which -s nvidia-smi`
+- add support for amd without testing and clarify that this is an experimental feature! ask someone whos got an amd card to test it.
+
+`set -g @dracula-refresh-rate` affects this widget
 
 ## network
+
 **This will only display the wifi you're connected to, if it provides internet access!**
+
+set -g @dracula-network-ethernet-label "󰈀 Eth"
+set -g @dracula-network-offline-label "󱍢 "
+set -g @dracula-network-wifi-label " "
+set -g @dracula-network-hosts "1.1.1.1 8.8.8.8"
+
 ## network bandwidth
+
 tmux show-option -gqv "@dracula-network-bandwidth"
+
 ## network ping
+
     pingserver=$(get_tmux_option "@dracula-ping-server" "google.com")
-  RATE=$(get_tmux_option "@dracula-ping-rate" 5)
+
+RATE=$(get_tmux_option "@dracula-ping-rate" 5)
+
+## network vpn
+
+set -g @dracula-network-vpn-verbose true
+
+TODO:
+set -g @dracula-network-vpn-label
+
 ## playerctl
 
-  RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
+RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
   FORMAT=$(get_tmux_option "@dracula-playerctl-format" "Now playing: {{ artist }} - {{ album }} - {{ title }}")
+
 ## ram usage
-  ram_label=$(get_tmux_option "@dracula-ram-usage-label" "RAM")
+
+ram_label=$(get_tmux_option "@dracula-ram-usage-label" "RAM")
+
+## ssh session
+
+set -g @dracula-show-ssh-only-when-connected true
+
 ## spotify tui
-  RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
+
+RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
   FORMAT=$(get_tmux_option "@dracula-spotify-tui-format" "%f %s %t - %a")
-  max_len=$(get_tmux_option "@dracula-spotify-tui-max-len" 0)
+max_len=$(get_tmux_option "@dracula-spotify-tui-max-len" 0)
+
 ## synchronise panes
-  current_synchronize_panes_status=$(get_tmux_window_option "synchronize-panes" "off")
+
+current_synchronize_panes_status=$(get_tmux_window_option "synchronize-panes" "off")
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
+
 ## terraform
-  RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
+
+RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
+
 ## tmux ram usage
-  ram_label=$(get_tmux_option "@dracula-tmux-ram-usage-label" "MEM")
+
+ram_label=$(get_tmux_option "@dracula-tmux-ram-usage-label" "MEM")
