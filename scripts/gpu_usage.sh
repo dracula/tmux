@@ -20,7 +20,10 @@ get_platform()
       ;;
 
     Darwin)
-      # TODO - Darwin/Mac compatability
+      # WARNING: for this to work the powermetrics command needs to be run without password
+      #   add this to the sudoers file, replacing the username and omitting the quotes.
+      #   be mindful of the tabs: "username		ALL = (root) NOPASSWD: /usr/bin/powermetrics"
+      echo "apple"
       ;;
 
     CYGWIN*|MINGW32*|MSYS*|MINGW*)
@@ -34,6 +37,8 @@ get_gpu()
   gpu=$(get_platform)
   if [[ "$gpu" == NVIDIA ]]; then
     usage=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{ sum += $0 } END { printf("%d%%\n", sum / NR) }')
+  elif [[ "$gpu" == apple ]]; then
+    usage="$(sudo powermetrics --samplers gpu_power -i500 -n 1 | grep 'active residency' | sed 's/[^0-9.%]//g' | sed 's/[%].*$//g')%"
   else
     usage='unknown'
   fi
