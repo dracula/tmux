@@ -9,9 +9,12 @@ get_platform()
 {
   case $(uname -s) in
     Linux)
-      # use this option for when you know that there is an NVIDIA gpu, but you cant use lspci to determine
-      ignore_lspci=$(get_tmux_option "@dracula-ignore-lspci" false)
-      if [[ "$ignore_lspci" = true ]]; then
+      # use this option for when your gpu isn't detected
+      gpu_label=$(get_tmux_option "@dracula-force-gpu" false)
+      if [[ "$gpu_label" != false ]]; then
+        echo $gpu_label
+      elif type -a nvidia-smi >> /dev/null; then
+        # if nvidia-smi is installed, its highly likely for the gpu to be nvidia, so stop checking
         echo "NVIDIA"
       else
         gpu=$(lspci -v | grep VGA | head -n 1 | awk '{print $5}')
@@ -32,8 +35,15 @@ get_platform()
 get_gpu()
 {
   gpu=$(get_platform)
+  gpu_vram_percent=$(get_tmux_option "@dracula-gpu-vram-percent" false)
   if [[ "$gpu" == NVIDIA ]]; then
-    usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk '{ used += $0; total +=$2 } END { printf("%dGB/%dGB\n", used / 1024, total / 1024) }')
+    if $gpu_vram_percent; then
+      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk '{ used += $0; total +=$2 } END { printf("%d%%\n", used / total * 100 ) }')
+    else
+      # to add finer grained info
+      # usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk '{ used += $0; total +=$2 } END { printf("%.1fGB/%dGB\n", used / 1024, total / 1024) }')
+      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk '{ used += $0; total +=$2 } END { printf("%dGB/%dGB\n", used / 1024, total / 1024) }')
+    fi
   else
     usage='unknown'
   fi
