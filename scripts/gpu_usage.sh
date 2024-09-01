@@ -9,9 +9,12 @@ get_platform()
 {
   case $(uname -s) in
     Linux)
-      # use this option for when you know that there is an NVIDIA gpu, but you cant use lspci to determine
-      ignore_lspci=$(get_tmux_option "@dracula-ignore-lspci" false)
-      if [[ "$ignore_lspci" = true ]]; then
+      # use this option for when your gpu isn't detected
+      gpu_label=$(get_tmux_option "@dracula-force-gpu" false)
+      if [[ "$gpu_label" != false ]]; then
+        echo $gpu_label
+      elif type -a nvidia-smi >> /dev/null; then
+        # if nvidia-smi is installed, its highly likely for the gpu to be nvidia, so stop checking
         echo "NVIDIA"
       else
         gpu=$(lspci -v | grep VGA | head -n 1 | awk '{print $5}')
