@@ -13,12 +13,16 @@ get_platform()
       gpu_label=$(get_tmux_option "@dracula-force-gpu" false)
       if [[ "$gpu_label" != false ]]; then
         echo $gpu_label
-      elif type -a nvidia-smi >> /dev/null; then
-        # if nvidia-smi is installed, its highly likely for the gpu to be nvidia, so stop checking
-        echo "NVIDIA"
       else
+        # attempt to detect the gpu
         gpu=$(lspci -v | grep VGA | head -n 1 | awk '{print $5}')
-        echo $gpu
+        if [[ -n $gpu ]]; then
+          # if a gpu is detected, return it
+          echo $gpu
+        elif type -a nvidia-smi >> /dev/null; then
+          # if no gpu was detected, and nvidia-smi is installed, we'll still try nvidia
+          echo "NVIDIA"
+        fi
       fi
       ;;
 
