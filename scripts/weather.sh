@@ -69,10 +69,10 @@ forecast_unicode()
 main()
 {
   # process should be cancelled when session is killed
-  if (echo > /dev/tcp/ipinfo.io/443) >/dev/null 2>&1; then
+  if timeout 1 bash -c "</dev/tcp/ipinfo.io/443" && timeout 1 bash -c "</dev/tcp/wttr.in/443"; then
     echo "$(display_weather)$(display_location)"
   else
-    echo "Location Unavailable"
+    echo "Weather Unavailable"
   fi
 }
 
