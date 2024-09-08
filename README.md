@@ -26,10 +26,10 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 - Refresh rate control
 - CPU usage (percentage or load average)
 - RAM usage (system and/or tmux server)
-- GPU usage
 - Custom status texts from external scripts
-- GPU VRAM usage
-- GPU power draw
+- GPU stats
+    - usage, power draw, and VRAM usage for NVIDIA on Linux
+    - usage, and power draw for MacOS. **requires sudo privileges**
 - Color code based on whether a prefix is active or not
 - List of windows with the current window highlighted
 - When prefix is enabled, the left status bar widget turns from green to yellow
