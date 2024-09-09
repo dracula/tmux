@@ -6,6 +6,13 @@ fahrenheit=$1
 location=$2
 fixedlocation=$3
 
+# emulate timeout command from bash - timeout is not available by default on OSX
+if [ "$(uname)" == "Darwin" ]; then
+  timeout() {
+      perl -e 'alarm shift; exec @ARGV' "$duration" "$@"
+  }
+fi
+
 display_location()
 {
   if $location && [[ ! -z "$fixedlocation" ]]; then
