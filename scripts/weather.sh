@@ -35,6 +35,7 @@ fetch_weather_information()
 #get weather display
 display_weather()
 {
+  fahrenheit=$1
   if $fahrenheit; then
     display_weather='&u' # for USA system
   else
@@ -66,13 +67,24 @@ forecast_unicode()
   fi
 }
 
+export -f display_weather
+export -f display_location
+export -f forecast_unicode
+export -f fetch_weather_information
+
 main()
 {
   # process should be cancelled when session is killed
   if timeout 1 bash -c "</dev/tcp/ipinfo.io/443" && timeout 1 bash -c "</dev/tcp/wttr.in/443"; then
-    echo "$(display_weather)$(display_location)"
+    if ! weather=$(timeout 3 bash -c "display_weather $fahrenheit"); then
+      echo "Weather Unavailable"
+    elif ! location=$(timeout 3 bash -c display_location); then
+      echo "Location Unavailable"
+    else
+      echo "${weather}${location}"
+    fi
   else
-    echo "Weather Unavailable"
+    echo "Network Error"
   fi
 }
 
