@@ -22,9 +22,9 @@ get_ssid()
       ;;
 
     Darwin)
-      if networksetup -getairportnetwork en0 | cut -d ':' -f 2 | sed 's/^[[:blank:]]*//g' &> /dev/null; then
+      if system_profiler SPAirPortDataType | awk '/Current Network Information:/ { getline; print substr($0, 13, (length($0) - 13)); exit }'; then
         wifi_label=$(get_tmux_option "@dracula-network-wifi-label" "")
-        echo "$wifi_label$(networksetup -getairportnetwork en0 | cut -d ':' -f 2)" | sed 's/^[[:blank:]]*//g'
+        echo "$wifi_label$(system_profiler SPAirPortDataType | awk '/Current Network Information:/ { getline; print substr($0, 13, (length($0) - 13)); exit }')"
       else
         echo "$(get_tmux_option "@dracula-network-ethernet-label" "Ethernet")"
       fi
