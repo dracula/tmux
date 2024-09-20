@@ -1,7 +1,3 @@
-"󰈀 "
-"󰣀 "
-"󱍢 "
-"󰉉 "
 
 ## left icon
 
@@ -22,27 +18,37 @@ besides formats, any other string can be used.
 
 ## continuum
 
+**TODO**
+
+```
 @dracula-continuum-mode
 @dracula-continuum-time-threshold
 @dracula-continuum-first-save
 @resurrect-dir
 @continuum-save-last-timestamp
 @continuum-save-interval
+```
+
+nerdfont icons to consider:
+`󰉉 `
 
 ## cpu_info
 
-Displays cpu usage in percent by default, but can display cpu load on linux, if the following flag is set to true:
-`set -g @dracula-cpu-display-load false`
+Displays cpu usage in percent by default, but can display cpu load on linux:
+`set -g @dracula-cpu-display-load true`
+
 Additionally the label can be set to whatever you'd like.
 `set -g @dracula-cpu-usage-label "CPU"`
-If you're using nerdfonts, try one of the following.
+
+nerdfont icons to consider:
 `   󰍛 󰘚 󰻟 󰻠 `
 
-`set -g @dracula-refresh-rate` affects this widget
+`set -g @dracula-refresh-rate 5` affects this widget
 
 ## gpu_info
 
-currently only works with NVIDIA gpus.
+full support for NVIDIA gpus.
+partial support for apple m-chips
 
 if your gpu is not recognised, force the script to assume a certain brands.
 ```
@@ -83,32 +89,57 @@ TODO:
 - add support for amd without testing and clarify that this is an experimental feature! ask someone whos got an amd card to test it.
 
 nerdfont icons to consider:
-```
-"󰢮 "
-```
+`󰢮  `
 
-`set -g @dracula-refresh-rate` affects this widget
+`set -g @dracula-refresh-rate 5` affects this widget
 
 ## network
 
 **This will only display the wifi you're connected to, if it provides internet access!**
 
+use different hosts to ping in order to check for a wifi or wired connection.
+if you frequently use networks without internet access, you can use local ip-addresses here to still display the connection.
+```
+set -g @dracula-network-hosts "1.1.1.1 8.8.8.8"
+```
+
+possible nerdfont settings for network info:
+```
 set -g @dracula-network-ethernet-label "󰈀 Eth"
 set -g @dracula-network-offline-label "󱍢 "
 set -g @dracula-network-wifi-label " "
-set -g @dracula-network-hosts "1.1.1.1 8.8.8.8"
+```
+
+nerdfont icons to consider:
+```
+ethernet: 󰈀 󰒪 󰒍 󰌗 󰌘
+offline: 󰖪  󱍢
+wifi:      󰖩  󰘊 󰒢
+```
+
+known issues:
+- if for some reason `iw` is only in the path for root and not the normal user, wifi connections will be considered ethernet connections.
 
 ## network bandwidth
+
+**TODO**
 
 tmux show-option -gqv "@dracula-network-bandwidth"
 
 ## network ping
 
-    pingserver=$(get_tmux_option "@dracula-ping-server" "google.com")
+to use a custom server:
+```
+set -g @dracula-ping-server "1.1.1.1"
+```
 
-RATE=$(get_tmux_option "@dracula-ping-rate" 5)
-
+to set the rate at which to ping the server (in seconds):
+```
+set -g @dracula-ping-rate 5
+```
 ## network vpn
+
+**TODO**
 
 set -g @dracula-network-vpn-verbose true
 
@@ -117,32 +148,64 @@ set -g @dracula-network-vpn-label
 
 ## playerctl
 
-RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-  FORMAT=$(get_tmux_option "@dracula-playerctl-format" "Now playing: {{ artist }} - {{ album }} - {{ title }}")
+to change the display format:
+```
+set -g @dracula-playerctl-format "Now playing: {{ artist }} - {{ album }} - {{ title }}"
+```
 
+`set -g @dracula-refresh-rate 5` affects this widget
 ## ram usage
 
-ram_label=$(get_tmux_option "@dracula-ram-usage-label" "RAM")
+possible nerdfont settings for ram usage:
+```
+set -g @dracula-ram-usage-label " "
+```
+
+nerdfont icons to consider:
+`   󰍛 󰘚 `
 
 ## ssh session
 
+to output nothing (and maybe hide) the widget when not connected via ssh:
+```
 set -g @dracula-show-ssh-only-when-connected true
+```
+
+nerdfont icons to consider:
+`󰣀 `
 
 ## spotify tui
 
-RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-  FORMAT=$(get_tmux_option "@dracula-spotify-tui-format" "%f %s %t - %a")
-max_len=$(get_tmux_option "@dracula-spotify-tui-max-len" 0)
+to format the display format:
+```
+set -g @dracula-spotify-tui-format "%f %s %t - %a"
+```
+
+to limit the maximum length (0 means unlimited length):
+```
+set -g @dracula-spotify-tui-max-len 30
+```
+
+`set -g @dracula-refresh-rate 5` affects this widget
 
 ## synchronise panes
 
-current_synchronize_panes_status=$(get_tmux_window_option "synchronize-panes" "off")
-  RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
+**TODO**
 
+```
+current_synchronize_panes_status=$(get_tmux_window_option "synchronize-panes" "off")
+```
+
+`set -g @dracula-refresh-rate 5` affects this widget
 ## terraform
 
-RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-
+`set -g @dracula-refresh-rate 5` affects this widget
 ## tmux ram usage
 
-ram_label=$(get_tmux_option "@dracula-tmux-ram-usage-label" "MEM")
+possible nerdfont settings for tmux ram usage:
+```
+@dracula-tmux-ram-usage-label " "
+```
+
+nerdfont icons to consider:
+`   󰍛 󰘚 `
