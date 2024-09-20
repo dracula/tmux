@@ -7,6 +7,8 @@ source $current_dir/utils.sh
 
 # set your own hosts so that a wifi is recognised even without internet access
 HOSTS=$(get_tmux_option "@dracula-network-hosts" "google.com github.com example.com")
+wifi_label=$(get_tmux_option "@dracula-network-wifi-label" "")
+ethernet_label=$(get_tmux_option "@dracula-network-ethernet-label" "Ethernet")
 
 get_ssid()
 {
@@ -17,16 +19,15 @@ get_ssid()
       if [ -n "$SSID" ]; then
         printf '%s' "$wifi_label$SSID"
       else
-        echo "$(get_tmux_option "@dracula-network-ethernet-label" "Ethernet")"
+        echo "$ethernet_label"
       fi
       ;;
 
     Darwin)
       if networksetup -getairportnetwork en0 | cut -d ':' -f 2 | sed 's/^[[:blank:]]*//g' &> /dev/null; then
-        wifi_label=$(get_tmux_option "@dracula-network-wifi-label" "")
         echo "$wifi_label$(networksetup -getairportnetwork en0 | cut -d ':' -f 2)" | sed 's/^[[:blank:]]*//g'
       else
-        echo "$(get_tmux_option "@dracula-network-ethernet-label" "Ethernet")"
+        echo "$ethernet_label"
       fi
       ;;
 
