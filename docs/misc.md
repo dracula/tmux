@@ -43,21 +43,49 @@ If you're using nerdfonts, try one of the following.
 ## gpu_info
 
 currently only works with NVIDIA gpus.
-"󰢮 "
 
-if your gpu is not recognised, force the script to run anyways.
-`set -g @dracula-ignore-lspci false`
+if your gpu is not recognised, force the script to assume a certain brands.
+```
+set -g @dracula-force-gpu "NVIDIA"
+```
 
+to display the used vram in percent (gigabyte is default unit):
+```
+set -g @dracula-gpu-vram-percent true
+```
+
+vram usage is displayed in gigabyte without decimal places per default. to change that behaviour, use the following options with the respective number of decimal places you'd like to get:
+```
+set -g @dracula-gpu-vram-used-accuracy ".2f"
+set -g @dracula-gpu-vram-total-accuracy ".1f"
+```
+
+to display the power usage in percent (watt is default unit):
+```
+set -g @dracula-gpu-power-percent true
+```
+
+default gpu info labels:
 ```
 set -g @dracula-gpu-usage-label "GPU"
 set -g @dracula-gpu-vram-label "VRAM"
 set -g @dracula-gpu-power-label "GPU"
 ```
 
-TODO:
+possible nerdfont settings for gpu info labels:
+```
+set -g @dracula-gpu-power-label "󰢮 "
+set -g @dracula-gpu-usage-label "󰢮 "
+set -g @dracula-gpu-vram-label "󰢮 "
+```
 
-- switch from `lspci` to `which -s nvidia-smi`
+TODO:
 - add support for amd without testing and clarify that this is an experimental feature! ask someone whos got an amd card to test it.
+
+nerdfont icons to consider:
+```
+"󰢮 "
+```
 
 `set -g @dracula-refresh-rate` affects this widget
 
