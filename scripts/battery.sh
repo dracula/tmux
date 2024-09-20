@@ -151,7 +151,7 @@ battery_status()
 main()
 {
   bat_label=$(get_tmux_option "@dracula-battery-label" "♥")
-  if [ "$bat_label" ]; then
+  if [ "$bat_label" == false ]; then
     bat_label=""
   fi
 
