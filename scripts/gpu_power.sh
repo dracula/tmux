@@ -9,18 +9,28 @@ get_platform()
 {
   case $(uname -s) in
     Linux)
-      # use this option for when you know that there is an NVIDIA gpu, but you cant use lspci to determine
-      ignore_lspci=$(get_tmux_option "@dracula-ignore-lspci" false)
-      if [[ "$ignore_lspci" = true ]]; then
-        echo "NVIDIA"
+      # use this option for when your gpu isn't detected
+      gpu_label=$(get_tmux_option "@dracula-force-gpu" false)
+      if [[ "$gpu_label" != false ]]; then
+        echo $gpu_label
       else
+        # attempt to detect the gpu
         gpu=$(lspci -v | grep VGA | head -n 1 | awk '{print $5}')
-        echo $gpu
+        if [[ -n $gpu ]]; then
+          # if a gpu is detected, return it
+          echo $gpu
+        elif type -a nvidia-smi >> /dev/null; then
+          # if no gpu was detected, and nvidia-smi is installed, we'll still try nvidia
+          echo "NVIDIA"
+        fi
       fi
       ;;
 
     Darwin)
-      # TODO - Darwin/Mac compatability
+      # WARNING: for this to work the powermetrics command needs to be run without password
+      #   add this to the sudoers file, replacing the username and omitting the quotes.
+      #   be mindful of the tabs: "username		ALL = (root) NOPASSWD: /usr/bin/powermetrics"
+      echo "apple"
       ;;
 
     CYGWIN*|MINGW32*|MSYS*|MINGW*)
@@ -28,13 +38,19 @@ get_platform()
       ;;
   esac
 }
-
 get_gpu()
 {
   gpu=$(get_platform)
+  gpu_power_percent=$(get_tmux_option "@dracula-gpu-power-percent" false)
   if [[ "$gpu" == NVIDIA ]]; then
-    usage=$(nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk '{ draw += $0; max +=$2 } END { printf("%dW/%dW\n", draw, max) }')
+    if $gpu_power_percent; then
+      usage=$(nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk '{ draw += $0; max +=$2 } END { printf("%d%%\n", draw / max * 100) }')
+  else
+      usage=$(nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk '{ draw += $0; max +=$2 } END { printf("%dW/%dW\n", draw, max) }')
+    fi
 
+  elif [[ "$gpu" == apple ]]; then
+    usage="$(sudo powermetrics --samplers gpu_power -i500 -n 1 | grep 'GPU Power' | sed 's/GPU Power: \(.*\) \(.*\)/\1\2/g')"
   else
     usage='unknown'
   fi
@@ -45,7 +61,7 @@ main()
 {
   # storing the refresh rate in the variable RATE, default is 5
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-  gpu_label=$(get_tmux_option "@dracula-gpu-usage-label" "GPU")
+  gpu_label=$(get_tmux_option "@dracula-gpu-power-label" "GPU")
   gpu_usage=$(get_gpu)
   echo "$gpu_label $gpu_usage"
   sleep $RATE

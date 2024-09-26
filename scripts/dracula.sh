@@ -9,6 +9,7 @@ main()
 {
   # set configuration option variables
   show_kubernetes_context_label=$(get_tmux_option "@dracula-kubernetes-context-label" "")
+  show_only_kubernetes_context=$(get_tmux_option "@dracula-show-only-kubernetes-context" "")
   eks_hide_arn=$(get_tmux_option "@dracula-kubernetes-eks-hide-arn" false)
   eks_extract_account=$(get_tmux_option "@dracula-kubernetes-eks-extract-account" false)
   hide_kubernetes_user=$(get_tmux_option "@dracula-kubernetes-hide-user" false)
@@ -231,7 +232,7 @@ main()
 
     elif [ $plugin = "kubernetes-context" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-kubernetes-context-colors" "cyan dark_gray")
-      script="#($current_dir/kubernetes_context.sh $eks_hide_arn $eks_extract_account $hide_kubernetes_user $show_kubernetes_context_label)"
+      script="#($current_dir/kubernetes_context.sh $eks_hide_arn $eks_extract_account $hide_kubernetes_user $show_only_kubernetes_context $show_kubernetes_context_label)"
 
     elif [ $plugin = "terraform" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-terraform-colors" "light_purple dark_gray")
@@ -253,7 +254,7 @@ main()
         if $show_day_month && $show_military ; then # military time and dd/mm
           script="%a %d/%m %R ${timezone} "
         elif $show_military; then # only military time
-          script="%a %m/%d %R ${timezone} "
+          script="%R ${timezone} "
         elif $show_day_month; then # only dd/mm
           script="%a %d/%m %I:%M %p ${timezone} "
         else

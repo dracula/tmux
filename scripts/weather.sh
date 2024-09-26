@@ -6,6 +6,13 @@ fahrenheit=$1
 location=$2
 fixedlocation=$3
 
+# emulate timeout command from bash - timeout is not available by default on OSX
+if [ "$(uname)" == "Darwin" ]; then
+  timeout() {
+      perl -e 'alarm shift; exec @ARGV' "$duration" "$@"
+  }
+fi
+
 display_location()
 {
   if $location && [[ ! -z "$fixedlocation" ]]; then
@@ -46,7 +53,7 @@ display_weather()
   temperature=$(echo $weather_information | rev | cut -d ' ' -f 1 | rev) # +31°C, -3°F, etc
   unicode=$(forecast_unicode $weather_condition)
 
-  echo "$unicode${temperature/+/}" # remove the plus sign to the temperature
+  echo "$unicode ${temperature/+/}" # remove the plus sign to the temperature
 }
 
 forecast_unicode()
@@ -69,10 +76,10 @@ forecast_unicode()
 main()
 {
   # process should be cancelled when session is killed
-  if ping -q -c 1 -W 1 ipinfo.io &>/dev/null; then
+  if timeout 1 bash -c "</dev/tcp/ipinfo.io/443" && timeout 1 bash -c "</dev/tcp/wttr.in/443"; then
     echo "$(display_weather)$(display_location)"
   else
-    echo "Location Unavailable"
+    echo "Weather Unavailable"
   fi
 }
 

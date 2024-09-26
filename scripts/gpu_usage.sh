@@ -9,18 +9,28 @@ get_platform()
 {
   case $(uname -s) in
     Linux)
-      # use this option for when you know that there is an NVIDIA gpu, but you cant use lspci to determine
-      ignore_lspci=$(get_tmux_option "@dracula-ignore-lspci" false)
-      if [[ "$ignore_lspci" = true ]]; then
-        echo "NVIDIA"
+      # use this option for when your gpu isn't detected
+      gpu_label=$(get_tmux_option "@dracula-force-gpu" false)
+      if [[ "$gpu_label" != false ]]; then
+        echo $gpu_label
       else
+        # attempt to detect the gpu
         gpu=$(lspci -v | grep VGA | head -n 1 | awk '{print $5}')
-        echo $gpu
+        if [[ -n $gpu ]]; then
+          # if a gpu is detected, return it
+          echo $gpu
+        elif type -a nvidia-smi >> /dev/null; then
+          # if no gpu was detected, and nvidia-smi is installed, we'll still try nvidia
+          echo "NVIDIA"
+        fi
       fi
       ;;
 
     Darwin)
-      # TODO - Darwin/Mac compatability
+      # WARNING: for this to work the powermetrics command needs to be run without password
+      #   add this to the sudoers file, replacing the username and omitting the quotes.
+      #   be mindful of the tabs: "username		ALL = (root) NOPASSWD: /usr/bin/powermetrics"
+      echo "apple"
       ;;
 
     CYGWIN*|MINGW32*|MSYS*|MINGW*)
@@ -34,6 +44,8 @@ get_gpu()
   gpu=$(get_platform)
   if [[ "$gpu" == NVIDIA ]]; then
     usage=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{ sum += $0 } END { printf("%d%%\n", sum / NR) }')
+  elif [[ "$gpu" == apple ]]; then
+    usage="$(sudo powermetrics --samplers gpu_power -i500 -n 1 | grep 'active residency' | sed 's/[^0-9.%]//g' | sed 's/[%].*$//g')%"
   else
     usage='unknown'
   fi
