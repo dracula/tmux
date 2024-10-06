@@ -9,18 +9,18 @@ linux_acpi() {
   arg=$1
   BAT=$(ls -d /sys/class/power_supply/*)
   if [ ! -x "$(which acpi 2> /dev/null)" ];then
-    case "$arg" in
-      status)
-        cat $BAT/status
-        ;;
-
-      percent)
-        cat $BAT/capacity
-        ;;
-
-      *)
-        ;;
-    esac
+    for DEV in $BAT; do
+      case "$arg" in
+        status)
+          [ -f "$DEV/status" ] && cat "$DEV/status"
+          ;;
+        percent)
+          [ -f "$DEV/capacity" ] && cat "$DEV/capacity"
+          ;;
+        *)
+          ;;
+      esac
+    done
   else
     case "$arg" in
       status)
