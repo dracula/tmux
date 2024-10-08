@@ -44,7 +44,7 @@ programs.tmux = {
 
 #### Configuration
 
-To enable plugins set up the `@dracula-plugins` option in you `.tmux.conf` file, separate plugin by space.
+To enable plugins set up the `@dracula-plugins` option in your `.tmux.conf` file, separate plugin by space.
 The order that you define the plugins will be the order on the status bar left to right.
 
 ```bash
