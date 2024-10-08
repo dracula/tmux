@@ -54,10 +54,8 @@ main()
   # Set color of background
   if $transparent_powerline_bg; then
     bg_color="default"
-    separator_bg_color="default"
   else
     bg_color=${gray}
-    separator_bg_color=${white}
   fi
 
   # Handle left icon configuration
@@ -139,8 +137,8 @@ main()
 
   # Status left
   if $show_powerline; then
-    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=default]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
-    powerbg=default
+    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${bg_color}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
+    powerbg=${bg_color}
   else
     tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon}"
   fi
@@ -308,7 +306,7 @@ main()
   # Window option
   if $show_powerline; then
     if $transparent_powerline_bg; then
-    tmux set-window-option -g window-status-current-format "#[fg=${dark_purple},bg=default]${inverse_divider}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=default]${left_sep}"
+    tmux set-window-option -g window-status-current-format "#[fg=${dark_purple},bg=${bg_color}]${inverse_divider}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=${bg_color}]${left_sep}"
     else
     tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=${gray}]${left_sep}"
     fi
@@ -316,7 +314,7 @@ main()
     tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W${current_flags} "
   fi
 
-  tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=default] #I #W${flags}"
+  tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${bg_color}] #I #W${flags}"
   tmux set-window-option -g window-status-activity-style "bold"
   tmux set-window-option -g window-status-bell-style "bold"
 }
