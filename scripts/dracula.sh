@@ -18,6 +18,7 @@ main()
   show_location=$(get_tmux_option "@dracula-show-location" true)
   fixed_location=$(get_tmux_option "@dracula-fixed-location")
   show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
+  transparent_bg=$(get_tmux_option "@dracula-transparent-bg" false)
   show_flags=$(get_tmux_option "@dracula-show-flags" false)
   show_left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
   show_left_icon_padding=$(get_tmux_option "@dracula-left-icon-padding" 1)
@@ -26,6 +27,7 @@ main()
   show_timezone=$(get_tmux_option "@dracula-show-timezone" true)
   show_left_sep=$(get_tmux_option "@dracula-show-left-sep" )
   show_right_sep=$(get_tmux_option "@dracula-show-right-sep" )
+  show_inverse_divider=$(get_tmux_option "@dracula-inverse-divider" )
   show_border_contrast=$(get_tmux_option "@dracula-border-contrast" false)
   show_day_month=$(get_tmux_option "@dracula-day-month" false)
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
@@ -48,6 +50,15 @@ main()
   red='#ff5555'
   pink='#ff79c6'
   yellow='#f1fa8c'
+
+  # Set color of background
+  if $transparent_bg; then
+    bg_color="default"
+    separator_bg_color="default"
+  else
+    bg_color=${gray}
+    separator_bg_color=${white}
+  fi
 
   # Handle left icon configuration
   case $show_left_icon in
@@ -76,6 +87,7 @@ main()
   if $show_powerline; then
     right_sep="$show_right_sep"
     left_sep="$show_left_sep"
+    inverse_divider="$show_inverse_divider"
   fi
 
   # Set timezone unless hidden by configuration
@@ -123,12 +135,12 @@ main()
   tmux set-option -g message-style "bg=${gray},fg=${white}"
 
   # status bar
-  tmux set-option -g status-style "bg=${gray},fg=${white}"
+  tmux set-option -g status-style "bg=${bg_color},fg=${white}"
 
   # Status left
   if $show_powerline; then
-    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
-    powerbg=${gray}
+    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=default]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
+    powerbg=default
   else
     tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon}"
   fi
@@ -295,12 +307,16 @@ main()
 
   # Window option
   if $show_powerline; then
+    if $transparent_bg; then
+    tmux set-window-option -g window-status-current-format "#[fg=${dark_purple},bg=default]${inverse_divider}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=default]${left_sep}"
+    else
     tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=${gray}]${left_sep}"
+    fi
   else
     tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W${current_flags} "
   fi
 
-  tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${gray}] #I #W${flags}"
+  tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=default] #I #W${flags}"
   tmux set-window-option -g window-status-activity-style "bold"
   tmux set-window-option -g window-status-bell-style "bold"
 }
