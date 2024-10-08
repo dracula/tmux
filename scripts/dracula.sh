@@ -91,7 +91,6 @@ main()
   if $show_powerline; then
     right_sep="$show_right_sep"
     left_sep="$show_left_sep"
-    inverse_divider="$show_inverse_divider"
   fi
 
   # Set timezone unless hidden by configuration
