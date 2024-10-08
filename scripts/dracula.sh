@@ -18,7 +18,7 @@ main()
   show_location=$(get_tmux_option "@dracula-show-location" true)
   fixed_location=$(get_tmux_option "@dracula-fixed-location")
   show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
-  transparent_bg=$(get_tmux_option "@dracula-transparent-bg" false)
+  transparent_powerline_bg=$(get_tmux_option "@dracula-transparent-powerline-bg" false)
   show_flags=$(get_tmux_option "@dracula-show-flags" false)
   show_left_icon=$(get_tmux_option "@dracula-show-left-icon" smiley)
   show_left_icon_padding=$(get_tmux_option "@dracula-left-icon-padding" 1)
@@ -52,7 +52,7 @@ main()
   yellow='#f1fa8c'
 
   # Set color of background
-  if $transparent_bg; then
+  if $transparent_powerline_bg; then
     bg_color="default"
     separator_bg_color="default"
   else
@@ -307,7 +307,7 @@ main()
 
   # Window option
   if $show_powerline; then
-    if $transparent_bg; then
+    if $transparent_powerline_bg; then
     tmux set-window-option -g window-status-current-format "#[fg=${dark_purple},bg=default]${inverse_divider}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=default]${left_sep}"
     else
     tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=${gray}]${left_sep}"
