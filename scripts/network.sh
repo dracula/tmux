@@ -17,7 +17,7 @@ get_ssid()
     Linux)
       SSID=$(iw dev | sed -nr 's/^\t\tssid (.*)/\1/p')
       if [ -n "$SSID" ]; then
-        printf '%s' "$wifi_label$SSID"
+        echo "$wifi_label$SSID"
       else
         echo "$ethernet_label"
       fi
@@ -45,7 +45,7 @@ main()
 {
   network="$(get_tmux_option "@dracula-network-offline-label" "Offline")"
   for host in $HOSTS; do
-    if ping -q -c 1 -W 1 $host &>/dev/null; then
+    if ping -q -c 1 -W 1 "$host" &>/dev/null; then
       network="$(get_ssid)"
       break
     fi
