@@ -117,6 +117,15 @@ Hide empty plugins
 set -g @dracula-show-empty-plugins false
 ```
 
+Make the powerline background transparent
+
+```bash
+set -g @dracula-powerline-bg-transparent true
+
+# the left separator symbol is inversed with a transparent background, you can modify it with any symbol you like
+set -g @dracula-inverse-divider 
+```
+
 #### cpu-usage options
 
 Customize label
