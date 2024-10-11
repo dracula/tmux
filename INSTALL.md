@@ -126,13 +126,13 @@ set -g @dracula-powerline-bg-transparent true
 set -g @dracula-inverse-divider 
 ```
 
-#### [color theming](https://github.com/dracula/tmux/blob/master/docs/color_theming/README.md)
+#### [color theming](/docs/color_theming/README.md)
 
 Each individual widget's foreground and background color can be overridden.
 Additionally, the variables used for storing color values can be overridden and extended.
 This allows for the use of custom themes like catppuccin or gruvbox.
 
-For everything regarding colors, please refer to [the color theming directory](https://github.com/dracula/tmux/blob/master/docs/color_theming/README.md).
+For everything regarding colors, please refer to [the color theming directory](/docs/color_theming/README.md).
 
 #### cpu-usage options
 

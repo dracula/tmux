@@ -54,5 +54,5 @@ yellow="#f1fa8c"
 ```
 ## plug and play themes
 as part of this directory there are some plug and play themes with explanations on how to use them:
-- [catppuccin](https://github.com/dracula/tmux/blob/master/docs/color_theming/catppuccin.md)
-- [gruvbox](https://github.com/dracula/tmux/blob/master/docs/color_theming/gruvbox.md)
+- [catppuccin](/docs/color_theming/catppuccin.md)
+- [gruvbox](/docs/color_theming/gruvbox.md)
