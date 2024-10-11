@@ -51,7 +51,10 @@ main()
   pink="#ff79c6"
   yellow="#f1fa8c"
 
-  source "$(get_tmux_option "@dracula-colors" "$current_dir/colors.sh")"
+  colors_file="$(get_tmux_option "@dracula-colors" "")"
+  if [ -f "$colors_file" ]; then
+    source "$colors_file"
+  fi
 
   # Set transparency variables - Colors and window dividers
   if $transparent_powerline_bg; then
