@@ -16,6 +16,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 
 - Support for powerline
 - Day, date, time, timezone
+- [Fully custom color theming](https://github.com/dracula/tmux/blob/master/docs/color_theming/README.md)
 - Current location based on network with temperature and forecast icon (if available)
 - Network connection status, bandwidth and SSID
 - SSH session user, hostname and port of active tmux pane
