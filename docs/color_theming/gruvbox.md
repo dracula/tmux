@@ -1,9 +1,10 @@
 # drac to gruv
 
 **TODO**
-for a quick setup, fill the file with the following contents:
+for a quick setup, set the following option:
 ```
-# simple catppuccin Color Pallette
+set -g @dracula-colors "
+# simple gruvbox Color Pallette
 pink='#'
 orange='#'
 yellow='#'
@@ -15,6 +16,7 @@ dark_gray='#'
 red='#'
 gray='#'
 dark_purple='#'
+"
 ```
 
 

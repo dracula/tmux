@@ -51,9 +51,10 @@ main()
   pink="#ff79c6"
   yellow="#f1fa8c"
 
-  colors_file="$(get_tmux_option "@dracula-colors" "")"
-  if [ -f "$colors_file" ]; then
-    source "$colors_file"
+  # Override default colors and possibly add more
+  colors="$(get_tmux_option "@dracula-colors" "")"
+  if [ -n "$colors" ]; then
+    eval "$colors"
   fi
 
   # Set transparency variables - Colors and window dividers

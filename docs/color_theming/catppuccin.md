@@ -1,8 +1,9 @@
 # drac to cat
 
 
-for a quick setup, fill the file with the following contents:
+for a quick setup, set the following option:
 ```
+set -g @dracula-colors "
 # simple catppuccin Color Pallette
 pink='#cba6f7'
 orange='#fab387'
@@ -15,6 +16,7 @@ dark_gray='#313244'
 red='#f38ba8'
 gray='#45475a'
 dark_purple='#6c7086'
+"
 ```
 
 

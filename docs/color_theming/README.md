@@ -32,25 +32,31 @@ set -g @dracula-weather-colors "orange dark_gray"
 ```
 
 # overriding color variables
-this requires an extra `.sh` file which specifies color variables and their respective values. it can be used to override and also extend the dracula color pallette.
 
-if your tmux config is in `~/.config/tmux/`, then consider putting the color variables into `~/.config/tmux/colors.sh`, with the matching option `set -g @dracula-colors "~/.config/tmux/colors.sh"` in your tmux config.
-alternatively, if your tmux config is `~/.tmux.conf`, then consider putting the color variables into `~/.tmux_colors.sh`, with the matching option `set -g @dracula-colors "~/.tmux_colors.sh"` in your tmux config.
+all dracula colors can be overridden and new variables can be added.
+use the `set -g @dracula-colors "color variables go here"` option. put each new variable on a new line for readability or all variables on one line to save space.
 
-for a quick setup, fill the file with the following contents:
+for a quick setup, add one of the following options to your config:
+**better readability**
 ```
+set -g @dracula-colors "
 # Dracula Color Pallette
-white="#f8f8f2"
-gray="#44475a"
-dark_gray="#282a36"
-light_purple="#bd93f9"
-dark_purple="#6272a4"
-cyan="#8be9fd"
-green="#50fa7b"
-orange="#ffb86c"
-red="#ff5555"
-pink="#ff79c6"
-yellow="#f1fa8c"
+white='#f8f8f2'
+gray='#44475a'
+dark_gray='#282a36'
+light_purple='#bd93f9'
+dark_purple='#6272a4'
+cyan='#8be9fd'
+green='#50fa7b'
+orange='#ffb86c'
+red='#ff5555'
+pink='#ff79c6'
+yellow='#f1fa8c'
+"
+```
+**saving space**
+```
+set -g @dracula-colors " white='#f8f8f2' gray='#44475a' dark_gray='#282a36' light_purple='#bd93f9' dark_purple='#6272a4' cyan='#8be9fd' green='#50fa7b' orange='#ffb86c' red='#ff5555' pink='#ff79c6' yellow='#f1fa8c' "
 ```
 ## plug and play themes
 as part of this directory there are some plug and play themes with explanations on how to use them:
