@@ -22,9 +22,9 @@ get_ssid()
       ;;
 
     Darwin)
-      if system_profiler SPAirPortDataType | awk '/Current Network Information:/ { getline; print substr($0, 13, (length($0) - 13)); exit }'; then
+      if ipconfig getsummary en0 | awk -F ' SSID : ' '/ SSID : / {print $2}'; then
         wifi_label=$(get_tmux_option "@dracula-network-wifi-label" "")
-        echo "$wifi_label$(system_profiler SPAirPortDataType | awk '/Current Network Information:/ { getline; print substr($0, 13, (length($0) - 13)); exit }')"
+        echo "$wifi_label$(ipconfig getsummary en0 | awk -F ' SSID : ' '/ SSID : / {print $2}')"
       else
         echo "$(get_tmux_option "@dracula-network-ethernet-label" "Ethernet")"
       fi
