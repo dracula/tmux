@@ -24,8 +24,9 @@ get_ssid()
       ;;
 
     Darwin)
-      if networksetup -getairportnetwork en0 | cut -d ':' -f 2 | sed 's/^[[:blank:]]*//g' &> /dev/null; then
-        echo "$wifi_label$(networksetup -getairportnetwork en0 | cut -d ':' -f 2)" | sed 's/^[[:blank:]]*//g'
+      if ipconfig getsummary en0 | awk -F ' SSID : ' '/ SSID : / {print $2}'; then
+        wifi_label=$(get_tmux_option "@dracula-network-wifi-label" "")
+        echo "$wifi_label$(ipconfig getsummary en0 | awk -F ' SSID : ' '/ SSID : / {print $2}')"
       else
         echo "$ethernet_label"
       fi
