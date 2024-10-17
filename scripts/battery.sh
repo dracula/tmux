@@ -106,7 +106,7 @@ battery_status()
       )
       echo "${battery_labels[$((bat_perc/10*10))]:-󰂃}"
       ;;
-    high|Full)
+    high|charged|Full)
       echo "󰁹"
       ;;
     charging|Charging)
