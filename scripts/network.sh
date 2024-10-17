@@ -7,6 +7,8 @@ source $current_dir/utils.sh
 
 # set your own hosts so that a wifi is recognised even without internet access
 HOSTS=$(get_tmux_option "@dracula-network-hosts" "google.com github.com example.com")
+wifi_label=$(get_tmux_option "@dracula-network-wifi-label" "")
+ethernet_label=$(get_tmux_option "@dracula-network-ethernet-label" "Ethernet")
 
 get_ssid()
 {
@@ -15,9 +17,9 @@ get_ssid()
     Linux)
       SSID=$(iw dev | sed -nr 's/^\t\tssid (.*)/\1/p')
       if [ -n "$SSID" ]; then
-        printf '%s' "$wifi_label$SSID"
+        echo "$wifi_label$SSID"
       else
-        echo "$(get_tmux_option "@dracula-network-ethernet-label" "Ethernet")"
+        echo "$ethernet_label"
       fi
       ;;
 
@@ -26,7 +28,7 @@ get_ssid()
         wifi_label=$(get_tmux_option "@dracula-network-wifi-label" "")
         echo "$wifi_label$(ipconfig getsummary en0 | awk -F ' SSID : ' '/ SSID : / {print $2}')"
       else
-        echo "$(get_tmux_option "@dracula-network-ethernet-label" "Ethernet")"
+        echo "$ethernet_label"
       fi
       ;;
 
@@ -44,7 +46,7 @@ main()
 {
   network="$(get_tmux_option "@dracula-network-offline-label" "Offline")"
   for host in $HOSTS; do
-    if ping -q -c 1 -W 1 $host &>/dev/null; then
+    if ping -q -c 1 -W 1 "$host" &>/dev/null; then
       network="$(get_ssid)"
       break
     fi
