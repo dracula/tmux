@@ -46,6 +46,7 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 - Current kubernetes context
 - Countdown to tmux-continuum save
 - Current working directory of tmux pane
+- Kerberos TGT expiration date
 - Show your Libre Freestyle 3 readings [Setup instructions](./scripts/libre.sh)
 
 ## Compatibility
