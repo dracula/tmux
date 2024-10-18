@@ -298,6 +298,11 @@ main()
       continue
     fi
 
+    if [ $plugin = "rpi-temp" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-rpi-temp-colors" "green dark_gray")
+      script="#($current_dir/rpi_temp.sh)"
+    fi
+
     if $show_powerline; then
       if $show_empty_plugins; then
         tmux set-option -ga status-right "#[fg=${!colors[0]},bg=${powerbg},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script "
