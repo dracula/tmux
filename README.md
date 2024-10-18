@@ -32,14 +32,22 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 - List of windows with the current window highlighted
 - When prefix is enabled, a smiley face turns from green to yellow
 - When charging, 'AC' is displayed
+    - Alternatively show battery level and whether its charging next to percentage by setting:
+    ```
+    set -g @dracula-battery-label false
+    set -g @dracula-no-battery-label false
+    set -g @dracula-show-battery-status true
+    ```
 - If forecast information is available, a ☀, ☁, ☂, or ❄ unicode character corresponding with the forecast is displayed alongside the temperature
 - Info if the Panes are synchronized
-- Spotify playback (needs the tool spotify-tui installed)
+- Spotify playback (needs the tool spotify-tui installed). max-len can be configured.
 - Music Player Daemon status (needs the tool mpc installed)
+- Playerctl, get current track metadata
 - Current kubernetes context
 - Countdown to tmux-continuum save
 - Current working directory of tmux pane
 - Kerberos TGT expiration date
+- Show your Libre Freestyle 3 readings [Setup instructions](./scripts/libre.sh)
 
 ## Compatibility
 

@@ -9,8 +9,21 @@ get_platform()
 {
   case $(uname -s) in
     Linux)
-      gpu=$(lspci -v | grep VGA | head -n 1 | awk '{print $5}')
-      echo $gpu
+      # use this option for when your gpu isn't detected
+      gpu_label=$(get_tmux_option "@dracula-force-gpu" false)
+      if [[ "$gpu_label" != false ]]; then
+        echo $gpu_label
+      else
+        # attempt to detect the gpu
+        gpu=$(lspci -v | grep VGA | head -n 1 | awk '{print $5}')
+        if [[ -n $gpu ]]; then
+          # if a gpu is detected, return it
+          echo $gpu
+        elif type -a nvidia-smi >> /dev/null; then
+          # if no gpu was detected, and nvidia-smi is installed, we'll still try nvidia
+          echo "NVIDIA"
+        fi
+      fi
       ;;
 
     Darwin)
@@ -26,19 +39,29 @@ get_platform()
 get_gpu()
 {
   gpu=$(get_platform)
+  gpu_vram_percent=$(get_tmux_option "@dracula-gpu-vram-percent" false)
   if [[ "$gpu" == NVIDIA ]]; then
-    usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk '{ used += $0; total +=$2 } END { printf("%dGB/%dGB\n", used / 1024, total / 1024) }')
+    if $gpu_vram_percent; then
+      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk '{ used += $0; total +=$2 } END { printf("%d%%\n", used / total * 100 ) }')
+    normalize_percent_len $usage
+    exit 0
+    else
+      # to add finer grained info
+      used_accuracy=$(get_tmux_option "@dracula-gpu-vram-used-accuracy" "d")
+      total_accuracy=$(get_tmux_option "@dracula-gpu-vram-total-accuracy" "d")
+      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk "{ used += \$0; total +=\$2 } END { printf(\"%${used_accuracy}GB/%${total_accuracy}GB\n\", used / 1024, total / 1024) }")
+    fi
   else
     usage='unknown'
   fi
-  normalize_percent_len $usage
+  echo $usage
 }
 
 main()
 {
   # storing the refresh rate in the variable RATE, default is 5
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-  gpu_label=$(get_tmux_option "@dracula-gpu-usage-label" "VRAM")
+  gpu_label=$(get_tmux_option "@dracula-gpu-vram-label" "VRAM")
   gpu_usage=$(get_gpu)
   echo "$gpu_label $gpu_usage"
   sleep $RATE

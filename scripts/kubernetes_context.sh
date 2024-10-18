@@ -5,7 +5,8 @@ export LC_ALL=en_US.UTF-8
 hide_arn_from_cluster=$1
 extract_account=$2
 hide_user=$3
-label=$4
+just_current_context=$4
+label=$5
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
@@ -34,6 +35,19 @@ main()
   # storing the refresh rate in the variable RATE, default is 5
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
   OUTPUT_STRING=""
+
+  if [ "$just_current_context" = "true" ]
+  then
+    echo "$current_context"
+  else
+    getFullMessage
+  fi
+
+  sleep $RATE
+}
+
+getFullMessage()
+{
   if [ ! -z "$current_account_id" ]
   then
       OUTPUT_STRING="${current_account_id}/"
@@ -65,8 +79,6 @@ main()
   else
     echo "${label} ${OUTPUT_STRING}"
   fi
-
-  sleep $RATE
 }
 
 # run the main driver

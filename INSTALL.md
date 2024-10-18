@@ -44,11 +44,11 @@ programs.tmux = {
 
 #### Configuration
 
-To enable plugins set up the `@dracula-plugins` option in you `.tmux.conf` file, separate plugin by space.
+To enable plugins set up the `@dracula-plugins` option in your `.tmux.conf` file, separate plugin by space.
 The order that you define the plugins will be the order on the status bar left to right.
 
 ```bash
-# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, ssh-session, attached-clients, network-vpn, weather, time, mpc, spotify-tui, kubernetes-context, synchronize-panes, krbtgt
+# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, ssh-session, attached-clients, network-vpn, weather, time, mpc, spotify-tui, krbtgt, playerctl, kubernetes-context, synchronize-panes
 set -g @dracula-plugins "cpu-usage gpu-usage ram-usage"
 ```
 
@@ -94,7 +94,7 @@ set -g @dracula-refresh-rate 5
 Switch the left smiley icon
 
 ```bash
-# it can accept `hostname` (full hostname), `session`, `shortname` (short name), `smiley`, `window`, or any character. 
+# it can accept `hostname` (full hostname), `session`, `shortname` (short name), `smiley`, `window`, or any character.
 set -g @dracula-show-left-icon session
 ```
 
@@ -115,6 +115,15 @@ Hide empty plugins
 
 ```bash
 set -g @dracula-show-empty-plugins false
+```
+
+Make the powerline background transparent
+
+```bash
+set -g @dracula-powerline-bg-transparent true
+
+# the left separator symbol is inversed with a transparent background, you can modify it with any symbol you like
+set -g @dracula-inverse-divider 
 ```
 
 #### cpu-usage options
@@ -382,4 +391,12 @@ Show if the last save was performed less than 60 seconds ago (default threshold 
 
 ```bash
 set -g @dracula-continuum-time-threshold 60
+```
+
+#### Playerctl format
+
+Set the playerctl metadata format
+
+```
+set -g @dracula-playerctl-format "►  {{ artist }} - {{ title }}"
 ```

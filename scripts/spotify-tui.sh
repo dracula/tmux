@@ -15,10 +15,20 @@ main()
     exit 1
   fi
 
+  if [ "$(spt list --devices)" = "No devices available" ]
+  then
+    echo ""
+    exit 0
+  fi
+
   FORMAT=$(get_tmux_option "@dracula-spotify-tui-format" "%f %s %t - %a")
   spotify_playback=$(spt playback -f "${FORMAT}")
-  echo ${spotify_playback}
-
+  max_len=$(get_tmux_option "@dracula-spotify-tui-max-len" 0)
+  if [[ $max_len -ne 0 ]] ; then
+    echo ${spotify_playback} | head -c $max_len
+  else
+    echo ${spotify_playback}
+  fi
 }
 
 # run the main driver

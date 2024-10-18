@@ -3,6 +3,9 @@
 # setting the locale, some users have issues with different locales, this forces the correct one
 export LC_ALL=en_US.UTF-8
 
+current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $current_dir/utils.sh
+
 show_ssh_session_port=$1
 
 parse_ssh_port() {
@@ -111,7 +114,9 @@ main() {
   user=$(get_info whoami)
 
   # Only show port info if ssh session connected (no localhost) and option enabled
-  if $(ssh_connected) && [ "$show_ssh_session_port" == "true" ] ; then
+  if $(get_tmux_option "@dracula-show-ssh-only-when-connected" false) && ! $(ssh_connected); then
+    echo ""
+  elif $(ssh_connected) && [ "$show_ssh_session_port" == "true" ] ; then
     port=$(get_info port)
     echo $user@$hostname:$port
   else
