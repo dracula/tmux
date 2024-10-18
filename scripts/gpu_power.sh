@@ -38,14 +38,19 @@ get_platform()
       ;;
   esac
 }
-
 get_gpu()
 {
   gpu=$(get_platform)
+  gpu_power_percent=$(get_tmux_option "@dracula-gpu-power-percent" false)
   if [[ "$gpu" == NVIDIA ]]; then
-    usage=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{ sum += $0 } END { printf("%d%%\n", sum / NR) }')
+    if $gpu_power_percent; then
+      usage=$(nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk '{ draw += $0; max +=$2 } END { printf("%d%%\n", draw / max * 100) }')
+  else
+      usage=$(nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk '{ draw += $0; max +=$2 } END { printf("%dW/%dW\n", draw, max) }')
+    fi
+
   elif [[ "$gpu" == apple ]]; then
-    usage="$(sudo powermetrics --samplers gpu_power -i500 -n 1 | grep 'active residency' | sed 's/[^0-9.%]//g' | sed 's/[%].*$//g')%"
+    usage="$(sudo powermetrics --samplers gpu_power -i500 -n 1 | grep 'GPU Power' | sed 's/GPU Power: \(.*\) \(.*\)/\1\2/g')"
   else
     usage='unknown'
   fi
@@ -56,7 +61,7 @@ main()
 {
   # storing the refresh rate in the variable RATE, default is 5
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-  gpu_label=$(get_tmux_option "@dracula-gpu-usage-label" "GPU")
+  gpu_label=$(get_tmux_option "@dracula-gpu-power-label" "GPU")
   gpu_usage=$(get_gpu)
   echo "$gpu_label $gpu_usage"
   sleep $RATE

@@ -27,10 +27,7 @@ get_platform()
       ;;
 
     Darwin)
-      # WARNING: for this to work the powermetrics command needs to be run without password
-      #   add this to the sudoers file, replacing the username and omitting the quotes.
-      #   be mindful of the tabs: "username		ALL = (root) NOPASSWD: /usr/bin/powermetrics"
-      echo "apple"
+      # TODO - Darwin/Mac compatability
       ;;
 
     CYGWIN*|MINGW32*|MSYS*|MINGW*)
@@ -42,21 +39,29 @@ get_platform()
 get_gpu()
 {
   gpu=$(get_platform)
+  gpu_vram_percent=$(get_tmux_option "@dracula-gpu-vram-percent" false)
   if [[ "$gpu" == NVIDIA ]]; then
-    usage=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{ sum += $0 } END { printf("%d%%\n", sum / NR) }')
-  elif [[ "$gpu" == apple ]]; then
-    usage="$(sudo powermetrics --samplers gpu_power -i500 -n 1 | grep 'active residency' | sed 's/[^0-9.%]//g' | sed 's/[%].*$//g')%"
+    if $gpu_vram_percent; then
+      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk '{ used += $0; total +=$2 } END { printf("%d%%\n", used / total * 100 ) }')
+    normalize_percent_len $usage
+    exit 0
+    else
+      # to add finer grained info
+      used_accuracy=$(get_tmux_option "@dracula-gpu-vram-used-accuracy" "d")
+      total_accuracy=$(get_tmux_option "@dracula-gpu-vram-total-accuracy" "d")
+      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk "{ used += \$0; total +=\$2 } END { printf(\"%${used_accuracy}GB/%${total_accuracy}GB\n\", used / 1024, total / 1024) }")
+    fi
   else
     usage='unknown'
   fi
-  normalize_percent_len $usage
+  echo $usage
 }
 
 main()
 {
   # storing the refresh rate in the variable RATE, default is 5
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-  gpu_label=$(get_tmux_option "@dracula-gpu-usage-label" "GPU")
+  gpu_label=$(get_tmux_option "@dracula-gpu-vram-label" "VRAM")
   gpu_usage=$(get_gpu)
   echo "$gpu_label $gpu_usage"
   sleep $RATE

@@ -18,20 +18,36 @@ Configuration and options can be found at [draculatheme.com/tmux](https://dracul
 - Day, date, time, timezone
 - Current location based on network with temperature and forecast icon (if available)
 - Network connection status, bandwidth and SSID
+- SSH session user, hostname and port of active tmux pane
 - Git branch and status
 - Battery percentage and AC power connection status
 - Refresh rate control
 - CPU usage (percentage or load average)
-- RAM usage
+- RAM usage (system and/or tmux server)
 - GPU usage
-- Color code based on if prefix is active or not
-- List of windows with current window highlighted
-- When prefix is enabled smiley face turns from green to yellow
+- Custom status texts from external scripts
+- GPU VRAM usage
+- GPU power draw
+- Color code based on whether a prefix is active or not
+- List of windows with the current window highlighted
+- When prefix is enabled, a smiley face turns from green to yellow
 - When charging, 'AC' is displayed
+    - Alternatively show battery level and whether its charging next to percentage by setting:
+    ```
+    set -g @dracula-battery-label false
+    set -g @dracula-no-battery-label false
+    set -g @dracula-show-battery-status true
+    ```
 - If forecast information is available, a ☀, ☁, ☂, or ❄ unicode character corresponding with the forecast is displayed alongside the temperature
 - System temperature on Raspberry PI
-- Spotify playback (needs the tool spotify-tui installed)
+- Info if the Panes are synchronized
+- Spotify playback (needs the tool spotify-tui installed). max-len can be configured.
+- Music Player Daemon status (needs the tool mpc installed)
+- Playerctl, get current track metadata
 - Current kubernetes context
+- Countdown to tmux-continuum save
+- Current working directory of tmux pane
+- Show your Libre Freestyle 3 readings [Setup instructions](./scripts/libre.sh)
 
 ## Compatibility
 
