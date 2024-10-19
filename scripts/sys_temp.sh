@@ -3,7 +3,7 @@
 export LC_ALL=en_US.UTF-8
 
 get_temp() {
-  if grep -q "Raspberry" /proc/device-tree/model; then
+  if grep -q "Raspberry" /proc/device-tree/model 2>/dev/null; then
     # It's a Raspberry pi
     echo "$(vcgencmd measure_temp | sed 's/temp=//')"
   else
