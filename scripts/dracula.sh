@@ -304,9 +304,9 @@ main()
       continue
     fi
 
-    if [ $plugin = "rpi-temp" ]; then
-      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-rpi-temp-colors" "green dark_gray")
-      script="#($current_dir/rpi_temp.sh)"
+    if [ $plugin = "sys-temp" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-sys-temp-colors" "green dark_gray")
+      script="#($current_dir/sys_temp.sh)"
     fi
 
     if $show_powerline; then
