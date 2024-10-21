@@ -1,0 +1,400 @@
+### [tmux](https://github.com/tmux/tmux/wiki)
+
+#### Table of Contents
+- [Configuration](#Configuration-up---up)
+- [Status bar options](#status-bar-options---up)
+- [Color theming](/docs/color_theming/README.md)
+- [Attached clients](#attached-clients---up)
+- [Battery](#battery---up)
+- [Continuum](#continuum---up)
+- [CPU info](#cpu-info---up)
+- [Current working directory](#current-working-directory---up)
+- [Fossil](#fossil---up)
+- [Git](#git---up)
+- [GPU info](#gpu-info---up)
+- [Mercurial](#mercurial---up)
+- [Kubernetes context](#kubernetes-context---up)
+- [Libre](#libre---up)
+- [MPC](#mpc---up)
+- [Network](#network---up)
+- [Network bandwidth](#network-bandwidth---up)
+- [Network ping](#network-ping---up)
+- [Network VPN](#network-vpn---up)
+- [Playerctl](#playerctl---up)
+- [RAM usage](#ram-usage---up)
+- [Spotify tui](#spotify-tui---up)
+- [ssh session](#ssh-session---up)
+- [Synchronize panes](#synchronize-panes---up)
+- [Terraform](#terraform---up)
+- [Time](#time---up)
+- [Tmux RAM usage](#tmux-ram-usage---up)
+- [Weather](#weather---up)
+- [Custom scripts](#custom-scripts---up)
+- []()
+#### Configuration - [up](#table-of-contents)
+
+The following configuration works regardless of whether you are using `$HOME/.tmux.conf`, or `$XDG_CONFIG_HOME/tmux/tmux.conf`.
+To enable plugins set up the `@dracula-plugins` option in your `.tmux.conf` file, separate plugin by space.
+The order that you define the plugins will be the order on the status bar left to right.
+
+```bash
+# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, ssh-session, attached-clients, network-vpn, weather, time, mpc, spotify-tui, krbtgt, playerctl, kubernetes-context, synchronize-panes
+set -g @dracula-plugins "cpu-usage gpu-usage ram-usage"
+```
+
+For each plugin is possible to customize background and foreground colors
+
+```bash
+# available colors: white, gray, dark_gray, light_purple, dark_purple, cyan, green, orange, red, pink, yellow
+# set -g @dracula-[plugin-name]-colors "[background] [foreground]"
+set -g @dracula-cpu-usage-colors "pink dark_gray"
+```
+
+#### Status bar options - [up](#table-of-contents)
+
+Enable powerline symbols
+
+```bash
+set -g @dracula-show-powerline true
+```
+
+Switch powerline symbols
+
+```bash
+# for left
+set -g @dracula-show-left-sep 
+
+# for right symbol (can set any symbol you like as separator)
+set -g @dracula-show-right-sep 
+```
+
+Enable window flags
+
+```bash
+set -g @dracula-show-flags true
+```
+
+Adjust the refresh rate for the status bar
+
+```bash
+# the default is 5, it can accept any number
+set -g @dracula-refresh-rate 5
+```
+
+Switch the left smiley icon
+
+```bash
+# it can accept `hostname` (full hostname), `session`, `shortname` (short name), `smiley`, `window`, or any character.
+set -g @dracula-show-left-icon session
+```
+
+Add padding to the left smiley icon
+
+```bash
+# default is 1, it can accept any number and 0 disables padding.
+set -g @dracula-left-icon-padding 1
+```
+
+Enable high contrast pane border
+
+```bash
+set -g @dracula-border-contrast true
+```
+
+Hide empty plugins
+
+```bash
+set -g @dracula-show-empty-plugins false
+```
+
+Make the powerline background transparent
+
+```bash
+set -g @dracula-powerline-bg-transparent true
+
+# the left separator symbol is inversed with a transparent background, you can modify it with any symbol you like
+set -g @dracula-inverse-divider 
+```
+
+#### [color theming](/docs/color_theming/README.md) - [up](#table-of-contents)
+
+Each individual widget's foreground and background color can be overridden.
+Additionally, the variables used for storing color values can be overridden and extended.
+This allows for the use of custom themes like catppuccin or gruvbox.
+
+For everything regarding colors, please refer to [the color theming directory](/docs/color_theming/README.md).
+
+#### cpu-usage options - [up](#table-of-contents)
+
+Customize label
+
+```bash
+set -g @dracula-cpu-usage-label "CPU"
+```
+
+Show system load average instead of CPU usage percentage (default)
+
+```bash
+set -g @dracula-cpu-display-load true
+```
+
+CPU usage percentage (default) - in percentage (output: %)
+Load average – is the average system load calculated over a given period of time of 1, 5 and 15 minutes (output: x.x x.x x.x)
+
+#### battery options - [up](#table-of-contents)
+
+Customize label
+
+```bash
+set -g @dracula-battery-label "Battery"
+```
+
+#### gpu-usage options - [up](#table-of-contents)
+
+Note, currently only the Linux NVIDIA Proprietary drivers are supported. Nouveau and AMD Graphics Cards support are still under development.
+
+Customize label
+
+```bash
+set -g @dracula-gpu-usage-label "GPU"
+```
+
+#### ram-usage options - [up](#table-of-contents)
+
+Customize label
+
+```bash
+set -g @dracula-ram-usage-label "RAM"
+```
+
+#### tmux-ram-usage options - [up](#table-of-contents)
+
+Customize label
+
+```bash
+set -g @dracula-tmux-ram-usage-label "MEM"
+```
+
+#### network-bandwidth - [up](#table-of-contents)
+
+You can configure which network interface you want to view the bandwidth,
+Displaying of the interface name, The interval between each bandwidth update.
+The most common interfaces name are `eth0` for a wired connection and `wlan0` for a wireless connection.
+
+```bash
+set -g @dracula-network-bandwidth eth0
+set -g @dracula-network-bandwidth-interval 0
+set -g @dracula-network-bandwidth-show-interface true
+```
+
+#### network-ping options - [up](#table-of-contents)
+
+You can configure which server (hostname, IP) you want to ping and at which rate (in seconds). Default is google.com at every 5 seconds.
+
+```bash
+set -g @dracula-ping-server "google.com"
+set -g @dracula-ping-rate 5
+```
+### ssh-session options
+
+Show SSH session port
+
+```bash
+set -g @dracula-show-ssh-session-port true
+```
+
+#### time options - [up](#table-of-contents)
+
+Disable timezone
+
+```bash
+set -g @dracula-show-timezone false
+```
+
+Swap date to day/month
+
+```bash
+set -g @dracula-day-month true
+```
+
+Enable military time
+
+```bash
+set -g @dracula-military-time true
+```
+
+Set custom time format e.g (2023-01-01 14:00)
+```bash
+set -g @dracula-time-format "%F %R"
+```
+See [[this page]](https://man7.org/linux/man-pages/man1/date.1.html) for other format symbols.
+
+#### git options - [up](#table-of-contents)
+
+Hide details of git changes
+```bash
+set -g @dracula-git-disable-status true
+```
+
+Set symbol to use for when branch is up to date with HEAD
+```bash
+# default is ✓. Avoid using non unicode characters that bash uses like $, * and !
+set -g @dracula-git-show-current-symbol ✓
+```
+
+Set symbol to use for when branch diverges from HEAD
+```bash
+# default is unicode !. Avoid bash special characters
+set -g @dracula-git-show-diff-symbol !
+```
+
+Set symbol or message to use when the current pane has no git repo
+```bash
+# default is unicode no message
+set -g @dracula-git-no-repo-message ""
+```
+
+Hide untracked files from being displayed as local changes
+```bash
+# default is false
+set -g @dracula-git-no-untracked-files true
+```
+
+Show remote tracking branch together with diverge/sync state
+```bash
+# default is false
+set -g @dracula-git-show-remote-status true
+```
+
+#### hg options - [up](#table-of-contents)
+
+Hide details of hg changes
+```bash
+set -g @dracula-hg-disable-status true
+```
+
+Set symbol to use for when branch is up to date with HEAD
+```bash
+#default is ✓.Avoid using non unicode characters that bash uses like $, * and !
+set -g @dracula-hg-show-current-symbol ✓
+```
+
+Set symbol to use for when branch diverges from HEAD
+```bash
+#default is unicode !.Avoid bash special characters
+set -g @dracula-hg-show-diff-symbol !
+```
+
+Set symbol or message to use when the current pane has no hg repo
+```bash
+#default is unicode no message
+set -g @dracula-hg-no-repo-message ""
+```
+
+Hide untracked files from being displayed as local changes
+```bash
+#default is false
+set -g @dracula-hg-no-untracked-files false
+```
+
+#### weather options - [up](#table-of-contents)
+
+Switch from default fahrenheit to celsius
+
+```bash
+set -g @dracula-show-fahrenheit false
+```
+
+Set your location manually
+
+```bash
+set -g @dracula-fixed-location "Some City"
+```
+
+Hide your location
+
+```bash
+set -g @dracula-show-location false
+```
+
+#### synchronize-panes options - [up](#table-of-contents)
+
+Customize label
+
+```bash
+set -g @dracula-synchronize-panes-label "Sync"
+```
+#### attached-clients options - [up](#table-of-contents)
+
+Set the minimum number of clients to show (otherwise, show nothing)
+
+```bash
+set -g @dracula-clients-minimum 1
+```
+
+Set the label when there is one client, or more than one client
+
+```bash
+set -g @dracula-clients-singular client
+set -g @dracula-clients-plural clients
+```
+
+#### Kubernetes options - [up](#table-of-contents)
+
+Add prefix label before the context
+
+```bash
+set -g @dracula-kubernetes-context-label "Some Label"
+```
+
+Hide user from the context string
+
+```
+set -g @dracula-kubernetes-hide-user true
+```
+
+Hide ARN (show only cluster name) - Available for EKS only (only available for cluster names that are ARNs)
+
+```
+set -g @dracula-kubernetes-eks-hide-arn true
+```
+
+Extract the account as a prefix to the cluster name - Available for EKS only (only available for cluster names that are ARNs)
+
+```
+set -g @dracula-kubernetes-eks-extract-account true
+```
+
+#### Kerberos TGT options - [up](#table-of-contents)
+
+Set the principal to check the TGT expiration date for (with or without the REALM)
+
+```
+set -g @dracula-krbtgt-principal "principal"
+```
+
+#### continuum options - [up](#table-of-contents)
+
+Set the output mode. Options are:
+- **countdown**: Show a T- countdown to the next save (default)
+- **time**: Show the time since the last save
+- **alert**: Hide output if no save has been performed recently
+- **interval**: Show the continuum save interval
+
+```bash
+set -g @dracula-continuum-mode countdown
+```
+
+Show if the last save was performed less than 60 seconds ago (default threshold is 15 seconds)
+
+```bash
+set -g @dracula-continuum-time-threshold 60
+```
+
+#### Playerctl format - [up](#table-of-contents)
+
+Set the playerctl metadata format
+
+```
+set -g @dracula-playerctl-format "►  {{ artist }} - {{ title }}"
+```
