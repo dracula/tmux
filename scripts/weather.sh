@@ -53,7 +53,12 @@ display_weather()
   temperature=$(echo $weather_information | rev | cut -d ' ' -f 1 | rev) # +31°C, -3°F, etc
   unicode=$(forecast_unicode $weather_condition)
 
-  echo "$unicode ${temperature/+/}" # remove the plus sign to the temperature
+  if [[ "${temperature/+/}" == "error" ]]; then
+    # Propagate Error
+    echo "${temperature/+/}"
+  else
+    echo "$unicode ${temperature/+/}" # remove the plus sign to the temperature
+  fi
 }
 
 forecast_unicode()
@@ -76,7 +81,7 @@ forecast_unicode()
 main()
 {
   # process should be cancelled when session is killed
-  if timeout 1 bash -c "</dev/tcp/ipinfo.io/443" && timeout 1 bash -c "</dev/tcp/wttr.in/443"; then
+  if timeout 1 bash -c "</dev/tcp/ipinfo.io/443" && timeout 1 bash -c "</dev/tcp/wttr.in/443" && [[ "$(display_weather)" != "error" ]]; then
     echo "$(display_weather)$(display_location)"
   else
     echo "Weather Unavailable"
