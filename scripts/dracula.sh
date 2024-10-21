@@ -299,7 +299,7 @@ main()
     fi
 
     if [ $plugin = "sys-temp" ]; then
-      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-rpi-temp-colors" "green dark_gray")
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-sys-temp-colors" "green dark_gray")
       script="#($current_dir/sys_temp.sh)"
     fi
 
