@@ -161,7 +161,7 @@ set -g @dracula-battery-label "Battery"
 
 #### gpu-usage options
 
-Note, currently only the Linux NVIDIA Proprietary drivers are supported. Nouveau and AMD Graphics Cards support are still under development.
+Note, currently only the Linux NVIDIA Proprietary drivers are fully supported. Apple, Nouveau and AMD Graphics Cards support are still under development. There is partial support for Apple M chips and AMD Graphics.
 
 Customize label
 
