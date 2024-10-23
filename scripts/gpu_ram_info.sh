@@ -43,14 +43,18 @@ get_gpu()
   if [[ "$gpu" == NVIDIA ]]; then
     if $gpu_vram_percent; then
       usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk '{ used += $0; total +=$2 } END { printf("%d%%\n", used / total * 100 ) }')
-    normalize_percent_len $usage
-    exit 0
+      normalize_percent_len $usage
+      exit 0
     else
       # to add finer grained info
       used_accuracy=$(get_tmux_option "@dracula-gpu-vram-used-accuracy" "d")
       total_accuracy=$(get_tmux_option "@dracula-gpu-vram-total-accuracy" "d")
       usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk "{ used += \$0; total +=\$2 } END { printf(\"%${used_accuracy}GB/%${total_accuracy}GB\n\", used / 1024, total / 1024) }")
     fi
+  elif [[ "$gpu" == Advanced ]]; then
+    usage=$(cat /sys/class/drm/card?/device/mem_info_vram_used /sys/class/drm/card?/device/mem_info_vram_total | cat /sys/class/drm/card?/device/mem_info_vram_used /sys/class/drm/card?/device/mem_info_vram_total | numfmt --to=iec-i --suffix=B | sed -z -e 's#\n#/#g' -e 's#/$##g')
+    normalize_percent_len $usage
+    exit 0
   else
     usage='unknown'
   fi
