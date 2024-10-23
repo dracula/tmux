@@ -47,7 +47,7 @@ get_gpu()
   elif [[ "$gpu" == apple ]]; then
     usage="$(sudo powermetrics --samplers gpu_power -i500 -n 1 | grep 'active residency' | sed 's/[^0-9.%]//g' | sed 's/[%].*$//g')%"
   else
-    usage='unknown'
+    usage="$(cat /sys/class/drm/card?/device/gpu_busy_percent | sed -z -e 's/\n/%|/g' -e 's/|$//g')"
   fi
   normalize_percent_len $usage
 }
