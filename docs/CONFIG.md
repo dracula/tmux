@@ -280,9 +280,8 @@ set -g @dracula-git-show-remote-status true
 ```
 
 ### gpu-info - [up](#table-of-contents)
-**gpu-usage, gpu-ram-usage, gpu-power-draw**
-
 These widgets display the current computational, ram, and power usage of installed graphics cards.
+They are split into widgets with the names: `gpu-usage, gpu-ram-usage, gpu-power-draw`.
 
 hardware support:
 - full support for NVIDIA gpus on linux.
@@ -356,7 +355,7 @@ set -g @dracula-hg-no-untracked-files false
 ```
 
 ### Kerberos TGT - [up](#table-of-contents)
-**krbtgt**
+This widgets name is `krbtgt`.
 
 Set the principal to check the TGT expiration date for (with or without the REALM)
 
@@ -595,19 +594,5 @@ set -g @dracula-show-location false
 ```
 
 ### custom:script-name - [up](#table-of-contents)
-**TODO**
-
-```
-  for plugin in "${plugins[@]}"; do
-
-    if case $plugin in custom:*) true;; *) false;; esac; then
-      script=${plugin#"custom:"}
-      if [[ -x "${current_dir}/${script}" ]]; then
-        IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-custom-plugin-colors" "cyan dark_gray")
-        script="#($current_dir/${script})"
-      else
-        colors[0]="red"
-        colors[1]="dark_gray"
-        script="${script} not found!"
-      fi
-```
+For testing/ running custom plugins, put the bash script into the scripts directory of dracula/tmux plugin.
+Additionally, in the `@dracula-plugins` option, add the script as `custom:name-of-script.sh`.
