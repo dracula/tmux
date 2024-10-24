@@ -6,11 +6,15 @@
 
 ## Install
 
-All instructions can be found at [draculatheme.com/tmux](https://draculatheme.com/tmux).
+All instructions can be found [in the docs](/docs/INSTALL.md).
 
 ## Configuration
 
-Configuration and options can be found at [draculatheme.com/tmux](https://draculatheme.com/tmux).
+Configuration and options can be found [in the docs](/docs/CONFIG.md).
+
+## Color Theming
+
+In depth configuration of Colors and alternative themes can be found [in the docs](/docs/color_theming/README.md)
 
 ## Features
 
