@@ -1,22 +1,22 @@
 ## [tmux](https://github.com/tmux/tmux/wiki)
 
 ### Table of Contents
-- [Configuration](#Configuration-up---up)
+- [Configuration](#Configuration---up)
 - [Status bar options](#status-bar-options---up)
 - [Color theming](/docs/color_theming/README.md)
-- Plugins
+- [Plugins](#Plugins)
   - [attached-clients](#attached-clients---up)
   - [battery](#battery---up)
   - [continuum](#continuum---up)
-  - [cpu-usage](#cpu-info---up)
-  - [cwd](#current-working-directory---up)
+  - [cpu-usage](#cpu-usage---up)
+  - [cwd](#cwd---up)
   - [fossil](#fossil---up)
   - [git](#git---up)
   - [GPU Info (gpu-usage, gpu-ram-usage, gpu-power-draw)](#gpu-info---up)
-  - [hg](#mercurial---up)
+  - [hg](#hg---up)
   - [Kerberos TGT (krbtgt)](#Kerberos-TGT---up)
   - [kubernetes-context](#kubernetes-context---up)
-  - [libreview](#libre---up)
+  - [libreview](#libreview---up)
   - [mpc](#mpc---up)
   - [network](#network---up)
   - [network-bandwidth](#network-bandwidth---up)
@@ -32,7 +32,7 @@
   - [time](#time---up)
   - [tmux-ram-usage](#tmux-ram-usage---up)
   - [weather](#weather---up)
-  - [custom:](#custom-scripts---up)
+  - [custom:script-name](#custom:script-name---up)
 
 ### Configuration - [up](#table-of-contents)
 
@@ -119,7 +119,7 @@ set -g @dracula-powerline-bg-transparent true
 set -g @dracula-inverse-divider 
 ```
 
-### [color theming](/docs/color_theming/README.md) - [up](#table-of-contents)
+### [Color Theming](/docs/color_theming/README.md) - [up](#table-of-contents)
 
 Each individual widget's foreground and background color can be overridden.
 Additionally, the variables used for storing color values can be overridden and extended.
@@ -128,7 +128,7 @@ This allows for the use of custom themes like catppuccin or gruvbox.
 For everything regarding colors, please refer to [the color theming directory](/docs/color_theming/README.md).
 
 ### Plugins
-#### attached-clients options - [up](#table-of-contents)
+#### attached-clients - [up](#table-of-contents)
 This widget provides the number of clients attached to the current tmux session.
 
 Set the minimum number of clients to show (otherwise, show nothing)
@@ -144,7 +144,7 @@ set -g @dracula-clients-singular client
 set -g @dracula-clients-plural clients
 ```
 
-#### battery options - [up](#table-of-contents)
+#### battery - [up](#table-of-contents)
 This widget provides information about the current charge of the battery, whether it is attached to a powersupply and charging from it, or running off the powersupply without charging. it also detects desktop pcs having no battery.
 
 Display any icon for the battery you'd like with:
@@ -172,7 +172,7 @@ alternatively, if you have no battery and would like a nerdfont icon to indicate
 set -g @dracula-no-battery-label " "
 ```
 
-#### continuum options - [up](#table-of-contents)
+#### continuum - [up](#table-of-contents)
 
 Set the output mode. Options are:
 - **countdown**: Show a T- countdown to the next save (default)
@@ -198,7 +198,7 @@ Other options.
 @continuum-save-interval
 ```
 
-#### cpu-usage options - [up](#table-of-contents)
+#### cpu-usage - [up](#table-of-contents)
 This widget displays the cpu usage in percent by default, but can display cpu load on linux.
 Load average – is the average system load calculated over a given period of time of 1, 5 and 15 minutes (output: x.x x.x x.x)
 ```bash
@@ -216,11 +216,11 @@ nerdfont icons to consider:
 ```
 
 `set -g @dracula-refresh-rate 5` affects this widget
-#### Current working directory - [up](#table-of-contents)
+#### cwd - [up](#table-of-contents)
 This widget displays the path of the current working directory.
-#### Fossil - [up](#table-of-contents)
+#### fossil - [up](#table-of-contents)
 **TODO**
-#### git options - [up](#table-of-contents)
+#### git - [up](#table-of-contents)
 This widget displays info about the current git repository.
 
 Hide details of git changes
@@ -258,7 +258,9 @@ Show remote tracking branch together with diverge/sync state
 set -g @dracula-git-show-remote-status true
 ```
 
-#### gpu-usage options - [up](#table-of-contents)
+#### gpu-info - [up](#table-of-contents)
+**gpu-usage, gpu-ram-usage, gpu-power-draw**
+
 These widgets display the current computational, ram, and power usage of installed graphics cards.
 
 hardware support:
@@ -300,7 +302,7 @@ nerdfont icons to consider:
 ```
 
 `set -g @dracula-refresh-rate 5` affects this widget
-#### Mercurial options - [up](#table-of-contents)
+#### hg - [up](#table-of-contents)
 This widget displays info about the current mercurial repository.
 
 Hide details of hg changes
@@ -332,7 +334,8 @@ Hide untracked files from being displayed as local changes
 set -g @dracula-hg-no-untracked-files false
 ```
 
-#### Kerberos TGT options - [up](#table-of-contents)
+#### Kerberos TGT - [up](#table-of-contents)
+**krbtgt**
 
 Set the principal to check the TGT expiration date for (with or without the REALM)
 
@@ -340,7 +343,7 @@ Set the principal to check the TGT expiration date for (with or without the REAL
 set -g @dracula-krbtgt-principal "principal"
 ```
 
-#### Kubernetes options - [up](#table-of-contents)
+#### kubernetes-context - [up](#table-of-contents)
 
 Add prefix label before the context
 
@@ -366,10 +369,10 @@ Extract the account as a prefix to the cluster name - Available for EKS only (on
 set -g @dracula-kubernetes-eks-extract-account true
 ```
 
-#### libre - [up](#table-of-contents)
+#### libreview - [up](#table-of-contents)
 This script retrieves and displays continuous glucose monitoring (CGM) data from the LibreView API.
 It caches the data to minimize API requests and displays the latest glucose level along with a trend indicator in a Tmux status bar.
-#### MPC - [up](#table-of-contents)
+#### mpc - [up](#table-of-contents)
 This widget displays music information provided by mpc.
 
 To format the display format:
@@ -421,7 +424,7 @@ Per default, this widget checks the speeds as frequently as it can. to set longe
 set -g @dracula-network-bandwidth-interval 5
 ```
 
-#### network-ping options - [up](#table-of-contents)
+#### network-ping - [up](#table-of-contents)
 This widget displays the current ping to a specific server.
 
 You can configure which server (hostname, IP) you want to ping and at which rate (in seconds). Default is google.com at every 5 seconds.
@@ -431,14 +434,14 @@ set -g @dracula-ping-server "google.com"
 set -g @dracula-ping-rate 5
 ```
 
-#### network vpn - [up](#table-of-contents)
+#### network-vpn - [up](#table-of-contents)
 **TODO**
 
 set -g @dracula-network-vpn-verbose true
 
 TODO:
 set -g @dracula-network-vpn-label
-#### Playerctl format - [up](#table-of-contents)
+#### playerctl - [up](#table-of-contents)
 This widget displays playerctl info.
 
 Set the playerctl metadata format like so:
@@ -446,7 +449,7 @@ Set the playerctl metadata format like so:
 set -g @dracula-playerctl-format "►  {{ artist }} - {{ title }}"
 ```
 
-#### ram-usage options - [up](#table-of-contents)
+#### ram-usage - [up](#table-of-contents)
 This widget displays the currently used ram as GB per GB.
 
 Possible nerdfont settings for ram usage:
@@ -460,7 +463,7 @@ Nerdfont icons to consider:
 ```
 #### rpi-temp - [up](#table-of-contents)
 **TODO**
-#### spotify tui - [up](#table-of-contents)
+#### spotify-tui - [up](#table-of-contents)
 This widget displays music information provided by spotify-tui. Spotify-tui must be installed to use this widget.
 
 To format the display format:
@@ -474,7 +477,7 @@ set -g @dracula-spotify-tui-max-len 30
 ```
 
 `set -g @dracula-refresh-rate 5` affects this widget
-#### ssh-session options - [up](#table-of-contents)
+#### ssh-session - [up](#table-of-contents)
 This widget displays the current username@host combination, both of the local machine as well as when connected via ssh.
 
 To output nothing (and maybe hide the widget) when not connected via ssh:
@@ -491,7 +494,7 @@ nerdfont icons to consider:
 ```
 󰣀
 ```
-#### synchronize-panes options - [up](#table-of-contents)
+#### synchronize-panes - [up](#table-of-contents)
 This widget displays whether the tmux panes are currently synchronised or not.
 
 To change the label:
@@ -508,7 +511,7 @@ set -g @dracula-terraform-label ""
 ```
 
 `set -g @dracula-refresh-rate 5` affects this widget
-#### time options - [up](#table-of-contents)
+#### time - [up](#table-of-contents)
 This widget displays current date and time.
 
 Disable timezone
@@ -535,7 +538,7 @@ set -g @dracula-time-format "%F %R"
 ```
 See [[this page]](https://man7.org/linux/man-pages/man1/date.1.html) for other format symbols.
 
-#### tmux-ram-usage options - [up](#table-of-contents)
+#### tmux-ram-usage - [up](#table-of-contents)
 This widget displays the ram currently used by tmux.
 
 Possible nerdfont settings for tmux ram usage:
@@ -547,7 +550,7 @@ Nerdfont icons to consider:
 ```
    󰍛 󰘚
 ```
-#### weather options - [up](#table-of-contents)
+#### weather - [up](#table-of-contents)
 Show weather information for given location.
 
 Switch from default fahrenheit to celsius
@@ -568,7 +571,7 @@ Hide your location
 set -g @dracula-show-location false
 ```
 
-#### custom scripts - [up](#table-of-contents)
+#### custom:script-name - [up](#table-of-contents)
 **TODO**
 
 ```
