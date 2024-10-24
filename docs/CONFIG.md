@@ -3,6 +3,8 @@
 ## Table of Contents
 - [Configuration](#Configuration---up)
 - [Status bar options](#status-bar-options---up)
+  - [Powerline](#powerline---up)
+  - [Left Icon](#left-icon---up)
 - [Color theming](/docs/color_theming/README.md)
 - [Plugins](#Plugins)
   - [attached-clients](#attached-clients---up)
@@ -24,10 +26,10 @@
   - [network-vpn](#network-vpn---up)
   - [playerctl](#playerctl---up)
   - [ram-usage](#ram-usage---up)
-  - [rpi-temp](#rpi-temp---up)
   - [spotify-tui](#spotify-tui---up)
   - [ssh-session](#ssh-session---up)
   - [synchronize-panes](#synchronize-panes---up)
+  - [sys-temp](#sys-temp---up)
   - [terraform](#terraform---up)
   - [time](#time---up)
   - [tmux-ram-usage](#tmux-ram-usage---up)
@@ -39,22 +41,49 @@
 The following configuration works regardless of whether you are using `$HOME/.tmux.conf`, or `$XDG_CONFIG_HOME/tmux/tmux.conf`.
 To enable plugins set up the `@dracula-plugins` option in your `.tmux.conf` file, separate plugin by space.
 The order that you define the plugins will be the order on the status bar left to right.
+The name of the plugin used in the [table of contents](#table-of-contents), as well as each plugins headline, is the name to be used in the `@dracula-plugins` option.
 
 ```bash
-# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, tmux-ram-usage, network, network-bandwidth, network-ping, ssh-session, attached-clients, network-vpn, weather, time, mpc, spotify-tui, krbtgt, playerctl, kubernetes-context, synchronize-panes
 set -g @dracula-plugins "cpu-usage gpu-usage ram-usage"
 ```
 
-For each plugin is possible to customize background and foreground colors
+For each plugin is possible to customize background and foreground colors.
+For more fine-grained color customization please reference [Color theming](/docs/color_theming/README.md).
 
 ```bash
-# available colors: white, gray, dark_gray, light_purple, dark_purple, cyan, green, orange, red, pink, yellow
+# per default available colors: white, gray, dark_gray, light_purple, dark_purple, cyan, green, orange, red, pink, yellow
 # set -g @dracula-[plugin-name]-colors "[background] [foreground]"
 set -g @dracula-cpu-usage-colors "pink dark_gray"
 ```
 
 ## Status bar options - [up](#table-of-contents)
 
+Enable window flags
+
+```bash
+set -g @dracula-show-flags true
+```
+
+Adjust the refresh rate for the status bar
+
+```bash
+# the default is 5, it can accept any number
+set -g @dracula-refresh-rate 5
+```
+
+Enable high contrast pane border
+
+```bash
+set -g @dracula-border-contrast true
+```
+
+Hide empty plugins
+
+```bash
+set -g @dracula-show-empty-plugins false
+```
+
+### Powerline - [up](#table-of-contents)
 Enable powerline symbols
 
 ```bash
@@ -71,45 +100,6 @@ set -g @dracula-show-left-sep 
 set -g @dracula-show-right-sep 
 ```
 
-Enable window flags
-
-```bash
-set -g @dracula-show-flags true
-```
-
-Adjust the refresh rate for the status bar
-
-```bash
-# the default is 5, it can accept any number
-set -g @dracula-refresh-rate 5
-```
-
-Switch the left smiley icon
-
-```bash
-# it can accept `hostname` (full hostname), `session`, `shortname` (short name), `smiley`, `window`, or any character.
-set -g @dracula-show-left-icon session
-```
-
-Add padding to the left smiley icon
-
-```bash
-# default is 1, it can accept any number and 0 disables padding.
-set -g @dracula-left-icon-padding 1
-```
-
-Enable high contrast pane border
-
-```bash
-set -g @dracula-border-contrast true
-```
-
-Hide empty plugins
-
-```bash
-set -g @dracula-show-empty-plugins false
-```
-
 Make the powerline background transparent
 
 ```bash
@@ -117,6 +107,37 @@ set -g @dracula-powerline-bg-transparent true
 
 # the left separator symbol is inversed with a transparent background, you can modify it with any symbol you like
 set -g @dracula-inverse-divider 
+```
+
+### Left Icon - [up](#table-of-contents)
+- The left icon can be set to anything static you'd like.
+- However if you use tmux on multiple machines, it may be helpful to display the hostname.
+- If you use multiple sessions simultaneously it can be good to name them and have the name in the left icon.
+
+the following example uses formatting to display `"hostname | session_name"`:
+
+```bash
+set -g @dracula-show-left-icon "#h | #S"
+```
+
+formats:
+
+```bash
+#H: Hostname of local host
+#h: Hostname of local host (no domain name)
+#S: name of session -> suggestion: alias trs to tmux rename-session
+#W: current Window
+```
+
+more formats can be found here, though those without a shorthand like #H need to be used like #{host}, which is equivalent.
+[reference: tmux(1) - OpenBSD manual pages](https://man.openbsd.org/tmux.1#FORMATS)
+
+besides formats, any other string can be used.
+
+additionally the left icons padding can be set like so:
+```bash
+# default is 1, it can accept any number and 0 disables padding.
+set -g @dracula-left-icon-padding 1
 ```
 
 ## [Color Theming](/docs/color_theming/README.md) - [up](#table-of-contents)
@@ -435,12 +456,13 @@ set -g @dracula-ping-rate 5
 ```
 
 ### network-vpn - [up](#table-of-contents)
-**TODO**
+This widget displays whether a vpn is connected.
 
+These options are not available yet.
+```bash
 set -g @dracula-network-vpn-verbose true
-
-TODO:
 set -g @dracula-network-vpn-label
+```
 ### playerctl - [up](#table-of-contents)
 This widget displays playerctl info.
 
@@ -461,8 +483,6 @@ Nerdfont icons to consider:
 ```
    󰍛 󰘚
 ```
-### rpi-temp - [up](#table-of-contents)
-**TODO**
 ### spotify-tui - [up](#table-of-contents)
 This widget displays music information provided by spotify-tui. Spotify-tui must be installed to use this widget.
 
@@ -503,6 +523,9 @@ set -g @dracula-synchronize-panes-label "Sync"
 ```
 
 `set -g @dracula-refresh-rate 5` affects this widget
+### sys-temp - [up](#table-of-contents)
+This widget displays the system temperature.
+
 ### terraform - [up](#table-of-contents)
 **TODO**
 
