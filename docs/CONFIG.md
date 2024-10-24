@@ -1,37 +1,40 @@
-### [tmux](https://github.com/tmux/tmux/wiki)
+## [tmux](https://github.com/tmux/tmux/wiki)
 
-#### Table of Contents
+### Table of Contents
 - [Configuration](#Configuration-up---up)
 - [Status bar options](#status-bar-options---up)
 - [Color theming](/docs/color_theming/README.md)
-- [Attached clients](#attached-clients---up)
-- [Battery](#battery---up)
-- [Continuum](#continuum---up)
-- [CPU info](#cpu-info---up)
-- [Current working directory](#current-working-directory---up)
-- [Fossil](#fossil---up)
-- [Git](#git---up)
-- [GPU info](#gpu-info---up)
-- [Mercurial](#mercurial---up)
-- [Kubernetes context](#kubernetes-context---up)
-- [Libre](#libre---up)
-- [MPC](#mpc---up)
-- [Network](#network---up)
-- [Network bandwidth](#network-bandwidth---up)
-- [Network ping](#network-ping---up)
-- [Network VPN](#network-vpn---up)
-- [Playerctl](#playerctl---up)
-- [RAM usage](#ram-usage---up)
-- [Spotify tui](#spotify-tui---up)
-- [ssh session](#ssh-session---up)
-- [Synchronize panes](#synchronize-panes---up)
-- [Terraform](#terraform---up)
-- [Time](#time---up)
-- [Tmux RAM usage](#tmux-ram-usage---up)
-- [Weather](#weather---up)
-- [Custom scripts](#custom-scripts---up)
-- []()
-#### Configuration - [up](#table-of-contents)
+- Plugins
+  - [attached-clients](#attached-clients---up)
+  - [battery](#battery---up)
+  - [continuum](#continuum---up)
+  - [cpu-usage](#cpu-info---up)
+  - [cwd](#current-working-directory---up)
+  - [fossil](#fossil---up)
+  - [git](#git---up)
+  - [GPU Info (gpu-usage, gpu-ram-usage, gpu-power-draw)](#gpu-info---up)
+  - [hg](#mercurial---up)
+  - [Kerberos TGT (krbtgt)](#Kerberos-TGT---up)
+  - [kubernetes-context](#kubernetes-context---up)
+  - [libreview](#libre---up)
+  - [mpc](#mpc---up)
+  - [network](#network---up)
+  - [network-bandwidth](#network-bandwidth---up)
+  - [network-ping](#network-ping---up)
+  - [network-vpn](#network-vpn---up)
+  - [playerctl](#playerctl---up)
+  - [ram-usage](#ram-usage---up)
+  - [rpi-temp](#rpi-temp---up)
+  - [spotify-tui](#spotify-tui---up)
+  - [ssh-session](#ssh-session---up)
+  - [synchronize-panes](#synchronize-panes---up)
+  - [terraform](#terraform---up)
+  - [time](#time---up)
+  - [tmux-ram-usage](#tmux-ram-usage---up)
+  - [weather](#weather---up)
+  - [custom:](#custom-scripts---up)
+
+### Configuration - [up](#table-of-contents)
 
 The following configuration works regardless of whether you are using `$HOME/.tmux.conf`, or `$XDG_CONFIG_HOME/tmux/tmux.conf`.
 To enable plugins set up the `@dracula-plugins` option in your `.tmux.conf` file, separate plugin by space.
@@ -50,7 +53,7 @@ For each plugin is possible to customize background and foreground colors
 set -g @dracula-cpu-usage-colors "pink dark_gray"
 ```
 
-#### Status bar options - [up](#table-of-contents)
+### Status bar options - [up](#table-of-contents)
 
 Enable powerline symbols
 
@@ -116,7 +119,7 @@ set -g @dracula-powerline-bg-transparent true
 set -g @dracula-inverse-divider 
 ```
 
-#### [color theming](/docs/color_theming/README.md) - [up](#table-of-contents)
+### [color theming](/docs/color_theming/README.md) - [up](#table-of-contents)
 
 Each individual widget's foreground and background color can be overridden.
 Additionally, the variables used for storing color values can be overridden and extended.
@@ -124,112 +127,101 @@ This allows for the use of custom themes like catppuccin or gruvbox.
 
 For everything regarding colors, please refer to [the color theming directory](/docs/color_theming/README.md).
 
-#### cpu-usage options - [up](#table-of-contents)
+### Plugins
+#### attached-clients options - [up](#table-of-contents)
+This widget provides the number of clients attached to the current tmux session.
 
-Customize label
+Set the minimum number of clients to show (otherwise, show nothing)
 
 ```bash
-set -g @dracula-cpu-usage-label "CPU"
+set -g @dracula-clients-minimum 1
 ```
 
-Show system load average instead of CPU usage percentage (default)
+Set the label when there is one client, or more than one client
 
+```bash
+set -g @dracula-clients-singular client
+set -g @dracula-clients-plural clients
+```
+
+#### battery options - [up](#table-of-contents)
+This widget provides information about the current charge of the battery, whether it is attached to a powersupply and charging from it, or running off the powersupply without charging. it also detects desktop pcs having no battery.
+
+Display any icon for the battery you'd like with:
+```bash
+set -g @dracula-battery-label "♥ "
+```
+
+to use nothing but nerdfont icons informing you about the current state, use the following,
+which will display the battery charge and whether its charging (or just drawing from AC) as nerdfont icons.
+
+```bash
+set -g @dracula-battery-label false
+set -g @dracula-show-battery-status true
+```
+
+if you have no battery and would like the widget to hide in that case, set the following:
+
+```bash
+set -g @dracula-no-battery-label false
+```
+
+alternatively, if you have no battery and would like a nerdfont icon to indicate that, consider setting the following:
+
+```bash
+set -g @dracula-no-battery-label " "
+```
+
+#### continuum options - [up](#table-of-contents)
+
+Set the output mode. Options are:
+- **countdown**: Show a T- countdown to the next save (default)
+- **time**: Show the time since the last save
+- **alert**: Hide output if no save has been performed recently
+- **interval**: Show the continuum save interval
+
+```bash
+set -g @dracula-continuum-mode countdown
+```
+
+Show if the last save was performed less than 60 seconds ago (default threshold is 15 seconds)
+
+```bash
+set -g @dracula-continuum-time-threshold 60
+```
+
+Other options.
+```bash
+@dracula-continuum-first-save
+@resurrect-dir
+@continuum-save-last-timestamp
+@continuum-save-interval
+```
+
+#### cpu-usage options - [up](#table-of-contents)
+This widget displays the cpu usage in percent by default, but can display cpu load on linux.
+Load average – is the average system load calculated over a given period of time of 1, 5 and 15 minutes (output: x.x x.x x.x)
 ```bash
 set -g @dracula-cpu-display-load true
 ```
 
-CPU usage percentage (default) - in percentage (output: %)
-Load average – is the average system load calculated over a given period of time of 1, 5 and 15 minutes (output: x.x x.x x.x)
-
-#### battery options - [up](#table-of-contents)
-
-Customize label
-
+possible nerdfont settings for cpu usage label:
 ```bash
-set -g @dracula-battery-label "Battery"
+set -g @dracula-cpu-usage-label " "
 ```
 
-#### gpu-usage options - [up](#table-of-contents)
-
-Note, currently only the Linux NVIDIA Proprietary drivers are supported. Nouveau and AMD Graphics Cards support are still under development.
-
-Customize label
-
+nerdfont icons to consider:
 ```bash
-set -g @dracula-gpu-usage-label "GPU"
+   󰍛 󰘚 󰻟 󰻠
 ```
 
-#### ram-usage options - [up](#table-of-contents)
-
-Customize label
-
-```bash
-set -g @dracula-ram-usage-label "RAM"
-```
-
-#### tmux-ram-usage options - [up](#table-of-contents)
-
-Customize label
-
-```bash
-set -g @dracula-tmux-ram-usage-label "MEM"
-```
-
-#### network-bandwidth - [up](#table-of-contents)
-
-You can configure which network interface you want to view the bandwidth,
-Displaying of the interface name, The interval between each bandwidth update.
-The most common interfaces name are `eth0` for a wired connection and `wlan0` for a wireless connection.
-
-```bash
-set -g @dracula-network-bandwidth eth0
-set -g @dracula-network-bandwidth-interval 0
-set -g @dracula-network-bandwidth-show-interface true
-```
-
-#### network-ping options - [up](#table-of-contents)
-
-You can configure which server (hostname, IP) you want to ping and at which rate (in seconds). Default is google.com at every 5 seconds.
-
-```bash
-set -g @dracula-ping-server "google.com"
-set -g @dracula-ping-rate 5
-```
-### ssh-session options
-
-Show SSH session port
-
-```bash
-set -g @dracula-show-ssh-session-port true
-```
-
-#### time options - [up](#table-of-contents)
-
-Disable timezone
-
-```bash
-set -g @dracula-show-timezone false
-```
-
-Swap date to day/month
-
-```bash
-set -g @dracula-day-month true
-```
-
-Enable military time
-
-```bash
-set -g @dracula-military-time true
-```
-
-Set custom time format e.g (2023-01-01 14:00)
-```bash
-set -g @dracula-time-format "%F %R"
-```
-See [[this page]](https://man7.org/linux/man-pages/man1/date.1.html) for other format symbols.
-
+`set -g @dracula-refresh-rate 5` affects this widget
+#### Current working directory - [up](#table-of-contents)
+This widget displays the path of the current working directory.
+#### Fossil - [up](#table-of-contents)
+**TODO**
 #### git options - [up](#table-of-contents)
+This widget displays info about the current git repository.
 
 Hide details of git changes
 ```bash
@@ -266,7 +258,50 @@ Show remote tracking branch together with diverge/sync state
 set -g @dracula-git-show-remote-status true
 ```
 
-#### hg options - [up](#table-of-contents)
+#### gpu-usage options - [up](#table-of-contents)
+These widgets display the current computational, ram, and power usage of installed graphics cards.
+
+hardware support:
+- full support for NVIDIA gpus on linux.
+- partial support for apple m-chips on MacOS.
+- support for amd and intel is underway
+
+If your gpu is not recognised, force the script to assume a certain brands.
+```bash
+set -g @dracula-force-gpu "NVIDIA"
+```
+
+To display the used vram in percent (gigabyte is default unit):
+```bash
+set -g @dracula-gpu-vram-percent true
+```
+
+Vram usage is displayed in gigabyte without decimal places per default. To change that behaviour, use the following options with the respective number of decimal places you'd like to get:
+```bash
+set -g @dracula-gpu-vram-used-accuracy ".2f"
+set -g @dracula-gpu-vram-total-accuracy ".1f"
+```
+
+To display the power usage in percent (watt is default unit):
+```bash
+set -g @dracula-gpu-power-percent true
+```
+
+Possible nerdfont settings for gpu info labels:
+```bash
+set -g @dracula-gpu-power-label "󰢮 "
+set -g @dracula-gpu-usage-label "󰢮 "
+set -g @dracula-gpu-vram-label "󰢮 "
+```
+
+nerdfont icons to consider:
+```bash
+󰢮
+```
+
+`set -g @dracula-refresh-rate 5` affects this widget
+#### Mercurial options - [up](#table-of-contents)
+This widget displays info about the current mercurial repository.
 
 Hide details of hg changes
 ```bash
@@ -297,46 +332,12 @@ Hide untracked files from being displayed as local changes
 set -g @dracula-hg-no-untracked-files false
 ```
 
-#### weather options - [up](#table-of-contents)
+#### Kerberos TGT options - [up](#table-of-contents)
 
-Switch from default fahrenheit to celsius
+Set the principal to check the TGT expiration date for (with or without the REALM)
 
-```bash
-set -g @dracula-show-fahrenheit false
 ```
-
-Set your location manually
-
-```bash
-set -g @dracula-fixed-location "Some City"
-```
-
-Hide your location
-
-```bash
-set -g @dracula-show-location false
-```
-
-#### synchronize-panes options - [up](#table-of-contents)
-
-Customize label
-
-```bash
-set -g @dracula-synchronize-panes-label "Sync"
-```
-#### attached-clients options - [up](#table-of-contents)
-
-Set the minimum number of clients to show (otherwise, show nothing)
-
-```bash
-set -g @dracula-clients-minimum 1
-```
-
-Set the label when there is one client, or more than one client
-
-```bash
-set -g @dracula-clients-singular client
-set -g @dracula-clients-plural clients
+set -g @dracula-krbtgt-principal "principal"
 ```
 
 #### Kubernetes options - [up](#table-of-contents)
@@ -365,36 +366,222 @@ Extract the account as a prefix to the cluster name - Available for EKS only (on
 set -g @dracula-kubernetes-eks-extract-account true
 ```
 
-#### Kerberos TGT options - [up](#table-of-contents)
+#### libre - [up](#table-of-contents)
+This script retrieves and displays continuous glucose monitoring (CGM) data from the LibreView API.
+It caches the data to minimize API requests and displays the latest glucose level along with a trend indicator in a Tmux status bar.
+#### MPC - [up](#table-of-contents)
+This widget displays music information provided by mpc.
 
-Set the principal to check the TGT expiration date for (with or without the REALM)
-
+To format the display format:
+```bash
+set -g @dracula-mpc-format "%title% - %artist%"
 ```
-set -g @dracula-krbtgt-principal "principal"
+
+`set -g @dracula-refresh-rate 5` affects this widget
+#### network - [up](#table-of-contents)
+This widget displays one of three states: offline, ethernet connected, or wifi connected.
+however, per default **this will only display the wifi you're connected to, if it provides internet access!**
+
+You can use different hosts to ping in order to check for a wifi or wired connection.
+If you frequently use networks without internet access, you can use local ip-addresses here to still display the connection.
+```bash
+set -g @dracula-network-hosts "1.1.1.1 8.8.8.8"
 ```
 
-#### continuum options - [up](#table-of-contents)
+Possible nerdfont settings for network info:
+```bash
+set -g @dracula-network-ethernet-label "󰈀 Eth"
+set -g @dracula-network-offline-label "󱍢 "
+set -g @dracula-network-wifi-label " "
+```
 
-Set the output mode. Options are:
-- **countdown**: Show a T- countdown to the next save (default)
-- **time**: Show the time since the last save
-- **alert**: Hide output if no save has been performed recently
-- **interval**: Show the continuum save interval
+Nerdfont icons to consider:
+```
+ethernet: 󰈀 󰒪 󰒍 󰌗 󰌘
+offline: 󰖪  󱍢
+wifi:      󰖩  󰘊 󰒢
+```
+
+Known issues:
+- If for some reason `iw` is only in the path for root and not the normal user, wifi connections will be considered ethernet connections.
+#### network-bandwidth - [up](#table-of-contents)
+This widget gives the currently used up and download speeds per second for one interface.
+
+The most common interfaces name are `eth0` for a wired connection and `wlan0` for a wireless connection.
+To set a specific network interface you'd like to monitor, used:
+```bash
+set -g @dracula-network-bandwidth "eno0"
+```
+To display the interface name alongside the speeds, set:
+```bash
+set -g @dracula-network-bandwidth-show-interface true
+```
+Per default, this widget checks the speeds as frequently as it can. to set longer intervals, use the following:
+```bash
+set -g @dracula-network-bandwidth-interval 5
+```
+
+#### network-ping options - [up](#table-of-contents)
+This widget displays the current ping to a specific server.
+
+You can configure which server (hostname, IP) you want to ping and at which rate (in seconds). Default is google.com at every 5 seconds.
 
 ```bash
-set -g @dracula-continuum-mode countdown
+set -g @dracula-ping-server "google.com"
+set -g @dracula-ping-rate 5
 ```
 
-Show if the last save was performed less than 60 seconds ago (default threshold is 15 seconds)
+#### network vpn - [up](#table-of-contents)
+**TODO**
 
-```bash
-set -g @dracula-continuum-time-threshold 60
-```
+set -g @dracula-network-vpn-verbose true
 
+TODO:
+set -g @dracula-network-vpn-label
 #### Playerctl format - [up](#table-of-contents)
+This widget displays playerctl info.
 
-Set the playerctl metadata format
+Set the playerctl metadata format like so:
+```bash
+set -g @dracula-playerctl-format "►  {{ artist }} - {{ title }}"
+```
+
+#### ram-usage options - [up](#table-of-contents)
+This widget displays the currently used ram as GB per GB.
+
+Possible nerdfont settings for ram usage:
+```bash
+set -g @dracula-ram-usage-label " "
+```
+
+Nerdfont icons to consider:
+```
+   󰍛 󰘚
+```
+#### rpi-temp - [up](#table-of-contents)
+**TODO**
+#### spotify tui - [up](#table-of-contents)
+This widget displays music information provided by spotify-tui. Spotify-tui must be installed to use this widget.
+
+To format the display format:
+```bash
+set -g @dracula-spotify-tui-format "%f %s %t - %a"
+```
+
+To limit the maximum length (0 means unlimited length):
+```bash
+set -g @dracula-spotify-tui-max-len 30
+```
+
+`set -g @dracula-refresh-rate 5` affects this widget
+#### ssh-session options - [up](#table-of-contents)
+This widget displays the current username@host combination, both of the local machine as well as when connected via ssh.
+
+To output nothing (and maybe hide the widget) when not connected via ssh:
+```bash
+set -g @dracula-show-ssh-only-when-connected true
+```
+
+Show SSH session port:
+```bash
+set -g @dracula-show-ssh-session-port true
+```
+
+nerdfont icons to consider:
+```
+󰣀
+```
+#### synchronize-panes options - [up](#table-of-contents)
+This widget displays whether the tmux panes are currently synchronised or not.
+
+To change the label:
+```bash
+set -g @dracula-synchronize-panes-label "Sync"
+```
+
+`set -g @dracula-refresh-rate 5` affects this widget
+#### terraform - [up](#table-of-contents)
+**TODO**
 
 ```
-set -g @dracula-playerctl-format "►  {{ artist }} - {{ title }}"
+set -g @dracula-terraform-label ""
+```
+
+`set -g @dracula-refresh-rate 5` affects this widget
+#### time options - [up](#table-of-contents)
+This widget displays current date and time.
+
+Disable timezone
+
+```bash
+set -g @dracula-show-timezone false
+```
+
+Swap date to day/month
+
+```bash
+set -g @dracula-day-month true
+```
+
+Enable military time
+
+```bash
+set -g @dracula-military-time true
+```
+
+Set custom time format e.g (2023-01-01 14:00)
+```bash
+set -g @dracula-time-format "%F %R"
+```
+See [[this page]](https://man7.org/linux/man-pages/man1/date.1.html) for other format symbols.
+
+#### tmux-ram-usage options - [up](#table-of-contents)
+This widget displays the ram currently used by tmux.
+
+Possible nerdfont settings for tmux ram usage:
+```
+@dracula-tmux-ram-usage-label " "
+```
+
+Nerdfont icons to consider:
+```
+   󰍛 󰘚
+```
+#### weather options - [up](#table-of-contents)
+Show weather information for given location.
+
+Switch from default fahrenheit to celsius
+
+```bash
+set -g @dracula-show-fahrenheit false
+```
+
+Set your location manually
+
+```bash
+set -g @dracula-fixed-location "Some City"
+```
+
+Hide your location
+
+```bash
+set -g @dracula-show-location false
+```
+
+#### custom scripts - [up](#table-of-contents)
+**TODO**
+
+```
+  for plugin in "${plugins[@]}"; do
+
+    if case $plugin in custom:*) true;; *) false;; esac; then
+      script=${plugin#"custom:"}
+      if [[ -x "${current_dir}/${script}" ]]; then
+        IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-custom-plugin-colors" "cyan dark_gray")
+        script="#($current_dir/${script})"
+      else
+        colors[0]="red"
+        colors[1]="dark_gray"
+        script="${script} not found!"
+      fi
 ```
