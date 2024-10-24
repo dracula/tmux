@@ -51,7 +51,7 @@ get_gpu()
 
   elif [[ "$gpu" == apple ]]; then
     usage="$(sudo powermetrics --samplers gpu_power -i500 -n 1 | grep 'GPU Power' | sed 's/GPU Power: \(.*\) \(.*\)/\1\2/g')"
-  else
+  elif [[ "$gpu" == Advanced ]]; then
     usage=$(
       for card in /sys/class/drm/card?
       do
@@ -59,6 +59,8 @@ get_gpu()
       done | \
       sed -z -e 's/\n/|/g' -e 's/|$//g'
     )
+  else # "Intel" "Matrox", etc
+    usage="unknown"
   fi
   echo $usage
 }

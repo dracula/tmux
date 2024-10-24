@@ -51,7 +51,7 @@ get_gpu()
       total_accuracy=$(get_tmux_option "@dracula-gpu-vram-total-accuracy" "d")
       usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk "{ used += \$0; total +=\$2 } END { printf(\"%${used_accuracy}GB/%${total_accuracy}GB\n\", used / 1024, total / 1024) }")
     fi
-  else
+  elif [[ "$gpu" == Advanced ]]; then
     usage="$(
       for card in /sys/class/drm/card?
       do
@@ -60,6 +60,8 @@ get_gpu()
         echo "$use/$max"
       done | sed -z -e 's/\n/|/g' -e 's/|$//g'
     )"
+  else # "Intel" "Matrox", etc
+    usage="unknown"
   fi
   echo $usage
 }
