@@ -41,6 +41,13 @@ main() {
   start=0
   len=${#playerctl_playback}
 
+  # previously we have appended a space to playerctl_playback
+  # if there is no player, len sees only one space
+  # exit the script and output nothing if there is just that space
+  if [[ $len == 1 ]]; then
+    exit
+  fi
+
   scrolling_text=""
 
   for ((start = 0; start <= len; start++)); do
