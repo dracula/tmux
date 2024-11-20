@@ -19,7 +19,7 @@ dark_purple='#373b41'
 "
 ```
 
-Alternatively use the full gruvbox color palette and customise the flags accordingly
+Alternatively use the full tomorrow color palette and customise the flags accordingly
 
 # Tomorrow Night Color Palette
 ## Tomorrow
@@ -102,3 +102,5 @@ blue='#bbdaff'
 purple='#ebbbff'
 pane='#4d5057'
 ```
+
+>For more information about the tomorrow theme, here is the repo made by [chriskempson](https://github.com/chriskempson/tomorrow-theme/tree/master)
