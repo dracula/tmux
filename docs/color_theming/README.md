@@ -62,3 +62,4 @@ set -g @dracula-colors " white='#f8f8f2' gray='#44475a' dark_gray='#282a36' ligh
 as part of this directory there are some plug and play themes with explanations on how to use them:
 - [catppuccin](/docs/color_theming/catppuccin.md)
 - [gruvbox](/docs/color_theming/gruvbox.md)
+- [tomorrow night](/docs/color_theming/tomorrow_night.md)
