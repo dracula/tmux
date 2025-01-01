@@ -41,3 +41,7 @@ programs.tmux = {
 1. Make sure  `run -b '~/.tmux/plugins/tpm/tpm'` is at the bottom of your .tmux.conf
 2. Run tmux
 3. Use the tpm install command: `prefix + I` (default prefix is ctrl+b)
+
+#### Configuration
+
+The configuration options are documented on [our GitHub](https://github.com/dracula/tmux/blob/master/docs/CONFIG.md)
