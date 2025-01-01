@@ -23,8 +23,8 @@ In depth configuration of Colors and alternative themes can be found [in the doc
 - Day, date, time, timezone
 - [Fully custom color theming](/docs/color_theming/README.md)
 - Current location based on network with temperature and forecast icon (if available)
-- Network connection status, bandwidth and SSID
 - SSH session user, hostname and port of active tmux pane
+- Network connection status, bandwidth, SSID and public IP (requires `curl`)
 - Git branch and status
 - Battery percentage and AC power connection status with icons
 - Refresh rate control
