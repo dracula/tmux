@@ -49,8 +49,11 @@ display_weather()
   fi
   weather_information=$(fetch_weather_information $display_weather)
 
-  weather_condition=$(echo $weather_information | rev | cut -d ' ' -f2- | rev) # Sunny, Snow, etc
+  weather_condition=$(echo $weather_information | rev | cut -d ' ' -f2- | rev | sed 's/\"//g') # Sunny, Snow, etc
+  echo "Weather Info: $weather_information" >> /tmp/weather-debug.log
+
   temperature=$(echo $weather_information | rev | cut -d ' ' -f 1 | rev) # +31°C, -3°F, etc
+  echo "Condition: $weather_condition, Temperature: $temperature" >> /tmp/weather-debug.log
   unicode=$(forecast_unicode $weather_condition)
 
   # Mac Only variant should be transparent on Linux
