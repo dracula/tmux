@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # setting the locale, some users have issues with different locales, this forces the correct one
-export LC_ALL=en_US.UTF-8
+export LC_ALL=C.utf8
 
 fahrenheit=$1
 location=$2
@@ -42,7 +42,6 @@ fetch_weather_information()
 #get weather display
 display_weather()
 {
-  fahrenheit=$1
   if $fahrenheit; then
     display_weather='&u' # for USA system
   else
@@ -50,11 +49,21 @@ display_weather()
   fi
   weather_information=$(fetch_weather_information $display_weather)
 
-  weather_condition=$(echo $weather_information | rev | cut -d ' ' -f2- | rev) # Sunny, Snow, etc
-  temperature=$(echo $weather_information | rev | cut -d ' ' -f 1 | rev) # +31°C, -3°F, etc
+  weather_condition=$(echo "$weather_information" | awk -F' -?[0-9]' '{print $1}' | xargs) # Extract condition before temperature, e.g. Sunny, Snow, etc
+  temperature=$(echo "$weather_information" | grep -oE '[-+]?[0-9]+°[CF]') # Extract temperature, e.g. +31°C, -3°F, etc
   unicode=$(forecast_unicode $weather_condition)
 
-  echo "$unicode ${temperature/+/}" # remove the plus sign to the temperature
+  # Mac Only variant should be transparent on Linux
+  if [[ "${temperature/+/}" == *"===="* ]]; then
+    temperature="error"
+  fi
+
+  if [[ "${temperature/+/}" == "error" ]]; then
+    # Propagate Error
+    echo "error"
+  else
+    echo "$unicode ${temperature/+/}" # remove the plus sign to the temperature
+  fi
 }
 
 forecast_unicode()
@@ -74,24 +83,13 @@ forecast_unicode()
   fi
 }
 
-export -f display_weather
-export -f display_location
-export -f forecast_unicode
-export -f fetch_weather_information
-
 main()
 {
   # process should be cancelled when session is killed
-  if timeout 1 bash -c "</dev/tcp/ipinfo.io/443" && timeout 1 bash -c "</dev/tcp/wttr.in/443"; then
-    if ! weather=$(timeout 3 bash -c "display_weather $fahrenheit"); then
-      echo "Weather Unavailable"
-    elif ! location=$(timeout 3 bash -c display_location); then
-      echo "Location Unavailable"
-    else
-      echo "${weather}${location}"
-    fi
+  if timeout 1 bash -c "</dev/tcp/ipinfo.io/443" && timeout 1 bash -c "</dev/tcp/wttr.in/443" && [[ "$(display_weather)" != "error" ]]; then
+    echo "$(display_weather)$(display_location)"
   else
-    echo "Network Error"
+    echo "Weather Unavailable"
   fi
 }
 

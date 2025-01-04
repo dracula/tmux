@@ -42,17 +42,23 @@ main()
   show_empty_plugins=$(get_tmux_option "@dracula-show-empty-plugins" true)
 
   # Dracula Color Pallette
-  white=$(get_tmux_option "@dracula-color-white" "#f8f8f2")
-  gray=$(get_tmux_option "@dracula-color-gray" "#44475a")
-  dark_gray=$(get_tmux_option "@dracula-color-dark_gray" "#282a36")
-  light_purple=$(get_tmux_option "@dracula-color-light_purple" "#bd93f9")
-  dark_purple=$(get_tmux_option "@dracula-color-dark_purple" "#6272a4")
-  cyan=$(get_tmux_option "@dracula-color-cyan" "#8be9fd")
-  green=$(get_tmux_option "@dracula-color-green" "#50fa7b")
-  orange=$(get_tmux_option "@dracula-color-orange" "#ffb86c")
-  red=$(get_tmux_option "@dracula-color-red" "#ff5555")
-  pink=$(get_tmux_option "@dracula-color-pink" "#ff79c6")
-  yellow=$(get_tmux_option "@dracula-color-yellow" "#f1fa8c")
+  white="#f8f8f2"
+  gray="#44475a"
+  dark_gray="#282a36"
+  light_purple="#bd93f9"
+  dark_purple="#6272a4"
+  cyan="#8be9fd"
+  green="#50fa7b"
+  orange="#ffb86c"
+  red="#ff5555"
+  pink="#ff79c6"
+  yellow="#f1fa8c"
+
+  # Override default colors and possibly add more
+  colors="$(get_tmux_option "@dracula-colors" "")"
+  if [ -n "$colors" ]; then
+    eval "$colors"
+  fi
 
   # Set transparency variables - Colors and window dividers
   if $transparent_powerline_bg; then
@@ -299,13 +305,17 @@ main()
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-ssh-session-colors" "green dark_gray")
       script="#($current_dir/ssh_session.sh $show_ssh_session_port)"
 
+    elif [ $plugin = "network-public-ip" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-network-public-ip-colors" "cyan dark_gray")
+      script="#($current_dir/network-public-ip.sh)"
+
     else
       continue
     fi
 
-    if [ $plugin = "rpi-temp" ]; then
-      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-rpi-temp-colors" "green dark_gray")
-      script="#($current_dir/rpi_temp.sh)"
+    if [ $plugin = "sys-temp" ]; then
+      IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-sys-temp-colors" "green dark_gray")
+      script="#($current_dir/sys_temp.sh)"
     fi
 
     if $show_powerline; then

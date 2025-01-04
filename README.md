@@ -6,40 +6,39 @@
 
 ## Install
 
-All instructions can be found at [draculatheme.com/tmux](https://draculatheme.com/tmux).
+All instructions can be found [in the docs](/docs/INSTALL.md).
 
 ## Configuration
 
-Configuration and options can be found at [draculatheme.com/tmux](https://draculatheme.com/tmux).
+Configuration and options can be found [in the docs](/docs/CONFIG.md).
+
+## Color Theming
+
+In depth configuration of Colors and alternative themes can be found [in the docs](/docs/color_theming/README.md)
 
 ## Features
 
 - Support for powerline
+- Support for NerdFonts
 - Day, date, time, timezone
+- [Fully custom color theming](/docs/color_theming/README.md)
 - Current location based on network with temperature and forecast icon (if available)
-- Network connection status, bandwidth and SSID
 - SSH session user, hostname and port of active tmux pane
+- Network connection status, bandwidth, SSID and public IP (requires `curl`)
 - Git branch and status
-- Battery percentage and AC power connection status
+- Battery percentage and AC power connection status with icons
 - Refresh rate control
 - CPU usage (percentage or load average)
 - RAM usage (system and/or tmux server)
-- GPU usage
 - Custom status texts from external scripts
-- GPU VRAM usage
-- GPU power draw
+- GPU stats
+    - usage, power draw, and VRAM usage for NVIDIA on Linux
+    - usage, and power draw for MacOS. **requires sudo privileges**
 - Color code based on whether a prefix is active or not
 - List of windows with the current window highlighted
-- When prefix is enabled, a smiley face turns from green to yellow
-- When charging, 'AC' is displayed
-    - Alternatively show battery level and whether its charging next to percentage by setting:
-    ```
-    set -g @dracula-battery-label false
-    set -g @dracula-no-battery-label false
-    set -g @dracula-show-battery-status true
-    ```
+- When prefix is enabled, the left status bar widget turns from green to yellow
 - If forecast information is available, a ☀, ☁, ☂, or ❄ unicode character corresponding with the forecast is displayed alongside the temperature
-- System temperature on Raspberry PI
+- Read system temperature
 - Info if the Panes are synchronized
 - Spotify playback (needs the tool spotify-tui installed). max-len can be configured.
 - Music Player Daemon status (needs the tool mpc installed)
@@ -59,9 +58,9 @@ FreeBSD compatibility is in development
 
 This theme is maintained by the following person(s) and a bunch of [awesome contributors](https://github.com/dracula/tmux/graphs/contributors).
 
-| [![Dane Williams](https://avatars2.githubusercontent.com/u/22798229?s=70&v=4",)](https://github.com/danerwilliams) | [![Ethan Edwards](https://avatars1.githubusercontent.com/u/60861925?s=70&v=4)](https://github.com/ethancedwards8) |
-| ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| [Dane Williams](https://github.com/danerwilliams)                                                                  | [Ethan Edwards](https://github.com/ethancedwards8)                                                                |
+| [![Ethan Edwards](https://avatars1.githubusercontent.com/u/60861925?s=70&v=4)](https://github.com/ethancedwards8) | [![Hugo Meinhof](https://avatars.githubusercontent.com/u/19731833?s=70&v=4)](https://github.com/theoreticallyhugo) | [![Dane Williams](https://avatars2.githubusercontent.com/u/22798229?s=70&v=4)](https://github.com/danerwilliams) |
+|-------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| [Ethan Edwards](https://github.com/ethancedwards8)                                                                | [Hugo Meinhof](https://github.com/theoreticallyhugo)                                                               | [Dane Williams](https://github.com/danerwilliams)                                                                |
 
 ## Community
 
