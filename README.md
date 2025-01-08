@@ -6,7 +6,7 @@
 
 ## Install
 
-All instructions can be found [in the docs](/docs/INSTALL.md).
+All instructions can be found [in the docs](./INSTALL.md).
 
 ## Configuration
 
