@@ -318,20 +318,19 @@ main()
       script="#($current_dir/sys_temp.sh)"
     fi
 
+    if $show_edge_icons; then
+      edge_icons="#[bg=${dark_gray},fg=${!colors[0]}]${show_left_sep}"
+      background_color="${dark_gray}"
+    else
+      background_color="${powerbg}"
+    fi
+
     if $show_powerline; then
       if $show_empty_plugins; then
-        if $show_edge_icons; then
-          tmux set-option -ga status-right " #[fg=${!colors[0]},bg=${dark_gray},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script #[bg=${dark_gray},fg=${!colors[0]}]${show_left_sep}"
-        else
-          tmux set-option -ga status-right "#[fg=${!colors[0]},bg=${powerbg},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script "
-        fi
+        tmux set-option -ga status-right " #[fg=${!colors[0]},bg=${background_color},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script $edge_icons"
       else
-        if $show_edge_icons; then
-          tmux set-option -ga status-right " #[fg=${!colors[0]},bg=${dark_gray},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script #[bg=${dark_gray},fg=${!colors[0]}]${show_left_sep}"
-        else
-          tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[0]},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script }"
-        fi
-      fi
+		tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[0]},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script $edge_icons }"
+	  fi
       powerbg=${!colors[0]}
     else
       if $show_empty_plugins; then
@@ -340,6 +339,7 @@ main()
         tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[1]},bg=${!colors[0]}] $script }"
       fi
     fi
+
   done
 
   # Window option
