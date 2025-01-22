@@ -5,8 +5,7 @@ export LC_ALL=en_US.UTF-8
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
 
-main()
-{
+main() {
   # set configuration option variables
   show_krbtgt_label=$(get_tmux_option "@dracula-krbtgt-context-label" "")
   krbtgt_principal=$(get_tmux_option "@dracula-krbtgt-principal" "")
@@ -62,15 +61,27 @@ main()
 
   # Set transparency variables - Colors and window dividers
   if $transparent_powerline_bg; then
-    bg_color="default"
-    window_sep_fg=${dark_purple}
-    window_sep_bg=default
-    window_sep="$show_inverse_divider"
+	bg_color="default"
+	if $show_edge_icons; then
+	  window_sep_fg=${dark_purple}
+	  window_sep_bg=default
+	  window_sep="$show_right_sep"
+	else
+	  window_sep_fg=${dark_purple}
+	  window_sep_bg=default
+	  window_sep="$show_inverse_divider"
+	fi
   else
     bg_color=${gray}
-    window_sep_fg=${gray}
-    window_sep_bg=${dark_purple}
-    window_sep="$show_left_sep"
+    if $show_edge_icons; then
+      window_sep_fg=${dark_purple}
+      window_sep_bg=${gray}
+      window_sep="$show_inverse_divider"
+    else
+      window_sep_fg=${gray}
+      window_sep_bg=${dark_purple}
+      window_sep="$show_left_sep"
+    fi
   fi
 
   # Handle left icon configuration
