@@ -326,7 +326,11 @@ main()
           tmux set-option -ga status-right "#[fg=${!colors[0]},bg=${powerbg},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script "
         fi
       else
-        tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[0]},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script }"
+        if $show_edge_icons; then
+          tmux set-option -ga status-right " #[fg=${!colors[0]},bg=${dark_gray},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script #[bg=${dark_gray},fg=${!colors[0]}]${show_left_sep}"
+        else
+          tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[0]},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script }"
+        fi
       fi
       powerbg=${!colors[0]}
     else
