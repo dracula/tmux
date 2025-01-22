@@ -152,7 +152,7 @@ main()
   # Status left
   if $show_powerline; then
     if $show_edge_icons; then
-      tmux set-option -g status-left "#[bg=${dark_gray},fg=${green}]#{?client_prefix,#[fg=${yellow}],}${show_right_sep}#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${bg_color}]#{?client_prefix,#[fg=${yellow}],}${left_sep} "
+      tmux set-option -g status-left "#[bg=${bg_color},fg=${green},bold]#{?client_prefix,#[fg=${yellow}],}${show_right_sep}#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${bg_color}]#{?client_prefix,#[fg=${yellow}],}${left_sep} "
     else
       tmux set-option -g status-left "#[bg=${dark_gray},fg=${green}]#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${bg_color}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
     fi
@@ -318,19 +318,20 @@ main()
       script="#($current_dir/sys_temp.sh)"
     fi
 
+    # edge styling
     if $show_edge_icons; then
-      edge_icons="#[bg=${dark_gray},fg=${!colors[0]}]${show_left_sep}"
-      background_color="${dark_gray}"
+      right_edge_icon="#[bg=${bg_color},fg=${!colors[0]}]${show_left_sep}"
+      background_color=${bg_color}
     else
-      background_color="${powerbg}"
+      background_color=${powerbg}
     fi
 
     if $show_powerline; then
       if $show_empty_plugins; then
-        tmux set-option -ga status-right " #[fg=${!colors[0]},bg=${background_color},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script $edge_icons"
+        tmux set-option -ga status-right " #[fg=${!colors[0]},bg=${background_color},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script $right_edge_icon"
       else
-		tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[0]},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script $edge_icons }"
-	  fi
+    tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[0]},nobold,nounderscore,noitalics] ${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script $right_edge_icon}"
+    fi
       powerbg=${!colors[0]}
     else
       if $show_empty_plugins; then
