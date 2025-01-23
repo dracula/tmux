@@ -17,7 +17,7 @@ current_cluster=$(kubectl config view --minify --output 'jsonpath={.contexts[?(@
 current_namespace=$(kubectl config view --minify --output 'jsonpath={.contexts[?(@.name=="'$current_context'")].context.namespace}'; echo)
 
 current_account_id=""
-if [[ "$current_cluster" =~ ^arn:aws:eks:[a-z0-9\-]*:[0-9]*:cluster/[a-z0-9\-]*$ ]]; then
+if [[ "$current_cluster" =~ ^arn:(aws|aws-[a-z\-]*-gov):eks:[a-z0-9\-]*:[0-9]*:cluster/[a-z0-9\-]*$ ]]; then
     if [ "$extract_account" = "true" ]; then
         current_account_id=$(echo "$current_cluster" | cut -d':' -f5)
     fi
