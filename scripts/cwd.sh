@@ -29,8 +29,5 @@ main() {
   echo "$cwd"
 }
 
-# Enable debugging
-set -x
-
 #run main driver program
 main
