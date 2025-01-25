@@ -21,13 +21,16 @@ main() {
   # check if the user wants only the current directory
   basename_enabled=$(tmux show-option -gqv @dracula-cwd-basename)
 
-  if ["$basenmae_enabled" == "true" ]; then
+  if [ "$basename_enabled" == "true" ]; then
     #Extract only the last part of path
     cwd=$(basename "$cwd")
   fi
 
   echo "$cwd"
 }
+
+# Enable debugging
+set -x
 
 #run main driver program
 main
