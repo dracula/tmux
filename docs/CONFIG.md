@@ -90,6 +90,11 @@ Enable powerline symbols
 set -g @dracula-show-powerline true
 ```
 
+Enable edge icons
+```bash
+set -g @dracula-show-edge-icons true
+```
+
 Switch powerline symbols
 
 ```bash
