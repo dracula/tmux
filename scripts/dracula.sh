@@ -10,7 +10,7 @@ main() {
   show_krbtgt_label=$(get_tmux_option "@dracula-krbtgt-context-label" "")
   krbtgt_principal=$(get_tmux_option "@dracula-krbtgt-principal" "")
   show_kubernetes_context_label=$(get_tmux_option "@dracula-kubernetes-context-label" "")
-  show_only_kubernetes_context=$(get_tmux_option "@dracula-show-only-kubernetes-context" "")
+  show_only_kubernetes_context=$(get_tmux_option "@dracula-show-only-kubernetes-context" false)
   eks_hide_arn=$(get_tmux_option "@dracula-kubernetes-eks-hide-arn" false)
   eks_extract_account=$(get_tmux_option "@dracula-kubernetes-eks-extract-account" false)
   hide_kubernetes_user=$(get_tmux_option "@dracula-kubernetes-hide-user" false)
