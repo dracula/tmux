@@ -2,30 +2,36 @@
 # setting the locale, some users have issues with different locales, this forces the correct one
 export LC_ALL=en_US.UTF-8
 
-#wrapper script for running weather on interval
-
-fahrenheit=$1
-location=$2
-fixedlocation=$3
-
-DATAFILE=/tmp/.dracula-tmux-data
+DATAFILE="/tmp/.dracula-tmux-data"
 LAST_EXEC_FILE="/tmp/.dracula-tmux-weather-last-exec"
-RUN_EACH=1200
-TIME_NOW=$(date +%s)
-TIME_LAST=$(cat "${LAST_EXEC_FILE}" 2>/dev/null || echo "0")
+INTERVAL=1200
 
-main()
-{
-  current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# Call weather script on interval to prevent exhausting remote API
+# Globals:
+#   DATAFILE
+#   LAST_EXEC_FILE
+#   INTERVAL
+# Arguments:
+#   show fahrenheit, either "true" (default) or "false"
+#   show location, either "true" (default) or "false"
+#   optional fixed location to query data about, e.g. "Houston, Texas"
+function main() {
+  local _show_fahrenheit _show_location _location _current_dir _time_last
+  _show_fahrenheit="$1"
+  _show_location="$2"
+  _location="$3"
+  _current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  _last=$(cat "$LAST_EXEC_FILE" 2>/dev/null || echo 0)
+  _now=$(date +%s)
 
-  if [ "$(expr ${TIME_LAST} + ${RUN_EACH})" -lt "${TIME_NOW}" ]; then
+  if (((_now - _last) > INTERVAL)); then
+    echo updating cache
     # Run weather script here
-    $current_dir/weather.sh $fahrenheit $location "$fixedlocation" > "${DATAFILE}"
-    echo "${TIME_NOW}" > "${LAST_EXEC_FILE}"
+    "${_current_dir}/weather.sh" "$_show_fahrenheit" "$_show_location" "$_location" >"${DATAFILE}"
+    printf '%s' "$_now" >"${LAST_EXEC_FILE}"
   fi
 
   cat "${DATAFILE}"
 }
 
-#run main driver function
-main
+main "$@"
