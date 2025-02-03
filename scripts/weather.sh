@@ -31,7 +31,14 @@ function fetch_weather_information() {
     _unit="m"
   fi
 
-  command -p curl -sL "${API_URL}/${_location// /%20}?format=%C${DELIM}%t${DELIM}%l&${_unit}"
+  # If the user provies a "fixed location", `@dracula-fixed-location`, that the
+  # API does not recognize, the API may suggest a users actual geoip GPS
+  # location in the response body. This can lead to user PI leak.
+  # Drop response body when status code >= 400 and return nonzero by passing the
+  # `--fail` flag. Execute curl last to allow the consumer to leverage the
+  # return code. Pass `--show-error` and redirect stderr for the consumer.
+  command -p curl -L --silent --fail --show-error \
+    "${API_URL}/${_location// /%20}?format=%C${DELIM}%t${DELIM}%l&${_unit}" 2>&1
 }
 
 # Format raw weather information from API
@@ -93,16 +100,25 @@ function main() {
   _location="$3"
 
   # process should be cancelled when session is killed
-  if ! timeout 1 bash -c "</dev/tcp/ipinfo.io/443"; then
-    printf "Weather Unavailable\n"
+  if ! timeout 1 bash -c "</dev/tcp/wttr.in/443"; then
+    printf 'Weather Unavailable\n'
     return
   fi
 
+  # BashFAQ/002: assignment of substitution does not effect status code.
   local _resp
-  _resp=$(fetch_weather_information "$_show_fahrenheit" "$_location")
+  if ! _resp=$(fetch_weather_information "$_show_fahrenheit" "$_location"); then
 
-  if [[ "$_resp" = "Unknown location"* ]]; then
-    printf 'Unknown location error\n'
+    # e.g. "curl: (22) The requested URL returned error: 404"
+    case "${_resp##* }" in
+    404)
+      printf 'Unknown Location\n'
+      ;;
+    *)
+      printf 'Weather Unavailable\n'
+      ;;
+    esac
+
     return
   fi
 
