@@ -54,15 +54,15 @@ function format_weather_info() {
   _show_location="$2"
 
   local _weather _temp _location
-  _weather="${_raw%%"${DELIM}"*}"  # slice temp and location to get weather
-  _temp="${_raw#*"${DELIM}"}"      # slice weather to get temp and location
-  _temp="${_temp%%"${DELIM}"*}"    # slice location to get temp
-  _temp="${_temp/+/}"              # slice "+" from "+74°F"
-  _location="${_raw##*"${DELIM}"}" # slice weather and temp to get location
-  [ "${_location//[^,]/}" == ",," ] &&
-    _location="${_location%,*}" # slice country if it exists
+  _weather="${_raw%%"${DELIM}"*}"                                  # slice temp and location to get weather
+  _weather=$(printf '%s' "$_weather" | tr '[:upper:]' '[:lower:]') # lowercase weather, OSX’s bash3.2 does not support ${v,,}
+  _temp="${_raw#*"${DELIM}"}"                                      # slice weather to get temp and location
+  _temp="${_temp%%"${DELIM}"*}"                                    # slice location to get temp
+  _temp="${_temp/+/}"                                              # slice "+" from "+74°F"
+  _location="${_raw##*"${DELIM}"}"                                 # slice weather and temp to get location
+  [ "${_location//[^,]/}" == ",," ] && _location="${_location%,*}" # slice country if it exists
 
-  case "${_weather,,}" in
+  case "$_weather" in
   'snow')
     _weather='❄'
     ;;
