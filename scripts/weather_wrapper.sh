@@ -16,7 +16,7 @@ INTERVAL=1200
 #   show location, either "true" (default) or "false"
 #   optional fixed location to query data about, e.g. "Houston, Texas"
 function main() {
-  local _show_fahrenheit _show_location _location _current_dir _time_last
+  local _show_fahrenheit _show_location _location _current_dir _last _now
   _show_fahrenheit="$1"
   _show_location="$2"
   _location="$3"
