@@ -16,6 +16,7 @@ fi
 
 # Fetch weather information from remote API
 # Globals:
+#   API_URL
 #   DELIM
 # Arguments:
 #   show fahrenheit, either "true" or "false"
