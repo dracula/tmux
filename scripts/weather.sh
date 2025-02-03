@@ -50,7 +50,7 @@ function fetch_weather_information() {
 #   show location, either "true" or "false"
 function format_weather_info() {
   local _raw _show_location
-  _raw="$1"
+  _raw="$1" # e.g. "Rain:+63°F:Houston, Texas, United States"
   _show_location="$2"
 
   local _weather _temp _location
