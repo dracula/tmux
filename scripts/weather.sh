@@ -103,6 +103,7 @@ function main() {
 
   if [[ "$_resp" = "Unknown location"* ]]; then
     printf 'Unknown location error\n'
+    return
   fi
 
   format_weather_info "$_resp" "$_show_location"
