@@ -16,7 +16,7 @@ getPaneDir() {
 }
 
 main() {
-  path=$(getPaneDir)
+  path="$(getPaneDir)"
 
   if [[ "$path" == "$HOME" ]]; then
     echo "~"
@@ -27,7 +27,7 @@ main() {
   cwd="${path/"${HOME}/"/'~/'}"
 
   # check max number of subdirs to display. 0 means unlimited
-  cwd_max_dirs=$(get_tmux_option "@dracula-cwd-max-dirs" "0")
+  cwd_max_dirs="$(get_tmux_option "@dracula-cwd-max-dirs" "0")"
 
   if [[ "$cwd_max_dirs" -gt 0 ]]; then
     base_to_erase=$cwd
@@ -38,6 +38,11 @@ main() {
     if [[ ${#base_to_erase} -gt 1 ]]; then
       cwd="…/${cwd:${#base_to_erase}+1}"
     fi
+  fi
+
+  cwd_max_chars="$(get_tmux_option "@dracula-cwd-max-chars" "0")"
+  if [[ "${#cwd}" -gt "$cwd_max_chars" ]]; then
+    cwd="…/…${cwd:(- cwd_max_chars)}"
   fi
 
   echo "$cwd"
