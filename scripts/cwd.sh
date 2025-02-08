@@ -41,7 +41,7 @@ main() {
   fi
 
   cwd_max_chars="$(get_tmux_option "@dracula-cwd-max-chars" "0")"
-  if [[ "${#cwd}" -gt "$cwd_max_chars" ]]; then
+  if [[ "${cwd_max_chars}" -gt 0 && "${#cwd}" -gt "$cwd_max_chars" ]]; then
     cwd="…/…${cwd:(- cwd_max_chars)}"
   fi
 
