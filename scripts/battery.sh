@@ -3,13 +3,13 @@
 export LC_ALL=en_US.UTF-8
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
 linux_acpi() {
   arg=$1
   BAT=$(ls -d /sys/class/power_supply/*)
   if [ ! -x "$(which acpi 2> /dev/null)" ];then
-    for DEV in $BAT; do
+    for DEV in "${BAT[@]}"; do
       case "$arg" in
         status)
           [ -f "$DEV/status" ] && cat "$DEV/status"
@@ -41,15 +41,15 @@ battery_percent()
   case $(uname -s) in
     Linux)
       percent=$(linux_acpi percent)
-      [ -n "$percent" ] && echo "$percent%"
+      [ "$percent" != "" ] && echo "$percent%"
       ;;
 
     Darwin)
-      echo $(pmset -g batt | grep -Eo '[0-9]?[0-9]?[0-9]%')
+      echo "$(pmset -g batt | grep -Eo '[0-9]?[0-9]?[0-9]%')"
       ;;
 
     FreeBSD)
-      echo $(apm | sed '8,11d' | grep life | awk '{print $4}')
+      echo "$(apm | sed '8,11d' | grep life | awk '{print $4}')"
       ;;
 
     CYGWIN*|MINGW32*|MSYS*|MINGW*)
@@ -161,7 +161,7 @@ main()
   fi
 
   show_bat_label=$(get_tmux_option "@dracula-show-battery-status" false)
-  if $show_bat_label; then
+  if "$show_bat_label"; then
     bat_stat=$(battery_status)
   else
     bat_stat=""
@@ -169,9 +169,9 @@ main()
 
   bat_perc=$(battery_percent)
 
-  if [ -z "$bat_stat" ]; then # Test if status is empty or not
+  if [ "$bat_stat" = "" ]; then # Test if status is empty or not
     echo "$bat_label $bat_perc"
-  elif [ -z "$bat_perc" ]; then # In case it is a desktop with no battery percent, only AC power
+  elif [ "$bat_perc" = "" ]; then # In case it is a desktop with no battery percent, only AC power
     echo "$no_bat_label"
   else
     echo "$bat_label$bat_stat $bat_perc"

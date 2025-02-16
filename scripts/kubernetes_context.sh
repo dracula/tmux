@@ -9,12 +9,12 @@ just_current_context=$4
 label=$5
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
 current_context=$(kubectl config view --minify --output 'jsonpath={.current-context}'; echo)
-current_user=$(kubectl config view --minify --output 'jsonpath={.contexts[?(@.name=="'$current_context'")].context.user}'; echo)
-current_cluster=$(kubectl config view --minify --output 'jsonpath={.contexts[?(@.name=="'$current_context'")].context.cluster}'; echo)
-current_namespace=$(kubectl config view --minify --output 'jsonpath={.contexts[?(@.name=="'$current_context'")].context.namespace}'; echo)
+current_user=$(kubectl config view --minify --output 'jsonpath={.contexts[?(@.name=="'"$current_context"'")].context.user}'; echo)
+current_cluster=$(kubectl config view --minify --output 'jsonpath={.contexts[?(@.name=="'"$current_context"'")].context.cluster}'; echo)
+current_namespace=$(kubectl config view --minify --output 'jsonpath={.contexts[?(@.name=="'"$current_context"'")].context.namespace}'; echo)
 
 current_account_id=""
 if [[ "$current_cluster" =~ ^arn:(aws|aws-[a-z\-]*-gov):eks:[a-z0-9\-]*:[0-9]*:cluster/[a-z0-9\-]*$ ]]; then
@@ -43,7 +43,7 @@ main()
     getFullMessage
   fi
 
-  sleep $RATE
+  sleep "$RATE"
 }
 
 getFullMessage()
@@ -75,7 +75,7 @@ getFullMessage()
 
   if [ "$label" = "" ]
   then
-    echo "${OUTPUT_STRING}"
+    echo "$OUTPUT_STRING"
   else
     echo "${label} ${OUTPUT_STRING}"
   fi

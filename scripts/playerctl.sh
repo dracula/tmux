@@ -3,7 +3,7 @@
 export LC_ALL=en_US.UTF-8
 
 current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
 function slice_loop() {
   local str="$1"
@@ -31,7 +31,7 @@ main() {
   fi
 
   FORMAT=$(get_tmux_option "@dracula-playerctl-format" "Now playing: {{ artist }} - {{ album }} - {{ title }}")
-  playerctl_playback=$(playerctl metadata --format "${FORMAT}")
+  playerctl_playback=$(playerctl metadata --format "$FORMAT")
   playerctl_playback="${playerctl_playback} "
 
   # Adjust width of string

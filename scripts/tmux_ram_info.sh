@@ -11,7 +11,7 @@ get_cpids_linux() {
   local cpid
   echo "$ppid"
   cpids="$(pgrep -P "$ppid")"
-  for cpid in $cpids; do
+  for cpid in "${cpids[@]}"; do
     get_cpids_linux "$cpid"
   done
 }
@@ -22,7 +22,7 @@ get_cpids_unix() {
   local cpid
   echo "$ppid"
   cpids="$(pgrep -aP "$ppid")"
-  for cpid in $cpids; do
+  for cpid in "${cpids[@]}"; do
     get_cpids_unix "$cpid"
   done
 }
@@ -53,7 +53,7 @@ round() {
     num="$1"
     scale="$2"
   fi
-  printf "%.${scale}f" "${num}"
+  printf "%.${scale}f" "$num"
 }
 
 get_tmux_ram_usage()

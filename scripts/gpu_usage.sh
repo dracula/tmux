@@ -3,7 +3,7 @@
 export LC_ALL=en_US.UTF-8
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
 get_platform()
 {
@@ -12,13 +12,13 @@ get_platform()
       # use this option for when your gpu isn't detected
       gpu_label=$(get_tmux_option "@dracula-force-gpu" false)
       if [[ "$gpu_label" != false ]]; then
-        echo $gpu_label
+        echo "$gpu_label"
       else
         # attempt to detect the gpu
         gpu=$(lspci -v | grep VGA | head -n 1 | awk '{print $5}')
         if [[ -n $gpu ]]; then
           # if a gpu is detected, return it
-          echo $gpu
+          echo "$gpu"
         elif type -a nvidia-smi >> /dev/null; then
           # if no gpu was detected, and nvidia-smi is installed, we'll still try nvidia
           echo "NVIDIA"
@@ -49,7 +49,7 @@ get_gpu()
   else
     usage='unknown'
   fi
-  normalize_percent_len $usage
+  normalize_percent_len "$usage"
 }
 
 main()
@@ -59,7 +59,7 @@ main()
   gpu_label=$(get_tmux_option "@dracula-gpu-usage-label" "GPU")
   gpu_usage=$(get_gpu)
   echo "$gpu_label $gpu_usage"
-  sleep $RATE
+  sleep "$RATE"
 }
 
 # run the main driver

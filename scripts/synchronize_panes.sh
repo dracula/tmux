@@ -5,11 +5,11 @@ export LC_ALL=en_US.UTF-8
 label=$1
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
 get_synchronize_panes_status() {
   current_synchronize_panes_status=$(get_tmux_window_option "synchronize-panes" "off")
-  echo $current_synchronize_panes_status
+  echo "$current_synchronize_panes_status"
 }
 
 main()
@@ -19,7 +19,7 @@ main()
   synchronize_panes_label=$label
   synchronize_panes_status=$(get_synchronize_panes_status)
   echo "$synchronize_panes_label $synchronize_panes_status"
-  sleep $RATE
+  sleep "$RATE"
 }
 
 # run main driver

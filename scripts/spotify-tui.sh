@@ -3,7 +3,7 @@
 export LC_ALL=en_US.UTF-8
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
 main()
 {
@@ -22,12 +22,12 @@ main()
   fi
 
   FORMAT=$(get_tmux_option "@dracula-spotify-tui-format" "%f %s %t - %a")
-  spotify_playback=$(spt playback -f "${FORMAT}")
+  spotify_playback=$(spt playback -f "$FORMAT")
   max_len=$(get_tmux_option "@dracula-spotify-tui-max-len" 0)
   if [[ $max_len -ne 0 ]] ; then
-    echo ${spotify_playback} | head -c $max_len
+    echo "$spotify_playback" | head -c "$max_len"
   else
-    echo ${spotify_playback}
+    echo "$spotify_playback"
   fi
 }
 

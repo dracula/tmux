@@ -3,7 +3,7 @@
 export LC_ALL=en_US.UTF-8
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
 get_ratio()
 {
@@ -18,7 +18,7 @@ get_ratio()
 
     Darwin)
       # Get used memory blocks with vm_stat, multiply by page size to get size in bytes, then convert to MiB
-      used_mem=$(vm_stat | grep ' active\|wired\|compressor\|speculative' | sed 's/[^0-9]//g' | paste -sd ' ' - | awk -v pagesize=$(pagesize) '{printf "%d\n", ($1+$2+$3+$5) * pagesize / 1048576}')
+      used_mem=$(vm_stat | grep ' active\|wired\|compressor\|speculative' | sed 's/[^0-9]//g' | paste -sd ' ' - | awk -v pagesize="$(pagesize)" '{printf "%d\n", ($1+$2+$3+$5) * pagesize / 1048576}')
       # System Profiler performs an activation lock check, which can result in
       # time outs or a lagged response. (~10 seconds)
       # total_mem=$(system_profiler SPHardwareDataType | grep "Memory:" | awk '{print $2 $3}')
@@ -41,7 +41,7 @@ get_ratio()
       free_mem=$(((mem_inactive + mem_unused + mem_cache) / 1024 / 1024))
       total_mem=$(($(sysctl -n hw.physmem) / 1024 / 1024))
       used_mem=$((total_mem - free_mem))
-      echo $used_mem
+      echo "$used_mem"
       if ((used_mem < 1024 )); then
         echo "${used_mem}MB/$total_mem"
       else
@@ -64,10 +64,10 @@ $(vmstat -s | grep "pages zeroed$" | sed -ne 's/^ *\([0-9]*\).*$/\1/p') +
       #used_mem=$((total_mem - free_mem))
       total_mem=$(($total_mem/1024))
       if (( $used_mem < 1024 )); then
-        echo $used_mem\M\B/$total_mem\G\B
+        echo "$used_mem"\M\B/"$total_mem"\G\B
       else
         memory=$(($used_mem/1024))
-        echo $memory\G\B/$total_mem\G\B
+        echo "$memory"\G\B/"$total_mem"\G\B
       fi
       ;;
 

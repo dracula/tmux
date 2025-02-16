@@ -4,23 +4,23 @@
 export LC_ALL=en_US.UTF-8
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
 show_ssh_session_port=$1
 
 parse_ssh_port() {
   # Get port from connection
-  local port=$(echo $1|grep -Eo '\-p\s*([0-9]+)'|sed 's/-p\s*//')
+  local port=$(echo "$1"|grep -Eo '\-p\s*([0-9]+)'|sed 's/-p\s*//')
 
-  if [ -z $port ]; then
+  if [ "$port" = "" ]; then
     local port=22
   fi
 
-  echo $port
+  echo "$port"
 }
 
 parse_ssh_config() {
-  for ssh_config in `awk '
+  for ssh_config in "$(awk '
     $1 == "Host" {
       gsub("\\\\.", "\\\\.", $2);
       gsub("\\\\*", ".*", $2);
@@ -31,7 +31,7 @@ parse_ssh_config() {
       $1 = "";
       sub( /^[[:space:]]*/, "" );
       printf "%s|%s\n", host, $0;
-    }' $1`; do
+    }' "$1")"; do
     local host_regex=${ssh_config%|*}
     local host_user=${ssh_config#*|}
     if [ "$2" == "$host_regex" ]; then
@@ -40,52 +40,52 @@ parse_ssh_config() {
     fi
   done
 
-  echo $ssh_user_found
+  echo "$ssh_user_found"
 }
 
 get_ssh_user() {
   # Search SSH User in user local file if available
   if [ -f ~/.ssh/config ]; then
-    ssh_user=$(parse_ssh_config ~/.ssh/config $1)
+    ssh_user=$(parse_ssh_config ~/.ssh/config "$1")
   fi
 
   # If SSH User not found, search in global config file
-  if [ -z $ssh_user ]; then
-    ssh_user=$(parse_ssh_config /etc/ssh/ssh_config $1)
+  if [ "$ssh_user" = "" ]; then
+    ssh_user=$(parse_ssh_config /etc/ssh/ssh_config "$1")
   fi
 
   #If SSH User not found in any config file, return current user
-  if [ -z $ssh_user ]; then
+  if [ "$ssh_user" = "" ]; then
     ssh_user=$(whoami)
   fi
 
-  echo $ssh_user
+  echo "$ssh_user"
 }
 
 get_remote_info() {
   local command=$1
 
   # First get the current pane command pid to get the full command with arguments
-  local cmd=$({ pgrep -flaP `tmux display-message -p "#{pane_pid}"` ; ps -o command -p `tmux display-message -p "#{pane_pid}"` ; } | xargs -I{} echo {} | grep ssh | sed -E 's/^[0-9]*[[:blank:]]*ssh //')
+  local cmd=$({ pgrep -flaP "$(tmux display-message -p "#{pane_pid}")" ; ps -o command -p "$(tmux display-message -p "#{pane_pid}")" ; } | xargs -I{} echo {} | grep ssh | sed -E 's/^[0-9]*[[:blank:]]*ssh //')
   local port=$(parse_ssh_port "$cmd")
 
-  local cmd=$(echo $cmd|sed 's/\-p\s*'"$port"'//g')
-  local user=$(echo $cmd | awk '{print $NF}'|cut -f1 -d@)
-  local host=$(echo $cmd | awk '{print $NF}'|cut -f2 -d@)
+  local cmd=$(echo "$cmd"|sed 's/\-p\s*'"$port"'//g')
+  local user=$(echo "$cmd" | awk '{print $NF}'|cut -f1 -d@)
+  local host=$(echo "$cmd" | awk '{print $NF}'|cut -f2 -d@)
 
-  if [ $user == $host ]; then
-    local user=$(get_ssh_user $host)
+  if [ "$user" == "$host" ]; then
+    local user=$(get_ssh_user "$host")
   fi
 
   case "$1" in
     "whoami")
-      echo $user
+      echo "$user"
       ;;
     "hostname")
-      echo $host
+      echo "$host"
       ;;
     "port")
-      echo $port
+      echo "$port"
       ;;
     *)
       echo "$user@$host:$port"
@@ -95,10 +95,10 @@ get_remote_info() {
 
 get_info() {
   # If command is ssh get info from remote
-  if $(ssh_connected); then
-    echo $(get_remote_info $1)
+  if "$(ssh_connected)"; then
+    echo "$(get_remote_info "$1")"
   else
-    echo $($1)
+    echo "$("$1")"
   fi
 }
 
@@ -106,7 +106,7 @@ ssh_connected() {
   # Get current pane command
   local cmd=$(tmux display-message -p "#{pane_current_command}")
 
-  [ $cmd = "ssh" ] || [ $cmd = "sshpass" ]
+  [ "$cmd" = "ssh" ] || [ "$cmd" = "sshpass" ]
 }
 
 main() {
@@ -114,13 +114,13 @@ main() {
   user=$(get_info whoami)
 
   # Only show port info if ssh session connected (no localhost) and option enabled
-  if $(get_tmux_option "@dracula-show-ssh-only-when-connected" false) && ! $(ssh_connected); then
+  if "$(get_tmux_option "@dracula-show-ssh-only-when-connected" false)" && ! "$(ssh_connected)"; then
     echo ""
-  elif $(ssh_connected) && [ "$show_ssh_session_port" == "true" ] ; then
+  elif "$(ssh_connected)" && [ "$show_ssh_session_port" == "true" ] ; then
     port=$(get_info port)
-    echo $user@$hostname:$port
+    echo "$user@$hostname:$port"
   else
-    echo $user@$hostname
+    echo "$user@$hostname"
   fi
 }
 

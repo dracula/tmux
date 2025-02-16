@@ -3,7 +3,7 @@
 export LC_ALL=en_US.UTF-8
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
 get_platform()
 {
@@ -12,13 +12,13 @@ get_platform()
       # use this option for when your gpu isn't detected
       gpu_label=$(get_tmux_option "@dracula-force-gpu" false)
       if [[ "$gpu_label" != false ]]; then
-        echo $gpu_label
+        echo "$gpu_label"
       else
         # attempt to detect the gpu
         gpu=$(lspci -v | grep VGA | head -n 1 | awk '{print $5}')
         if [[ -n $gpu ]]; then
           # if a gpu is detected, return it
-          echo $gpu
+          echo "$gpu"
         elif type -a nvidia-smi >> /dev/null; then
           # if no gpu was detected, and nvidia-smi is installed, we'll still try nvidia
           echo "NVIDIA"
@@ -43,7 +43,7 @@ get_gpu()
   gpu=$(get_platform)
   gpu_power_percent=$(get_tmux_option "@dracula-gpu-power-percent" false)
   if [[ "$gpu" == NVIDIA ]]; then
-    if $gpu_power_percent; then
+    if "$gpu_power_percent"; then
       usage=$(nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk '{ draw += $0; max +=$2 } END { printf("%d%%\n", draw / max * 100) }')
   else
       usage=$(nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk '{ draw += $0; max +=$2 } END { printf("%dW/%dW\n", draw, max) }')
@@ -54,7 +54,7 @@ get_gpu()
   else
     usage='unknown'
   fi
-  normalize_percent_len $usage
+  normalize_percent_len "$usage"
 }
 
 main()
@@ -64,7 +64,7 @@ main()
   gpu_label=$(get_tmux_option "@dracula-gpu-power-label" "GPU")
   gpu_usage=$(get_gpu)
   echo "$gpu_label $gpu_usage"
-  sleep $RATE
+  sleep "$RATE"
 }
 
 # run the main driver

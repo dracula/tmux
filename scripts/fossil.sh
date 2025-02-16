@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
-IFS=' ' read -r -a hide_status <<< $(get_tmux_option "@dracula-fossil-disable-status" "false")
-IFS=' ' read -r -a current_symbol <<< $(get_tmux_option "@dracula-fossil-show-current-symbol" "✓")
-IFS=' ' read -r -a diff_symbol <<< $(get_tmux_option "@dracula-fossil-show-diff-symbol" "!")
-IFS=' ' read -r -a no_repo_message <<< $(get_tmux_option "@dracula-fossil-no-repo-message" "")
-IFS=' ' read -r -a no_untracked_files <<< $(get_tmux_option "@dracula-fossil-no-untracked-files" "false")
-IFS=' ' read -r -a show_remote_status <<< $(get_tmux_option "@dracula-fossil-show-remote-status" "false")
+IFS=' ' read -r -a hide_status <<< "$(get_tmux_option "@dracula-fossil-disable-status" "false")"
+IFS=' ' read -r -a current_symbol <<< "$(get_tmux_option "@dracula-fossil-show-current-symbol" "✓")"
+IFS=' ' read -r -a diff_symbol <<< "$(get_tmux_option "@dracula-fossil-show-diff-symbol" "!")"
+IFS=' ' read -r -a no_repo_message <<< "$(get_tmux_option "@dracula-fossil-no-repo-message" "")"
+IFS=' ' read -r -a no_untracked_files <<< "$(get_tmux_option "@dracula-fossil-no-untracked-files" "false")"
+IFS=' ' read -r -a show_remote_status <<< "$(get_tmux_option "@dracula-fossil-show-remote-status" "false")"
 
 # Get added, modified, updated and deleted files from git status
 getChanges()
@@ -18,18 +18,18 @@ getChanges()
    declare -i updated=0;
    declare -i deleted=0;
 
-for i in $(cd $path; fossil changes --differ|cut -f1 -d' ')
+for i in "$(cd "$path"; fossil changes --differ|cut -f1 -d' ')"
 
     do
-      case $i in 
+      case $i in
       'EXTRA')
-        added+=1 
+        added+=1
       ;;
       'EDITED')
         modified+=1
       ;;
       'U')
-        updated+=1 
+        updated+=1
       ;;
       'DELETED')
        deleted+=1
@@ -39,12 +39,12 @@ for i in $(cd $path; fossil changes --differ|cut -f1 -d' ')
     done
 
     output=""
-    [ $added -gt 0 ] && output+="${added}A"
-    [ $modified -gt 0 ] && output+=" ${modified}M"
-    [ $updated -gt 0 ] && output+=" ${updated}U"
-    [ $deleted -gt 0 ] && output+=" ${deleted}D"
-  
-    echo $output    
+    [ "$added" -gt 0 ] && output+="${added}A"
+    [ "$modified" -gt 0 ] && output+=" ${modified}M"
+    [ "$updated" -gt 0 ] && output+=" ${updated}U"
+    [ "$deleted" -gt 0 ] && output+=" ${deleted}D"
+
+    echo "$output"
 }
 
 
@@ -52,12 +52,12 @@ for i in $(cd $path; fossil changes --differ|cut -f1 -d' ')
 getPaneDir()
 {
  nextone="false"
- for i in $(tmux list-panes -F "#{pane_active} #{pane_current_path}");
+ for i in "$(tmux list-panes -F "#{pane_active} #{pane_current_path}")";
  do
     if [ "$nextone" == "true" ]; then
-       echo $i
+       echo "$i"
        return
-    fi 
+    fi
     if [ "$i" == "1" ]; then
         nextone="true"
     fi
@@ -68,7 +68,7 @@ getPaneDir()
 # check if the current or diff symbol is empty to remove ugly padding
 checkEmptySymbol()
 {
-    symbol=$1    
+    symbol=$1
     if [ "$symbol" == "" ]; then
         echo "true"
     else
@@ -80,7 +80,7 @@ checkEmptySymbol()
 checkForChanges()
 {
     if [ "$(checkForFossilDir)" == "true" ]; then
-        if [ "$(cd $path; fossil changes --differ)" != "" ]; then
+        if [ "$(cd "$path"; fossil changes --differ)" != "" ]; then
             echo "true"
         else
             echo "false"
@@ -88,12 +88,12 @@ checkForChanges()
     else
         echo "false"
     fi
-}     
+}
 
 # check if a git repo exists in the directory
 checkForFossilDir()
 {
-    if [ -f ${path}/.fslckout ]; then
+    if [ -f "$path"/.fslckout ]; then
         echo "true"
     else
         echo "false"
@@ -102,27 +102,27 @@ checkForFossilDir()
 
 # return branch name if there is one
 getBranch()
-{   
-    if [ $(checkForFossilDir) == "true" ]; then
-        echo $(cd $path; fossil branch current)
+{
+    if [ "$(checkForFossilDir)" == "true" ]; then
+        echo "$(cd "$path"; fossil branch current)"
     else
-        echo $no_repo_message
+        echo "$no_repo_message"
     fi
 }
 
 getRemoteInfo()
 {
-    base=$(cd $path; fossil branch current)
+    base=$(cd "$path"; fossil branch current)
     remote=$(echo "$base" | cut -d" " -f1)
     out=""
 
-    if [ -n "$remote" ]; then
+    if [ "$remote" != "" ]; then
         out="...$remote"
         ahead=$(echo "$base" | grep -E -o 'ahead[ [:digit:]]+' | cut -d" " -f2)
         behind=$(echo "$base" | grep -E -o 'behind[ [:digit:]]+' | cut -d" " -f2)
 
-        [ -n "$ahead" ] && out+=" +$ahead"
-        [ -n "$behind" ] && out+=" -$behind"
+        [ "$ahead" != "" ] && out+=" +$ahead"
+        [ "$behind" != "" ] && out+=" -$behind"
     fi
 
     echo "$out"
@@ -131,22 +131,22 @@ getRemoteInfo()
 # return the final message for the status bar
 getMessage()
 {
-    if [ $(checkForFossilDir) == "true" ]; then
+    if [ "$(checkForFossilDir)" == "true" ]; then
         branch="$(getBranch)"
         output=""
 
-        if [ $(checkForChanges) == "true" ]; then 
-            
-            changes="$(getChanges)" 
-            
-            if [ "${hide_status}" == "false" ]; then
-                if [ $(checkEmptySymbol $diff_symbol) == "true" ]; then
+        if [ "$(checkForChanges)" == "true" ]; then
+
+            changes="$(getChanges)"
+
+            if [ "$hide_status" == "false" ]; then
+                if [ "$(checkEmptySymbol "$diff_symbol")" == "true" ]; then
 		     output=$(echo "${changes} $branch")
                 else
 		     output=$(echo "$diff_symbol ${changes} $branch")
                 fi
             else
-                if [ $(checkEmptySymbol $diff_symbol) == "true" ]; then
+                if [ "$(checkEmptySymbol "$diff_symbol")" == "true" ]; then
 		     output=$(echo "$branch")
                 else
 		     output=$(echo "$diff_symbol $branch")
@@ -154,7 +154,7 @@ getMessage()
             fi
 
         else
-            if [ $(checkEmptySymbol $current_symbol) == "true" ]; then
+            if [ "$(checkEmptySymbol "$current_symbol")" == "true" ]; then
 	         output=$(echo "$branch")
             else
 		 output=$(echo "$current_symbol $branch")
@@ -164,15 +164,15 @@ getMessage()
         [ "$show_remote_status" == "true" ] && output+=$(getRemoteInfo)
         echo "$output"
     else
-        echo $no_repo_message
+        echo "$no_repo_message"
     fi
 }
 
 main()
-{  
+{
     path=$(getPaneDir)
     getMessage
 }
 
 #run main driver program
-main 
+main

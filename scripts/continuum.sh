@@ -23,7 +23,7 @@ auto_save_interval_option="@continuum-save-interval"
 auto_save_interval_default="15"
 
 current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
 current_timestamp() {
   echo "$(date +%s)"
@@ -73,7 +73,7 @@ set_tmux_option() {
 
 # tmux-resurrect dir
 resurrect_dir() {
-  if [ -z "$_RESURRECT_DIR" ]; then
+  if [ "$_RESURRECT_DIR" = "" ]; then
     local path="$(get_tmux_option "$resurrect_dir_option" "$default_resurrect_dir")"
     # expands tilde, $HOME and $HOSTNAME if used in @resurrect-dir
     echo "$path" | sed "s,\$HOME,$HOME,g; s,\$HOSTNAME,$(hostname),g; s,\~,$HOME,g"
@@ -92,7 +92,7 @@ last_saved_timestamp() {
   local first_save_timestamp="$(get_tmux_option "$first_save" "")"
   # continuum sets the last save timestamp to the current time on first load if auto_save_option is not set
   # so we can outrace it and detect that last_uato_save_option is empty and the timestamp is a dummy save
-  if [ -z "$first_save_timestamp" ]; then
+  if [ "$first_save_timestamp" = "" ]; then
     last_saved_timestamp="$(file_mtime "$(last_resurrect_file)")" || last_saved_timestamp=-1
     set_tmux_option "$first_save" "$last_saved_timestamp"
   elif [ "$first_save_timestamp" != "done" ]; then

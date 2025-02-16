@@ -7,7 +7,7 @@ export LC_ALL=en_US.UTF-8
 # @dracula-ping-rate 5
 
 current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
 ping_function() {
   case $(uname -s) in
@@ -26,9 +26,9 @@ ping_function() {
 
 main() {
 
-  echo $(ping_function)
+  echo "$(ping_function)"
   RATE=$(get_tmux_option "@dracula-ping-rate" 5)
-  sleep $RATE
+  sleep "$RATE"
 }
 
 # run main driver

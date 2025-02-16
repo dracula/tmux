@@ -8,11 +8,11 @@ export LC_ALL=en_US.UTF-8
 # @dracula-clients-plural clients
 
 current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
 count_clients() {
   pane=$(tmux list-panes -F "#{session_name}" | head -n 1)
-  tmux list-clients -t $pane | wc -l | tr -d ' '
+  tmux list-clients -t "$pane" | wc -l | tr -d ' '
 }
 
 main() {
@@ -28,7 +28,7 @@ main() {
     fi
     echo "$clients_count $clients_label"
   fi
-  sleep $RATE
+  sleep "$RATE"
 }
 
 # run main driver

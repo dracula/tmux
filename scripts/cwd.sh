@@ -7,7 +7,7 @@ source "$current_dir/utils.sh"
 getPaneDir() {
   nextone="false"
   ret=""
-  for i in $(tmux list-panes -F "#{pane_active} #{pane_current_path}"); do
+  for i in "$(tmux list-panes -F "#{pane_active} #{pane_current_path}")"; do
     [ "$i" == "1" ] && nextone="true" && continue
     [ "$i" == "0" ] && nextone="false"
     [ "$nextone" == "true" ] && ret+="$i "
@@ -41,7 +41,7 @@ main() {
   fi
 
   cwd_max_chars="$(get_tmux_option "@dracula-cwd-max-chars" "0")"
-  if [[ "${cwd_max_chars}" -gt 0 && "${#cwd}" -gt "$cwd_max_chars" ]]; then
+  if [[ "$cwd_max_chars" -gt 0 && "${#cwd}" -gt "$cwd_max_chars" ]]; then
     cwd="…/…${cwd:(- cwd_max_chars)}"
   fi
 

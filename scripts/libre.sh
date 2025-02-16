@@ -44,7 +44,7 @@ export LC_ALL=en_US.UTF-8
 
 # Load utils
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $current_dir/utils.sh
+source "$current_dir"/utils.sh
 
 # Constants (Default values, can be overridden by config)
 BASE_URL="${LIBREVIEW_API_URL:-https://api-de.libreview.io}"
@@ -95,7 +95,7 @@ get_file_size()
 rotate_log() {
     if [ -f "$LOG_FILE" ]; then
         log_size=$(get_file_size "$LOG_FILE")
-        if [ "$log_size" -gt $LOG_MAX_SIZE ]; then
+        if [ "$log_size" -gt "$LOG_MAX_SIZE" ]; then
             mv "$LOG_FILE" "$LOG_FILE.1"
             gzip "$LOG_FILE.1"
         fi
@@ -132,7 +132,7 @@ EOL
     : "${LOG_FILE:=$LOG_FILE}"
     : "${LOG_MAX_SIZE:=$LOG_MAX_SIZE}"
 
-    if [ -z "$LIBREVIEW_EMAIL" ] || [ -z "$LIBREVIEW_PASSWORD" ]; then
+    if [ "$LIBREVIEW_EMAIL" = "" ] || [ "$LIBREVIEW_PASSWORD" = "" ]; then
         if grep -q '^[^#]' "$CONFIG_FILE"; then
             log "Email and password must be set in the configuration file"
             echo "🦋 CHECK CONFIG ❌"
@@ -179,7 +179,7 @@ login() {
     response=$(echo "$response" | tr -d '\0' | tr -cd '\11\12\15\40-\176')
     token=$(echo "$response" | jq -r '.data.authTicket.token' 2>/dev/null)
     expires=$(echo "$response" | jq -r '.data.authTicket.expires' 2>/dev/null)
-    if [ -z "$token" ] || [ "$token" == "null" ]; then
+    if [ "$token" = "" ] || [ "$token" == "null" ]; then
         log "Failed to retrieve token from login response"
         echo "🦋 NO DATA ❌"
         exit 1
@@ -209,7 +209,7 @@ get_patient_connections() {
     log "Patient connections response: $response"
 
     data=$(echo "$response" | jq -c '.data' 2>/dev/null)
-    if [ -z "$data" ] || [ "$data" == "null" ]; then
+    if [ "$data" = "" ] || [ "$data" == "null" ]; then
         log "No patient connections found"
         echo "🦋 NO DATA ❌"
         exit 1
@@ -316,7 +316,7 @@ get_data() {
         fi
 
         patient_id=$(echo "$patient_data" | jq -r '.[0].patientId' 2>/dev/null)
-        if [ -z "$patient_id" ];then
+        if [ "$patient_id" = "" ];then
             log "Patient ID not found in patient connections"
             echo "🦋 NO DATA ❌"
             exit 1

@@ -112,7 +112,7 @@ main() {
     IFS=" " read -ra bandwidth <<<"$(get_bandwidth "$network_name")"
 
     if [[ $show_interface == "true" ]]; then echo -n "[$network_name] "; fi
-    printf "↓ %6s %-4s • ↑ %6s %-4s\n" $(bandwidth_to_unit "${bandwidth[$DOWNLOAD]}") $(bandwidth_to_unit "${bandwidth[$UPLOAD]}")
+    printf "↓ %6s %-4s • ↑ %6s %-4s\n" "$(bandwidth_to_unit "${bandwidth[$DOWNLOAD]}")" "$(bandwidth_to_unit "${bandwidth[$UPLOAD]}")"
 
     ((counter = counter - 1))
     sleep "$interval_update"
