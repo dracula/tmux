@@ -243,7 +243,13 @@ nerdfont icons to consider:
 
 `set -g @dracula-refresh-rate 5` affects this widget
 ### cwd - [up](#table-of-contents)
-This widget displays the path of the current working directory.
+This widget displays the path of the current working directory, where the path of the users home directory will be shortened to `~`.
+
+The maximum number of directories and number of characters used for that is unlimited by default, but can be set with the following two options:
+```bash
+set -g @dracula-cwd-max-dirs "0"
+set -g @dracula-cwd-max-chars "0"
+```
 ### fossil - [up](#table-of-contents)
 **TODO**
 ### git - [up](#table-of-contents)
