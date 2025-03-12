@@ -25,7 +25,7 @@ get_ssid()
 
     Darwin)
       local wifi_network=$(ipconfig getsummary en0 | awk -F ' SSID : '  '/ SSID : / {print $2}')
-      local airport=$(networksetup -getairportnetwork en0 | cut -d ':' -f 2)
+      local airport=$(networksetup -getairportnetwork en0 | cut -d ':' -f 2 | head -n 1)
 
       if [[ $airport != "You are not associated with an AirPort network." ]]; then
         echo "$wifi_label$airport" | sed 's/^[[:blank:]]*//g'
