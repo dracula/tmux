@@ -320,13 +320,11 @@ main() {
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-network-public-ip-colors" "cyan dark_gray")
       script="#($current_dir/network-public-ip.sh)"
 
-    else
-      continue
-    fi
-
-    if [ $plugin = "sys-temp" ]; then
+    elif [ $plugin = "sys-temp" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-sys-temp-colors" "green dark_gray")
       script="#($current_dir/sys_temp.sh)"
+    else
+      continue
     fi
 
     # edge styling
