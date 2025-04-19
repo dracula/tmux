@@ -1,24 +1,22 @@
 # drac to gruv
 
-**TODO**
 for a quick setup, set the following option:
 ```
 set -g @dracula-colors "
 # simple gruvbox Color Pallette
-pink='#'
-orange='#'
-yellow='#'
-green='#'
-cyan='#'
-light_purple='#'
-white='#'
-dark_gray='#'
-red='#'
-gray='#'
-dark_purple='#'
+white='#EBDBB2'
+gray='#32302F'
+dark_gray='#282828'
+light_purple='#B16286'
+dark_purple='#504945'
+cyan='#689D6A'
+green='#98971A'
+orange='#D65D0E'
+red='#CC241D'
+pink='#D3869B'
+yellow='#D79921'
 "
 ```
-
 
 alternatively use the full gruvbox color palette and customise the flags accordingly
 
