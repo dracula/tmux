@@ -323,6 +323,15 @@ main() {
     elif [ $plugin = "sys-temp" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-sys-temp-colors" "green dark_gray")
       script="#($current_dir/sys_temp.sh)"
+
+    elif [ $plugin = "cpu-arch" ]; then
+      IFS=$' ' read -r -a colors <<< $(get_tmux_option "@dracula-cpu-arch-colors" "default default")
+      script="#($current_dir/cpu_arch.sh)"
+
+    elif [ $plugin = "uptime" ]; then
+      IFS=$' ' read -r -a colors <<< $(get_tmux_option "@dracula-uptime-colors" "default default")
+      script="#($current_dir/uptime.sh)"
+
     else
       continue
     fi
