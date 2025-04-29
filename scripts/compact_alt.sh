@@ -27,8 +27,9 @@ main()
   # if width changed, set global var and reload
   if [[ "$narrow" != "$narrow_mode" ]]; then
     tmux set -g @dracula-narrow-mode $narrow
-    tmux source-file ~/.config/tmux/tmux.conf
+    tmux source-file $(get_tmux_option "@dracula-config-path" "$HOME/.config/tmux/tmux.conf")
   fi
+  # TODO: test and think about what to display
   echo "$window_width aa $narrow"
 }
 
