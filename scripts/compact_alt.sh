@@ -8,7 +8,7 @@ source $current_dir/utils.sh
 main()
 {
   # get options
-  min_width=$(get_tmux_option "@dracula-compact-min-width" "200")
+  min_width=$(get_tmux_option "@dracula-compact-min-width" "140")
 
   # get current window with
   local window_width
@@ -27,10 +27,14 @@ main()
   # if width changed, set global var and reload
   if [[ "$narrow" != "$narrow_mode" ]]; then
     tmux set -g @dracula-narrow-mode $narrow
-    tmux source-file $(get_tmux_option "@dracula-config-path" "$HOME/.config/tmux/tmux.conf")
+    tmux source-file "$(get_tmux_option "@dracula-config-path" "$HOME/.config/tmux/tmux.conf")"
   fi
-  # TODO: test and think about what to display
-  echo "$window_width aa $narrow"
+
+  # show widget info if verbose
+  verbose=$(get_tmux_option "@dracula-compact-alt-verbose" false)
+  if $verbose; then
+    echo "$window_width - $narrow"
+  fi
 }
 
 #run main driver program
