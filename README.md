@@ -29,6 +29,7 @@ In depth configuration of Colors and alternative themes can be found [in the doc
 - Battery percentage and AC power connection status with icons
 - Refresh rate control
 - CPU usage (percentage or load average)
+- CPU architecture
 - RAM usage (system and/or tmux server)
 - Custom status texts from external scripts
 - GPU stats
@@ -39,6 +40,7 @@ In depth configuration of Colors and alternative themes can be found [in the doc
 - When prefix is enabled, the left status bar widget turns from green to yellow
 - If forecast information is available, a ☀, ☁, ☂, or ❄ unicode character corresponding with the forecast is displayed alongside the temperature
 - Read system temperature
+- Read system uptime
 - Info if the Panes are synchronized
 - Spotify playback (needs the tool spotify-tui installed). max-len can be configured.
 - Music Player Daemon status (needs the tool mpc installed)

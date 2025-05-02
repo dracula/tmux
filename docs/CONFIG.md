@@ -10,6 +10,7 @@
   - [attached-clients](#attached-clients---up)
   - [battery](#battery---up)
   - [continuum](#continuum---up)
+  - [cpu-arch](#cpu-arch---up)
   - [cpu-usage](#cpu-usage---up)
   - [cwd](#cwd---up)
   - [fossil](#fossil---up)
@@ -33,6 +34,7 @@
   - [terraform](#terraform---up)
   - [time](#time---up)
   - [tmux-ram-usage](#tmux-ram-usage---up)
+  - [uptime](#uptime---up)
   - [weather](#weather---up)
   - [custom:script-name](#customscript-name---up)
 
@@ -222,6 +224,14 @@ Other options.
 @resurrect-dir
 @continuum-save-last-timestamp
 @continuum-save-interval
+```
+
+### cpu-arch - [up](#table-of-contents)
+This widget displays the cpu architecture.
+
+possible nerdfont settings for cpu arch label:
+```bash
+set -g @dracula-cpu-arch-label "󰍛 "
 ```
 
 ### cpu-usage - [up](#table-of-contents)
@@ -583,6 +593,15 @@ Nerdfont icons to consider:
 ```
    󰍛 󰘚
 ```
+
+### uptime - [up](#table-of-contents)
+Shows how long the system has been running.
+
+Possible nerdfont settings for uptime:
+```
+@dracula-uptime-label "󱎫 "
+```
+
 ### weather - [up](#table-of-contents)
 Show weather information for given location.
 
