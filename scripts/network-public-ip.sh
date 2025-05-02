@@ -19,7 +19,7 @@ main() {
     IP_SERVER="ifconfig.me"
     ip=$(curl -s "$IP_SERVER")
 
-    echo "$(get_tmux_option "@dracula-network-public-ip-label" "") $ip" > "${DATAFILE}"
+    echo "$(get_tmux_option "@dracula-network-public-ip-label" "")$ip" > "${DATAFILE}"
     printf '%s' "$_now" > "${LAST_EXEC_FILE}"
   fi
 
