@@ -9,6 +9,7 @@
 - [Plugins](#Plugins)
   - [attached-clients](#attached-clients---up)
   - [battery](#battery---up)
+  - [compact-alt](#compact-alt---up)
   - [continuum](#continuum---up)
   - [cpu-arch](#cpu-arch---up)
   - [cpu-usage](#cpu-usage---up)
@@ -198,6 +199,44 @@ alternatively, if you have no battery and would like a nerdfont icon to indicate
 
 ```bash
 set -g @dracula-no-battery-label " "
+```
+
+### compact-alt - [up](#table-of-contents)
+This widget allows the user to switch to an alternate list of widgets when the terminal becomes narrow.
+Switching only works if the widget is added to `set -g @dracula-plugins "your-plugins-here"`.
+
+to set what widgets should be shown in narrow mode, set the following variable. *make sure to include the compact-alt widget as you won't be able to switch out of narrow mode otherwise.*
+
+```bash
+set -g @dracula-narrow-plugins "compact-alt battery network weather"
+```
+
+to determine when to switch to narrow mode, set the following variable.
+any value below this threshold is considered narrow.
+
+```bash
+set -g @dracula-compact-min-width 140
+```
+
+the compact-alt widget needs to reload your tmux config to switch from wide to narrow and back.
+therefore, you need to make sure to set the right path to your config file.
+
+```bash
+set -g @dracula-config-path "$HOME/.config/tmux/tmux.conf"
+```
+
+if you want to see your window with and whether narrow mode is active, set the following, which is false per default.
+
+```bash
+set -g @dracula-compact-alt-verbose true
+```
+
+this widget maintains a global variable informing about whether narrow mode is active.
+that variable should never be touched by the user and could potentially be used by other widgets/ plugins.
+
+```bash
+# NEVER DO:
+set -g @dracula-narrow-mode some-value
 ```
 
 ### continuum - [up](#table-of-contents)
