@@ -67,7 +67,7 @@ get_tmux_ram_usage()
   case $(uname -s) in
     Linux)
       if command -v pstree > /dev/null; then
-        pids="$(pstree -p "$pid" | tr -d '\n' | sed -rn -e 's/[^()]*\(([0-9]+)\)[^()]*/\1,/g' -e 's/,$//p')"
+        pids="$(pstree -Tlp "$pid" | tr -d '\n' | sed -rn -e 's/[^()]*\(([0-9]+)\)[^()]*/\1,/g' -e 's/,$//p')"
       else
         pids="$(get_cpids_linux "$pid" | tr '\n' ',')"
       fi
@@ -76,7 +76,7 @@ get_tmux_ram_usage()
 
     Darwin)
       if command -v pstree > /dev/null; then
-        pids="$(pstree "$pid" | sed -En 's/[^0-9]+([0-9]+) .*/\1/p' | tr '\n' ',')"
+        pids="$(pstree -w "$pid" | sed -En 's/[^0-9]+([0-9]+) .*/\1/p' | tr '\n' ',')"
       else
         pids="$(get_cpids_unix "$pid" | tr '\n' ',')"
       fi
@@ -86,7 +86,7 @@ get_tmux_ram_usage()
     FreeBSD)
       # TODO check FreeBSD compatibility
       if command -v pstree > /dev/null; then
-        pids="$(pstree "$pid" | sed -En 's/[^0-9]+([0-9]+) .*/\1/p' | tr '\n' ',')"
+        pids="$(pstree -lp "$pid" | sed -En 's/[^0-9]+([0-9]+) .*/\1/p' | tr '\n' ',')"
       else
         pids="$(get_cpids_unix "$pid" | tr '\n' ',')"
       fi
