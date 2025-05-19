@@ -37,8 +37,14 @@ main() {
   time_format=$(get_tmux_option "@dracula-time-format" "")
   show_ssh_session_port=$(get_tmux_option "@dracula-show-ssh-session-port" false)
   show_libreview=$(get_tmux_option "@dracula-show-libreview" false)
-  IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
   show_empty_plugins=$(get_tmux_option "@dracula-show-empty-plugins" true)
+
+  narrow_mode=$(get_tmux_option "@dracula-narrow-mode" false)
+  if $narrow_mode; then
+    IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-narrow-plugins" "compact-alt battery network weather")
+  else
+    IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
+  fi
 
   # Dracula Color Pallette
   white="#f8f8f2"
@@ -187,6 +193,11 @@ main() {
         colors[1]="dark_gray"
         script="${script} not found!"
       fi
+
+    elif [ $plugin = "compact-alt" ]; then
+      IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-compact-alt-colors" "dark_gray white")
+      tmux set-option -g status-right-length 250
+      script="#($current_dir/compact_alt.sh)"
 
     elif [ $plugin = "cwd" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-cwd-colors" "dark_gray white")
