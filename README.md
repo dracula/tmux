@@ -33,7 +33,7 @@ In depth configuration of Colors and alternative themes can be found [in the doc
 - RAM usage (system and/or tmux server)
 - Custom status texts from external scripts
 - GPU stats
-    - usage, power draw, and VRAM usage for NVIDIA on Linux
+    - usage, power draw, and VRAM usage for NVIDIA on Linux, with partial support for amd/ intel
     - usage, and power draw for MacOS. **requires sudo privileges**
 - Color code based on whether a prefix is active or not
 - List of windows with the current window highlighted

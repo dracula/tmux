@@ -344,11 +344,11 @@ These widgets display the current computational, ram, and power usage of install
 They are split into widgets with the names: `gpu-usage, gpu-ram-usage, gpu-power-draw`.
 
 hardware support:
-- full support for NVIDIA gpus on linux.
+- full support for NVIDIA gpus on linux, when using official nvidia drivers.
 - partial support for apple m-chips on MacOS.
-- support for amd and intel is underway
+- partial support for amd and intel on linux
 
-If your gpu is not recognised, force the script to assume a certain brands.
+If your gpu is not recognised, force the script to assume a certain brand.
 ```bash
 set -g @dracula-force-gpu "NVIDIA"
 ```
