@@ -195,7 +195,7 @@ main() {
 
   # Active Player variables
   PLAY_ICON=$(get_tmux_option "@dracula-mac-player-play-icon" "♪")
-  PAUSE_ICON=$(get_tmux_option "@dracula-mac-player-pause" "❚❚ ")
+  PAUSE_ICON=$(get_tmux_option "@dracula-mac-player-pause-icon" "❚❚ ")
   MAX_LENGTH=$(get_tmux_option "@dracula-mac-player-length" 25)
 
   # Remote variables
