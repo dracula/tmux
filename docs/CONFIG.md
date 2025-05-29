@@ -502,20 +502,20 @@ set -g @dracula-kubernetes-eks-extract-account true
 This script retrieves and displays continuous glucose monitoring (CGM) data from the LibreView API.
 It caches the data to minimize API requests and displays the latest glucose level along with a trend indicator in a Tmux status bar.
 
-### mac-player - [up](CONFIG#table-of-contents)
+### mac-player - [up](#table-of-contents)
 
 This widget and script displays music information provided by the native macOS players.
-It also a remote-player feature.
 
 The current supported apps are:
 
-- Native Players
+- Native Players:
   - Spotify
   - Music - Apple Music
-- Browser Players ( don't have player state option )
+- Browser Players ( Active Tab should consists of this players ):
   - youtube.com/watch
   - open.spotify.com
 
+It also has a remote-player feature.
 The supported remote players are:
 
 - Spotify
