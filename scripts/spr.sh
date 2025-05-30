@@ -91,6 +91,11 @@ main() {
   BACK_BUTTON=$(get_tmux_option "@dracula-spr-remote-back" "R")
   NEXT_BUTTON=$(get_tmux_option "@dracula-spr-remote-next" "N")
 
+  if ! command -v spotify_player &> /dev/null
+  then
+    exit 1
+  fi
+
   # Remote Access
   if [[ "$REMOTE_ACCESS" == true ]]; then
     remoteControl "$PLAY_PAUSE_BUTTON" "$BACK_BUTTON" "$NEXT_BUTTON"
