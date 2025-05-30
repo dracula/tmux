@@ -212,7 +212,7 @@ main() {
   # os checker
   if [[ "$OSTYPE" != "darwin"* ]]; then
     echo ""
-    exit 0
+    exit 1
   fi
 
   # Remote Access
