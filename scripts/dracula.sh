@@ -56,6 +56,7 @@ main() {
   green="#50fa7b"
   orange="#ffb86c"
   red="#ff5555"
+  purple="#b166cc"
   pink="#ff79c6"
   yellow="#f1fa8c"
 
@@ -267,6 +268,11 @@ main() {
     elif [ $plugin = "attached-clients" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-attached-clients-colors" "cyan dark_gray")
       script="#($current_dir/attached_clients.sh)"
+
+
+     elif [ $plugin = "mac-player" ]; then
+      IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-mac-player-colors" "purple dark_gray")
+      script="#($current_dir/mac-player.sh)"
 
     elif [ $plugin = "mpc" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-mpc-colors" "green dark_gray")
