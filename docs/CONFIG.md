@@ -511,7 +511,7 @@ The current supported apps are:
 - Native Players:
   - Spotify
   - Music - Apple Music
-- Browser Players ( Active Tab should consists of this players ):
+- Browser Players (active tab must match one of these URLs and requires Google Chrome or Safari):
   - youtube.com/watch
   - open.spotify.com
 
@@ -546,7 +546,7 @@ set -g @dracula-mac-player-remote true
 To specify the app to use(`"Music"` or `"Spotify"`):
 
 ```bash
-set -g @dracule-mac-player-app "Music"
+set -g @dracula-mac-player-app "Music"
 ```
 
 The default keybinds are:
