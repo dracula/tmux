@@ -667,7 +667,7 @@ The default keybinds are:
 To change the keybinds:
 
 ```bash
-set -g @dracula-spr-remote-pp "P"
+set -g @dracula-spr-remote-play-pause "P"
 set -g @dracula-spr-remote-back "R"
 set -g @dracula-spr-remote-next "N"
 ```

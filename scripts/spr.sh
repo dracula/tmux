@@ -86,7 +86,7 @@ main() {
   PAUSE_ICON=$(get_tmux_option "@dracula-spr-pause-icon" "❚❚ ")
 
   # Remote Control Buttons Customizations
-  PLAY_PAUSE_BUTTON=$(get_tmux_option "@dracula-spr-remote-pp" "P")
+  PLAY_PAUSE_BUTTON=$(get_tmux_option "@dracula-spr-remote-play-pause" "P")
   BACK_BUTTON=$(get_tmux_option "@dracula-spr-remote-back" "R")
   NEXT_BUTTON=$(get_tmux_option "@dracula-spr-remote-next" "N")
 
