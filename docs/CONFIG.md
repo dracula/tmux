@@ -22,7 +22,7 @@
   - [Kerberos TGT (krbtgt)](#Kerberos-TGT---up)
   - [kubernetes-context](#kubernetes-context---up)
   - [libreview](#libreview---up)
-  - [mac-player](#libreview---up)
+  - [mac-player](#mac-player---up)
   - [mpc](#mpc---up)
   - [network](#network---up)
   - [network-bandwidth](#network-bandwidth---up)
@@ -529,6 +529,12 @@ To change player icons:
 set -g @dracula-mac-player-play-icon "♪ "
 set -g @dracula-mac-player-pause-icon "❚❚ "
 
+```
+
+To change length of the widget (length 25 by default):
+
+```bash
+set -g @dracula-mac-player-length 25
 ```
 
 To activate the remote:
