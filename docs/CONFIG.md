@@ -526,8 +526,8 @@ NOTE: `set -g @dracula-refresh-rate 5` affects this widget
 To change player icons:
 
 ```bash
-set -g @dracula-mac-player-play-icon" "♪ "
-set -g @dracula-mac-player-pause-icon" "❚❚ "
+set -g @dracula-mac-player-play-icon "♪ "
+set -g @dracula-mac-player-pause-icon "❚❚ "
 
 ```
 
