@@ -28,7 +28,6 @@ function trackStatus() {
 				else
 					return nativePlayer(currentApp)
 				end if
-			else
 			end if
 		end repeat
 
@@ -83,7 +82,7 @@ function trackStatus() {
 				set pageTitle to title of currentTab
 			end tell
 		else
-			return \"Not supported\"
+			return \"Not Supported\"
 		end if
 
 
@@ -150,7 +149,7 @@ function sliceTrack()
   local result=""
 
   if [[ $len > $std ]]; then
-    result="${str:0:std}"
+    result="${str:0:$std}"
     result+="..."
   else
     result=$str
