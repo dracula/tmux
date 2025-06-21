@@ -649,7 +649,7 @@ set -g @dracula-spr-pause-icon "❚❚ "
 
 ```
 
-This contains a remote (experimental) but limits the use of the display widget in MacOS.
+This section includes an experimental remote control feature, but it may limit the widget’s display on macOS.
 
 In order to utilize the remote feature you need to install the [spotify-player-daemon](https://github.com/aome510/spotify-player#daemon)
 To activate the remote:

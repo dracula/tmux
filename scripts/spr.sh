@@ -7,9 +7,8 @@ source "$current_dir/utils.sh"
 
 
 function trackStatus() {
-  local pause_icon="$1"
-  local play_icon="$2"
-	local track_info
+  local pause_icon="$1" play_icon="$2"
+	local track_info playback status track_result
 
   playback=$(spotify_player get key playback)
 
@@ -42,7 +41,7 @@ function sliceTrack()
   local result=""
 
   if [[ $len > $std ]]; then
-    result="${str:0:std}"
+    result="${str:0:$std}"
     result+="..."
   else
     result=$str
