@@ -202,7 +202,7 @@ main() {
   REMOTE_APP=$(get_tmux_option "@dracula-mac-player-app" "Spotify")
 
   # Remote Control Buttons Customizations
-  PLAY_PAUSE_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-pp" "P")
+  PLAY_PAUSE_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-play-pause" "P")
   BACK_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-back" "R")
   NEXT_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-next" "N")
 

@@ -558,7 +558,7 @@ The default keybinds are:
 To change the keybinds:
 
 ```bash
-set -g @dracula-mac-player-remote-pp "P"
+set -g @dracula-mac-player-remote-play-pause "P"
 set -g @dracula-mac-player-remote-back "R"
 set -g @dracula-mac-player-remote-next "N"
 ```
