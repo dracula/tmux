@@ -30,7 +30,7 @@
   - [playerctl](#playerctl---up)
   - [ram-usage](#ram-usage---up)
   - [spotify-tui](#spotify-tui---up)
-  - [spr](#spr--up)
+  - [spr](#spr---up)
   - [ssh-session](#ssh-session---up)
   - [synchronize-panes](#synchronize-panes---up)
   - [sys-temp](#sys-temp---up)
