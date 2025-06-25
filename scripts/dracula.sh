@@ -5,6 +5,9 @@ export LC_ALL=en_US.UTF-8
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
 
+# main configures the tmux status bar with Dracula theme options, colors, and plugins.
+#
+# Reads user-defined tmux options to customize the status bar's appearance, color palette, icons, separators, refresh rate, and enabled plugins. Dynamically builds and applies tmux configuration for the status bar, including left and right sections, window status formats, and plugin outputs. Supports powerline styling, transparency, and a wide range of system and informational plugins.
 main() {
   # set configuration option variables
   show_krbtgt_label=$(get_tmux_option "@dracula-krbtgt-context-label" "")
@@ -56,6 +59,7 @@ main() {
   green="#50fa7b"
   orange="#ffb86c"
   red="#ff5555"
+  purple="#b166cc"
   pink="#ff79c6"
   yellow="#f1fa8c"
 
@@ -267,6 +271,11 @@ main() {
     elif [ $plugin = "attached-clients" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-attached-clients-colors" "cyan dark_gray")
       script="#($current_dir/attached_clients.sh)"
+
+
+     elif [ $plugin = "mac-player" ]; then
+      IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-mac-player-colors" "purple dark_gray")
+      script="#($current_dir/mac-player.sh)"
 
     elif [ $plugin = "mpc" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-mpc-colors" "green dark_gray")
