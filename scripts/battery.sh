@@ -126,7 +126,7 @@ battery_status()
       )
       echo "${battery_labels[$((bat_perc/10*10))]:-󰂃}"
       ;;
-    ACattached)
+    "ACattached"|"Not charging")
       # drawing from AC but not charging
       echo ''
       ;;
