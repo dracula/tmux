@@ -126,8 +126,11 @@ battery_status()
       )
       echo "${battery_labels[$((bat_perc/10*10))]:-󰂃}"
       ;;
-    "ACattached"|"Not charging")
+    ACattached|Notcharging|"Not charging")
       # drawing from AC but not charging
+      # ACattached - MacOS
+      # Not charging - Linux without acpi
+      # Notcharging - Linux with acpi
       echo ''
       ;;
     finishingcharge)
