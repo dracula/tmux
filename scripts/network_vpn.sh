@@ -13,14 +13,20 @@ vpn_function() {
 
     verbose=$(get_tmux_option "@dracula-network-vpn-verbose" false)
 
-    #Show IP of tun0 if connected
+    # Show IP of tun0 if connected
     vpn=$(ip -o -4 addr show dev tun0 | awk '{print $4}' | cut -d/ -f1)
 
     which -s tailscale > /dev/null
     tailscale_installed=$?
 
     if [[ $vpn =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
-      echo $vpn
+      if $verbose; then
+        vpn_label=$(get_tmux_option "@dracula-network-vpn-label" "󰌘 ")
+        echo "$vpn_label$vpn"
+      else
+        vpn_label=$(get_tmux_option "@dracula-network-vpn-label" "VPN-ON")
+        echo "$vpn_label"
+      fi
     elif [ $tailscale_installed ]; then
       # if tailscale is installed
       #
