@@ -515,12 +515,17 @@ set -g @dracula-ping-rate 5
 ```
 
 ### network-vpn - [up](#table-of-contents)
-This widget displays whether a vpn is connected.
+This widget tries to display whether a vpn is connected.
+Tailscale exit nodes are fully supported for Linux and MacOS.
 
-These options are not available yet.
+Set verbose to true in order to see the VPNs IP or name of Tailscale exit node.
 ```bash
 set -g @dracula-network-vpn-verbose true
-set -g @dracula-network-vpn-label
+```
+
+Set the widgets label like so:
+```bash
+set -g @dracula-network-vpn-label "󰌘 "
 ```
 ### playerctl - [up](#table-of-contents)
 This widget displays playerctl info.
