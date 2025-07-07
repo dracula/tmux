@@ -188,6 +188,14 @@ which will display the battery charge and whether its charging (or just drawing 
 set -g @dracula-battery-label false
 set -g @dracula-show-battery-status true
 ```
+these settings will introduce the following icons:
+- the battery is discharging and at the current level: `󰂎` `󰁺` `󰁻` `󰁼` `󰁽` `󰁾` `󰁿` `󰂀` `󰂁` `󰂂` `󰁹`
+- the battery is charging and at the current level: `󰢟` `󰢜` `󰂆` `󰂇` `󰂈` `󰢝` `󰂉` `󰢞` `󰂊` `󰂋` `󰂅`
+- power is being drawn from AC, but the battery is neither charging nor discharging: ``
+- we were able to determine that the battery is charging/ discharging, but something about the percentage went wrong: `󰂃`
+- we don't know the status of the battery: ``
+
+
 
 if you have no battery and would like the widget to hide in that case, set the following:
 
