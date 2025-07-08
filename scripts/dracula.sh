@@ -312,11 +312,7 @@ main() {
 
     elif [ $plugin = "time" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-time-colors" "dark_purple white")
-      if $show_military; then
-        script="#($current_dir/dual_time.sh military)"
-      else
-        script="#($current_dir/dual_time.sh)"
-      fi
+      script="#($current_dir/dual_time.sh)"
 
     elif [ $plugin = "synchronize-panes" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-synchronize-panes-colors" "cyan dark_gray")
