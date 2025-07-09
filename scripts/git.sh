@@ -9,6 +9,7 @@ IFS=' ' read -r -a diff_symbol <<< $(get_tmux_option "@dracula-git-show-diff-sym
 IFS=' ' read -r -a no_repo_message <<< $(get_tmux_option "@dracula-git-no-repo-message" "")
 IFS=' ' read -r -a no_untracked_files <<< $(get_tmux_option "@dracula-git-no-untracked-files" "false")
 IFS=' ' read -r -a show_remote_status <<< $(get_tmux_option "@dracula-git-show-remote-status" "false")
+IFS=' ' read -r -a show_repo_name <<<$(get_tmux_option "@dracula-git-show-repo-name" "false")
 
 # Get added, modified, updated and deleted files from git status
 getChanges()
@@ -129,11 +130,25 @@ getRemoteInfo()
     echo "$out"
 }
 
+getRepoName()
+{
+  if [ "$show_repo_name" = "true" ]; then
+    if [ $(checkForGitDir) == "true" ]; then
+        echo "$(basename "$(git -C $path rev-parse --show-toplevel 2>/dev/null)") |"
+    else
+        echo ""
+    fi
+  else
+    echo ""
+  fi
+}
+
 # return the final message for the status bar
 getMessage()
 {
     if [ $(checkForGitDir) == "true" ]; then
         branch="$(getBranch)"
+        repo_name="$(getRepoName)"
         output=""
 
         if [ $(checkForChanges) == "true" ]; then 
@@ -142,23 +157,23 @@ getMessage()
             
             if [ "${hide_status}" == "false" ]; then
                 if [ $(checkEmptySymbol $diff_symbol) == "true" ]; then
-		     output=$(echo "${changes} $branch")
+		     output=$(echo "$repo_name ${changes} $branch")
                 else
-		     output=$(echo "$diff_symbol ${changes} $branch")
+		     output=$(echo "$repo_name $diff_symbol ${changes} $branch")
                 fi
             else
                 if [ $(checkEmptySymbol $diff_symbol) == "true" ]; then
-		     output=$(echo "$branch")
+		     output=$(echo "$repo_name $branch")
                 else
-		     output=$(echo "$diff_symbol $branch")
+		     output=$(echo "$repo_name $diff_symbol $branch")
                 fi
             fi
 
         else
             if [ $(checkEmptySymbol $current_symbol) == "true" ]; then
-	         output=$(echo "$branch")
+	         output=$(echo "$repo_name $branch")
             else
-		 output=$(echo "$current_symbol $branch")
+		      output=$(echo "$repo_name $current_symbol $branch")
             fi
         fi
 
