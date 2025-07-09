@@ -132,14 +132,9 @@ getRemoteInfo()
 
 getRepoName()
 {
-  if [ "$show_repo_name" = "true" ]; then
-    if [ $(checkForGitDir) == "true" ]; then
-        echo "$(basename "$(git -C $path rev-parse --show-toplevel 2>/dev/null)") |"
-    else
-        echo ""
-    fi
-  else
-    echo ""
+  if [ "$show_repo_name" == "true" ] && [ "$(checkForGitDir)" == "true" ]; then
+    repo="$(basename "$(git -C $path rev-parse --show-toplevel 2>/dev/null)")"
+    echo "$repo |"
   fi
 }
 
