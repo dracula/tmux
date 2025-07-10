@@ -470,8 +470,8 @@ set -g @dracula-mpc-format "%title% - %artist%"
 
 `set -g @dracula-refresh-rate 5` affects this widget
 ### network - [up](#table-of-contents)
-This widget displays one of three states: offline, ethernet connected, or wifi connected.
-however, per default **this will only display the wifi you're connected to, if it provides internet access!**
+This widget displays one of four states: offline, ethernet connected, wifi connected, or gsm connected.
+however, per default **this will only display the ethernet/wifi/gsm you're connected to, if it provides internet access!**
 
 You can use different hosts to ping in order to check for a wifi or wired connection.
 If you frequently use networks without internet access, you can use local ip-addresses here to still display the connection.
@@ -483,14 +483,15 @@ Possible nerdfont settings for network info:
 ```bash
 set -g @dracula-network-ethernet-label "󰈀 Eth"
 set -g @dracula-network-offline-label "󱍢 "
-set -g @dracula-network-wifi-label " "
+set -g @dracula-network-wifi-label " "
+set -g @dracula-network-gsm-label " "
 ```
 
 Nerdfont icons to consider:
 ```
 ethernet: 󰈀 󰒪 󰒍 󰌗 󰌘
 offline: 󰖪  󱍢
-wifi:      󰖩  󰘊 󰒢
+wifi/gsm:      󰖩  󰘊 󰒢
 ```
 
 Known issues:

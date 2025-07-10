@@ -8,6 +8,7 @@ source $current_dir/utils.sh
 # set your own hosts so that a wifi is recognised even without internet access
 HOSTS=$(get_tmux_option "@dracula-network-hosts" "google.com github.com example.com")
 wifi_label=$(get_tmux_option "@dracula-network-wifi-label" "")
+gsm_label=$(get_tmux_option "@dracula-network-gsm-label" "GSM")
 ethernet_label=$(get_tmux_option "@dracula-network-ethernet-label" "Ethernet")
 
 get_ssid()
@@ -16,8 +17,17 @@ get_ssid()
   case $(uname -s) in
     Linux)
       SSID=$(iw dev | sed -nr 's/^\t\tssid (.*)/\1/p')
+      if [ ! -x "$(which nmcli 2> /dev/null)" ];then
+        nmcli connection show --active | grep gsm
+        gsm_connected=$?
+      else
+        gsm_connected=false
+      fi
       if [ -n "$SSID" ]; then
         echo "$wifi_label$SSID"
+      elif [ $gsm_connected ]; then
+        gsm_carrier=$(nmcli connection show --active | grep gsm | cut -d ' ' -f 1)
+        echo "$gsm_label$gsm_carrier"
       else
         echo "$ethernet_label"
       fi
