@@ -151,13 +151,13 @@ getMessage()
             changes="$(getChanges)" 
             
             if [ "${hide_status}" == "false" ]; then
-                if [ $(checkEmptySymbol $diff_symbol) == "true" ]; then
+               if [ "$(checkEmptySymbol "${diff_symbol[0]}")" = "true" ]; then
 		     output="$repo_name${changes:+ ${changes}} $branch"
                 else
 		     output="$repo_name ${diff_symbol[0]} ${changes:+$changes }$branch"
                 fi
             else
-                if [ $(checkEmptySymbol $diff_symbol) == "true" ]; then
+               if [ "$(checkEmptySymbol "${diff_symbol[0]}")" = "true" ]; then
 		     output=$(echo "$repo_name $branch")
                 else
 		     output=$(echo "$repo_name $diff_symbol $branch")
