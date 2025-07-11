@@ -9,7 +9,7 @@ IFS=' ' read -r -a diff_symbol <<< $(get_tmux_option "@dracula-git-show-diff-sym
 IFS=' ' read -r -a no_repo_message <<< $(get_tmux_option "@dracula-git-no-repo-message" "")
 IFS=' ' read -r -a no_untracked_files <<< $(get_tmux_option "@dracula-git-no-untracked-files" "false")
 IFS=' ' read -r -a show_remote_status <<< $(get_tmux_option "@dracula-git-show-remote-status" "false")
-IFS=' ' read -r -a show_repo_name <<<$(get_tmux_option "@dracula-git-show-repo-name" "false")
+show_repo_name="$(get_tmux_option "@dracula-git-show-repo-name" "false")"
 
 # Get added, modified, updated and deleted files from git status
 getChanges()
@@ -154,7 +154,7 @@ getMessage()
                 if [ $(checkEmptySymbol $diff_symbol) == "true" ]; then
 		     output=$(echo "$repo_name ${changes} $branch")
                 else
-		     output=$(echo "$repo_name $diff_symbol ${changes} $branch")
+		     output="$repo_name ${diff_symbol[0]} ${changes:+$changes }$branch"
                 fi
             else
                 if [ $(checkEmptySymbol $diff_symbol) == "true" ]; then
