@@ -347,6 +347,12 @@ Show remote tracking branch together with diverge/sync state
 set -g @dracula-git-show-remote-status true
 ```
 
+Show the current repository name in the status bar
+```bash
+# default is false
+set -g @dracula-git-show-repo-name true
+```
+
 ### gpu-info - [up](#table-of-contents)
 These widgets display the current computational, ram, and power usage of installed graphics cards.
 They are split into widgets with the names: `gpu-usage, gpu-ram-usage, gpu-power-draw`.
