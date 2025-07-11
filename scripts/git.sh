@@ -132,8 +132,8 @@ getRemoteInfo()
 
 getRepoName()
 {
-  if [ "$show_repo_name" == "true" ] && [ "$(checkForGitDir)" == "true" ]; then
-    repo="$(basename "$(git -C $path rev-parse --show-toplevel 2>/dev/null)")"
+  if [ "$show_repo_name" = "true" ] && [ "$(checkForGitDir)" = "true" ]; then
+    repo="$(basename "$(git -C "$path" --no-optional-locks rev-parse --show-toplevel 2>/dev/null)")"
     echo "$repo |"
   fi
 }
@@ -152,7 +152,7 @@ getMessage()
             
             if [ "${hide_status}" == "false" ]; then
                 if [ $(checkEmptySymbol $diff_symbol) == "true" ]; then
-		     output=$(echo "$repo_name ${changes} $branch")
+		     output="$repo_name${changes:+ ${changes}} $branch"
                 else
 		     output="$repo_name ${diff_symbol[0]} ${changes:+$changes }$branch"
                 fi
@@ -168,7 +168,7 @@ getMessage()
             if [ $(checkEmptySymbol $current_symbol) == "true" ]; then
 	         output=$(echo "$repo_name $branch")
             else
-		      output=$(echo "$repo_name $current_symbol $branch")
+		      output="$repo_name ${current_symbol[0]} $branch"
             fi
         fi
 
