@@ -134,7 +134,7 @@ getRepoName()
 {
   if [ "$show_repo_name" = "true" ] && [ "$(checkForGitDir)" = "true" ]; then
     repo="$(basename "$(git -C "$path" --no-optional-locks rev-parse --show-toplevel 2>/dev/null)")"
-    echo "$repo"
+    echo "$repo | "
   fi
 }
 
@@ -143,7 +143,7 @@ getMessage()
 {
     if [ $(checkForGitDir) == "true" ]; then
         branch="$(getBranch)"
-        repo_name="$(getRepoName) | "
+        repo_name="$(getRepoName)"
         output=""
 
         if [ $(checkForChanges) == "true" ]; then 
