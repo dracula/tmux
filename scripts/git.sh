@@ -134,7 +134,7 @@ getRepoName()
 {
   if [ "$show_repo_name" = "true" ] && [ "$(checkForGitDir)" = "true" ]; then
     repo="$(basename "$(git -C "$path" --no-optional-locks rev-parse --show-toplevel 2>/dev/null)")"
-    echo "$repo |"
+    echo "$repo"
   fi
 }
 
@@ -143,7 +143,7 @@ getMessage()
 {
     if [ $(checkForGitDir) == "true" ]; then
         branch="$(getBranch)"
-        repo_name="$(getRepoName)"
+        repo_name="$(getRepoName) | "
         output=""
 
         if [ $(checkForChanges) == "true" ]; then 
@@ -154,21 +154,21 @@ getMessage()
                if [ "$(checkEmptySymbol "${diff_symbol[0]}")" = "true" ]; then
 		     output="$repo_name${changes:+ ${changes}} $branch"
                 else
-		     output="$repo_name ${diff_symbol[0]} ${changes:+$changes }$branch"
+		     output="$repo_name${diff_symbol[0]} ${changes:+$changes }$branch"
                 fi
             else
                if [ "$(checkEmptySymbol "${diff_symbol[0]}")" = "true" ]; then
-		     output=$(echo "$repo_name $branch")
+		     output=$(echo "$repo_name$branch")
                 else
-		     output=$(echo "$repo_name $diff_symbol $branch")
+		     output=$(echo "$repo_name$diff_symbol $branch")
                 fi
             fi
 
         else
             if [ $(checkEmptySymbol $current_symbol) == "true" ]; then
-	         output=$(echo "$repo_name $branch")
+	         output=$(echo "$repo_name$branch")
             else
-		      output="$repo_name ${current_symbol[0]} $branch"
+		      output="$repo_name${current_symbol[0]} $branch"
             fi
         fi
 
