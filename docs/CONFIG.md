@@ -219,6 +219,18 @@ alternatively, if you have no battery and would like a nerdfont icon to indicate
 set -g @dracula-no-battery-label " "
 ```
 
+in case you have multiple batteries:
+
+the default battery label is only displayed in the very front.
+you can specify multiple battery labels by splitting them with `\n` like so:
+```bash
+set -g @dracula-battery-label "1:\n2:"
+```
+additionally you can specify the separator between each battery like so:
+```bash
+set -g @dracula-battery-separator "; "
+```
+
 ### compact-alt - [up](#table-of-contents)
 
 This widget allows the user to switch to an alternate list of widgets when the terminal becomes narrow.
