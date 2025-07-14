@@ -22,6 +22,7 @@
   - [Kerberos TGT (krbtgt)](#Kerberos-TGT---up)
   - [kubernetes-context](#kubernetes-context---up)
   - [libreview](#libreview---up)
+  - [mac-player](#mac-player---up)
   - [mpc](#mpc---up)
   - [network](#network---up)
   - [network-bandwidth](#network-bandwidth---up)
@@ -379,6 +380,12 @@ Show remote tracking branch together with diverge/sync state
 set -g @dracula-git-show-remote-status true
 ```
 
+Show the current repository name in the status bar
+```bash
+# default is false
+set -g @dracula-git-show-repo-name true
+```
+
 ### gpu-info - [up](#table-of-contents)
 
 These widgets display the current computational, ram, and power usage of installed graphics cards.
@@ -510,6 +517,68 @@ set -g @dracula-kubernetes-eks-extract-account true
 This script retrieves and displays continuous glucose monitoring (CGM) data from the LibreView API.
 It caches the data to minimize API requests and displays the latest glucose level along with a trend indicator in a Tmux status bar.
 
+
+### mac-player - [up](#table-of-contents)
+
+This widget and script displays music information provided by the native macOS players.
+
+The current supported apps are:
+
+- Native Players:
+  - Spotify
+  - Music - Apple Music
+- Browser Players (active tab must match one of these URLs and requires Google Chrome or Safari):
+  - youtube.com/watch
+  - open.spotify.com
+
+It also has a remote-player feature.
+The supported remote players are:
+
+- Spotify
+- Music - Apple Music
+
+NOTE: `set -g @dracula-refresh-rate 5` affects this widget
+
+To change player icons:
+
+```bash
+set -g @dracula-mac-player-play-icon "♪ "
+set -g @dracula-mac-player-pause-icon "❚❚ "
+
+```
+
+To change length of the widget (length 25 by default):
+
+```bash
+set -g @dracula-mac-player-length 25
+```
+
+To activate the remote:
+
+```bash
+set -g @dracula-mac-player-remote true
+```
+
+To specify the app to use(`"Music"` or `"Spotify"`):
+
+```bash
+set -g @dracula-mac-player-app "Music"
+```
+
+The default keybinds are:
+
+- `<prefix> + P` - Play/Pause
+- `<prefix> + R` - Back to position 0/previous track
+- `<prefix> + N` - Next track
+
+To change the keybinds:
+
+```bash
+set -g @dracula-mac-player-remote-play-pause "P"
+set -g @dracula-mac-player-remote-back "R"
+set -g @dracula-mac-player-remote-next "N"
+```
+
 ### mpc - [up](#table-of-contents)
 
 This widget displays music information provided by mpc.
@@ -594,6 +663,7 @@ This widget tries to display whether a vpn is connected.
 Tailscale exit nodes are fully supported for Linux and MacOS.
 
 Set verbose to true in order to see the VPNs IP or name of Tailscale exit node.
+
 ```bash
 set -g @dracula-network-vpn-verbose true
 ```
@@ -645,6 +715,7 @@ To limit the maximum length (0 means unlimited length):
 set -g @dracula-spotify-tui-max-len 30
 ```
 
+
 `set remote-g @dracula-refresh-rate 5` affects this widget
 
 ### spr - [up](#table-of-contents)
@@ -683,6 +754,9 @@ set -g @dracula-spr-remote-play-pause "P"
 set -g @dracula-spr-remote-back "R"
 set -g @dracula-spr-remote-next "N"
 ```
+
+`set -g @dracula-refresh-rate 5` affects this widget
+
 
 ### ssh-session - [up](#table-of-contents)
 
