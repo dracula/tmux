@@ -25,7 +25,7 @@ get_ssid()
       fi
       if [ -n "$SSID" ]; then
         echo "$wifi_label$SSID"
-      elif [ $gsm_connected ]; then
+      elif $gsm_connected; then
         gsm_carrier=$(nmcli connection show --active | grep gsm | cut -d ' ' -f 1)
         echo "$gsm_label$gsm_carrier"
       else
