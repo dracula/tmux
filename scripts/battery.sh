@@ -172,9 +172,9 @@ main()
 
   bat_perc=$(battery_percent)
 
-  hide_on_desktop="$(get_tmux_option "@dracula-battery-hide-on-desktop" "false")"
-  # If no battery percent, don't show anything
-  if [ -z "$bat_perc" ] && [ "$hide_on_desktop" = "true" ]; then
+  hide_on_desktop=$(get_tmux_option "@dracula-battery-hide-on-desktop" false)
+  # If no battery percent and the feature flag is enabled, hide the widget completely
+  if $hide_on_desktop && [ -z "$bat_perc" ]; then
       echo ""
       return
   fi
