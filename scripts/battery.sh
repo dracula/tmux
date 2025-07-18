@@ -181,6 +181,8 @@ main()
 
   if [ -z "$bat_stat" ]; then # Test if status is empty or not
     echo "$bat_label $bat_perc"
+  elif [ -z "$bat_perc" ]; then # In case it is a desktop with no battery percentage, only AC power
+    echo "$no_bat_label"
   else
     echo "$bat_label$bat_stat $bat_perc"
   fi
