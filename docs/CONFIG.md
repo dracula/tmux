@@ -222,6 +222,7 @@ set -g @dracula-no-battery-label " "
 if you only want to hide the battery widget on a desktop pc, set the following:
 
 ```bash
+# default is false
 set -g @dracula-battery-hide-on-desktop true
 ```
 
