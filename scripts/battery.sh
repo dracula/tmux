@@ -179,7 +179,7 @@ main()
       return
   fi
 
-  if [ -z "$bat_stat" ]; then
+  if [ -z "$bat_stat" ]; then # Test if status is empty or not
     echo "$bat_label $bat_perc"
   else
     echo "$bat_label$bat_stat $bat_perc"
