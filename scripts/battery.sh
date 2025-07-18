@@ -5,7 +5,6 @@ export LC_ALL=en_US.UTF-8
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
 
-hide_status_on_desktop="$(get_tmux_option "@dracula-battery-hide-status-on-desktop" "false")"
 
 linux_acpi() {
   arg=$1
@@ -174,8 +173,9 @@ main()
 
   bat_perc=$(battery_percent)
 
+  hide_on_desktop="$(get_tmux_option "@dracula-battery-hide-on-desktop" "false")"
   # If no battery percent, don't show anything
-  if [ -z "$bat_perc" ] && [ "$hide_status_on_desktop" = "true" ]; then
+  if [ -z "$bat_perc" ] && [ "$hide_on_desktop" = "true" ]; then
       echo ""
       return
   fi
