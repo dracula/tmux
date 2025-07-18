@@ -5,6 +5,8 @@ export LC_ALL=en_US.UTF-8
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
 
+hide_status_on_desktop="$(get_tmux_option "@dracula-battery-hide-status-on-desktop" "false")"
+
 linux_acpi() {
   arg=$1
   BAT=$(ls -d /sys/class/power_supply/*)
@@ -172,10 +174,14 @@ main()
 
   bat_perc=$(battery_percent)
 
-  if [ -z "$bat_stat" ]; then # Test if status is empty or not
+  # If no battery percent, don't show anything
+  if [ -z "$bat_perc" ] && [ "$hide_status_on_desktop" = "true" ]; then
+      echo ""
+      return
+  fi
+
+  if [ -z "$bat_stat" ]; then
     echo "$bat_label $bat_perc"
-  elif [ -z "$bat_perc" ]; then # In case it is a desktop with no battery percent, only AC power
-    echo "$no_bat_label"
   else
     echo "$bat_label$bat_stat $bat_perc"
   fi
