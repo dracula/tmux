@@ -97,6 +97,13 @@ main() {
     BACK_BUTTON=$(get_tmux_option "@dracula-spr-remote-back" "R")
     NEXT_BUTTON=$(get_tmux_option "@dracula-spr-remote-next" "N")
     sprRemoteControl "$PLAY_PAUSE_BUTTON" "$BACK_BUTTON" "$NEXT_BUTTON"
+  else
+    tmux set -g @dracula-spr-remote-play-pause ""
+    tmux set -g @dracula-spr-remote-back ""
+    tmux set -g @dracula-spr-remote-next ""
+    tmux unbind-key "$PLAY_PAUSE_BUTTON" 2>/dev/null
+    tmux unbind-key "$BACK_BUTTON" 2>/dev/null
+    tmux unbind-key "$NEXT_BUTTON" 2>/dev/null
   fi
 
 
