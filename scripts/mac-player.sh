@@ -160,17 +160,17 @@ function sliceTrack()
 
 
 function remoteControl() {
-  toggle_button="$1"
-  back_button="$2"
-  next_button="$3"
-  app_controlled="$4"
+  local toggle_button="$1"
+  local back_button="$2"
+  local next_button="$3"
+  local app_controlled="$4"
 
   if [[ $app_controlled == "Spotify" ]] || [[ $app_controlled == "Music" ]]; then
 
     if [[ $app_controlled == "Music" ]]; then
       back="osascript -e 'tell application \"$app_controlled\" to back track'"
     else
-      back="osascript -e 'tell application \"$app_controlled\" to set player position to 0'"
+      back="osascript -e 'tell application \"$app_controlled\" to previous track'"
     fi
 
     toggle="osascript -e 'tell application \"$app_controlled\" to playpause'"
