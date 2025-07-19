@@ -219,13 +219,6 @@ alternatively, if you have no battery and would like a nerdfont icon to indicate
 set -g @dracula-no-battery-label " "
 ```
 
-if you only want to hide the battery widget on a desktop pc, set the following:
-
-```bash
-# default is false
-set -g @dracula-battery-hide-on-desktop true
-```
-
 ### compact-alt - [up](#table-of-contents)
 
 This widget allows the user to switch to an alternate list of widgets when the terminal becomes narrow.
