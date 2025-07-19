@@ -172,6 +172,7 @@ function remoteControl() {
     else
       back="osascript -e 'tell application \"$app_controlled\" to set player position to 0'"
     fi
+
     toggle="osascript -e 'tell application \"$app_controlled\" to playpause'"
     next="osascript -e 'tell application \"$app_controlled\" to play next track'"
 
@@ -212,11 +213,13 @@ main() {
     PLAY_PAUSE_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-play-pause" "P")
     BACK_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-back" "R")
     NEXT_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-next" "N")
+
     remoteControl "$PLAY_PAUSE_BUTTON" "$BACK_BUTTON" "$NEXT_BUTTON" "$REMOTE_APP"
   fi
 
   if [ ! -f "$cache_file" ] || [ $(($(date +%s) - $(stat -f%c "$cache_file"))) -ge "$RATE" ]; then
     local full_track
+
     full_track=$(trackStatus "$PAUSE_ICON" "$PLAY_ICON")
     sliceTrack "$full_track" "$MAX_LENGTH" > "$cache_file"
   fi
