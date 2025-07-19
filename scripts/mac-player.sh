@@ -203,7 +203,6 @@ main() {
 
   # os checker
   if [[ "$OSTYPE" != "darwin"* ]]; then
-    echo ""
     exit 1
   fi
 
