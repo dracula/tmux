@@ -198,15 +198,8 @@ main() {
   MAX_LENGTH=$(get_tmux_option "@dracula-mac-player-length" 25)
 
   # Remote variables
-  REMOTE_ACCESS=$(get_tmux_option "@dracula-mac-player-remote" false)
+  REMOTE_ACCESS=$(get_tmux_option "@dracula-mac-player-remote" "false")
   REMOTE_APP=$(get_tmux_option "@dracula-mac-player-app" "Spotify")
-
-  # Remote Control Buttons Customizations
-  PLAY_PAUSE_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-play-pause" "P")
-  BACK_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-back" "R")
-  NEXT_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-next" "N")
-
-
 
   # os checker
   if [[ "$OSTYPE" != "darwin"* ]]; then
@@ -215,12 +208,12 @@ main() {
   fi
 
   # Remote Access
-  if [[ "$REMOTE_ACCESS" == true ]]; then
+  if [[ "$REMOTE_ACCESS" == "true" ]]; then
+    # Remote Control Buttons Customizations
+    PLAY_PAUSE_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-play-pause" "P")
+    BACK_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-back" "R")
+    NEXT_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-next" "N")
     remoteControl "$PLAY_PAUSE_BUTTON" "$BACK_BUTTON" "$NEXT_BUTTON" "$REMOTE_APP"
-  else
-    tmux unbind-key "$toggle_button"
-    tmux unbind-key "$back_button"
-    tmux unbind-key "$next_button"
   fi
 
   if [ ! -f "$cache_file" ] || [ $(($(date +%s) - $(stat -f%c "$cache_file"))) -ge "$RATE" ]; then
