@@ -17,7 +17,7 @@ function trackStatus() {
   track_info=$(echo "$playback" | jq -r '.item | "\(.artists | map(.name) | join(", ")) - \(.name)"')
   track_result=""
 
-  if [[ $status == true ]]; then
+  if [[ $status == "true" ]]; then
     track_result+=$play_icon
     track_result+=$track_info
   else
