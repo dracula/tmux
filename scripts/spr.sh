@@ -51,19 +51,18 @@ function sliceTrack()
 }
 
 
-function remoteControl() {
   local toggle_button="$1"
   local back_button="$2"
   local next_button="$3"
 
-  local toggle="spotify_player playback play-pause"
-  local back="spotify_player playback previous"
-  local next="spotify_player playback next"
+  local toggle="spotify_player playback play-pause > /dev/null 2>&1"
+  local back="spotify_player playback previous > /dev/null 2>&1"
+  local next="spotify_player playback next > /dev/null 2>&1"
 
 
-  tmux unbind-key "$toggle_button"
-  tmux unbind-key "$back_button"
-  tmux unbind-key "$next_button"
+  tmux unbind-key "$toggle_button" 2>/dev/null
+  tmux unbind-key "$back_button" 2>/dev/null
+  tmux unbind-key "$next_button" 2>/dev/null
 
   tmux bind-key "$toggle_button" run-shell "$toggle"
   tmux bind-key "$back_button" run-shell "$back"
