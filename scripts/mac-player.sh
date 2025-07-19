@@ -217,8 +217,9 @@ main() {
   fi
 
   if [ ! -f "$cache_file" ] || [ $(($(date +%s) - $(stat -f%c "$cache_file"))) -ge "$RATE" ]; then
-    trackStatus "$PAUSE_ICON" "$PLAY_ICON" > "$cache_file"
-    sliceTrack "$(cat $cache_file)" "$MAX_LENGTH" > "$cache_file"
+    local full_track
+    full_track=$(trackStatus "$PAUSE_ICON" "$PLAY_ICON")
+    sliceTrack "$full_track" "$MAX_LENGTH" > "$cache_file"
   fi
 
 	cat "$cache_file"
