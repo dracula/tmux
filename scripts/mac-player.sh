@@ -167,8 +167,12 @@ function remoteControl() {
 
   if [[ $app_controlled == "Spotify" ]] || [[ $app_controlled == "Music" ]]; then
 
+    if [[ $app_controlled == "Music" ]]; then
+      back="osascript -e 'tell application \"$app_controlled\" to back track'"
+    else
+      back="osascript -e 'tell application \"$app_controlled\" to set player position to 0'"
+    fi
     toggle="osascript -e 'tell application \"$app_controlled\" to playpause'"
-    back="osascript -e 'tell application \"$app_controlled\" to back track'"
     next="osascript -e 'tell application \"$app_controlled\" to play next track'"
 
     tmux unbind-key "$toggle_button"
