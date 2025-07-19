@@ -6,7 +6,7 @@ current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$current_dir/utils.sh"
 
 
-function trackStatus() {
+trackStatus() {
   local pause_icon="$1" play_icon="$2"
 	local track_info playback status track_result
 
@@ -51,6 +51,7 @@ function sliceTrack()
 }
 
 
+function sprRemoteControl() {
   local toggle_button="$1"
   local back_button="$2"
   local next_button="$3"
@@ -74,33 +75,28 @@ main() {
   # save buffer to prevent lag
   local cache_file="/tmp/tmux_spr_cache"
 
-  RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
+  RATE="$(get_tmux_option "@dracula-refresh-rate" 5)"
 
-  MAX_LENGTH=$(get_tmux_option "@dracula-spr-length" 25)
+  MAX_LENGTH="$(get_tmux_option "@dracula-spr-length" 25)"
 
   # Remote Control checker
-  REMOTE_ACCESS=$(get_tmux_option "@dracula-spr-remote" false)
+  SPR_REMOTE_ACCESS="$(get_tmux_option "@dracula-spr-remote" "false")"
 
   PLAY_ICON=$(get_tmux_option "@dracula-spr-play-icon" "♪ ")
   PAUSE_ICON=$(get_tmux_option "@dracula-spr-pause-icon" "❚❚ ")
 
-  # Remote Control Buttons Customizations
-  PLAY_PAUSE_BUTTON=$(get_tmux_option "@dracula-spr-remote-play-pause" "P")
-  BACK_BUTTON=$(get_tmux_option "@dracula-spr-remote-back" "R")
-  NEXT_BUTTON=$(get_tmux_option "@dracula-spr-remote-next" "N")
 
   if ! command -v spotify_player &> /dev/null
   then
     exit 1
   fi
 
-  # Remote Access
-  if [[ "$REMOTE_ACCESS" == true ]]; then
-    remoteControl "$PLAY_PAUSE_BUTTON" "$BACK_BUTTON" "$NEXT_BUTTON"
-  else
-    tmux unbind-key "$PLAY_PAUSE_BUTTON"
-    tmux unbind-key "$BACK_BUTTON"
-    tmux unbind-key "$NEXT_BUTTON"
+ # Remote Access
+  if [[ "$SPR_REMOTE_ACCESS" == "true" ]]; then
+    PLAY_PAUSE_BUTTON=$(get_tmux_option "@dracula-spr-remote-play-pause" "P")
+    BACK_BUTTON=$(get_tmux_option "@dracula-spr-remote-back" "R")
+    NEXT_BUTTON=$(get_tmux_option "@dracula-spr-remote-next" "N")
+    sprRemoteControl "$PLAY_PAUSE_BUTTON" "$BACK_BUTTON" "$NEXT_BUTTON"
   fi
 
   if [ ! -f "$cache_file" ] || [ $(($(date +%s) - $(stat -f%c "$cache_file"))) -ge "$RATE" ]; then
