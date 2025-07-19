@@ -178,10 +178,6 @@ function remoteControl() {
     tmux bind-key "$toggle_button" run-shell "$toggle"
     tmux bind-key "$back_button" run-shell "$back"
     tmux bind-key "$next_button" run-shell "$next"
-  else
-    tmux unbind-key "$toggle_button"
-    tmux unbind-key "$back_button"
-    tmux unbind-key "$next_button"
   fi
 }
 
@@ -217,7 +213,10 @@ main() {
   # Remote Access
   if [[ "$REMOTE_ACCESS" == true ]]; then
     remoteControl "$PLAY_PAUSE_BUTTON" "$BACK_BUTTON" "$NEXT_BUTTON" "$REMOTE_APP"
-
+  else
+    tmux unbind-key "$toggle_button"
+    tmux unbind-key "$back_button"
+    tmux unbind-key "$next_button"
   fi
 
   if [ ! -f "$cache_file" ] || [ $(($(date +%s) - $(stat -f%c "$cache_file"))) -ge "$RATE" ]; then
