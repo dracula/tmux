@@ -172,17 +172,10 @@ main()
 
   bat_perc=$(battery_percent)
 
-  hide_on_desktop=$(get_tmux_option "@dracula-battery-hide-on-desktop" false)
-  # If no battery percent and the feature flag is enabled, hide the widget completely
-  if $hide_on_desktop && [ -z "$bat_perc" ]; then
-      echo ""
-      return
-  fi
-
-  if [ -z "$bat_stat" ]; then # Test if status is empty or not
-    echo "$bat_label $bat_perc"
-  elif [ -z "$bat_perc" ]; then # In case it is a desktop with no battery percent, only AC power
+  if [ -z "$bat_perc" ]; then # In case it is a desktop with no battery percent, only AC power
     echo "$no_bat_label"
+  elif [ -z "$bat_stat" ]; then # Test if status is empty or not
+    echo "$bat_label $bat_perc"
   else
     echo "$bat_label$bat_stat $bat_perc"
   fi
