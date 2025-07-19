@@ -99,12 +99,14 @@ main() {
     sprRemoteControl "$PLAY_PAUSE_BUTTON" "$BACK_BUTTON" "$NEXT_BUTTON"
   fi
 
-  if [ ! -f "$cache_file" ] || [ $(($(date +%s) - $(stat -f%c "$cache_file"))) -ge "$RATE" ]; then
-    trackStatus "$PAUSE_ICON" "$PLAY_ICON" > "$cache_file"
-    sliceTrack "$(cat $cache_file)" "$MAX_LENGTH" > "$cache_file"
+
+  if [ ! -f "$cache_file" ] || [ $(($(date +%s) - $(stat -c%Y "$cache_file" 2>/dev/null || stat -f%m "$cache_file"))) -ge "$RATE" ]; then
+    local full_track
+    full_track=$(trackStatus "$PAUSE_ICON" "$PLAY_ICON")
+    sliceTrack "$full_track" "$MAX_LENGTH" > "$cache_file"
   fi
 
-	cat "$cache_file"
+  echo "$BACK_BUTTON"
 }
 
 main
