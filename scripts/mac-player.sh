@@ -3,15 +3,14 @@
 export LC_ALL=en_US.UTF-8
 
 current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$current_dir/utils.sh"
-
+source $current_dir/utils.sh
 
 function trackStatus() {
-	local active_player
+  local active_player
   local pause_icon="$1"
   local play_icon="$2"
 
-	active_player=$(osascript -e "
+  active_player=$(osascript -e "
 	property playerList : {\"Spotify\", \"Music\", \"Safari\", \"Google Chrome\"}
 	property nativePlayerList : {\"Spotify\", \"Music\"}
 
@@ -128,20 +127,18 @@ function trackStatus() {
 	detectPlayer()
 	")
 
+  case "$active_player" in
+  "not running") echo "not running" ;;
+  "stopped") echo "stopped" ;;
+  "can't encode") echo "unable to encode" ;;
+  "Not Supported") echo "not supported" ;;
 
-case "$active_player" in
-		"not running") echo "not running" ;;
-		"stopped") echo "stopped" ;;
-    "can't encode") echo "unable to encode" ;;
-    "Not Supported") echo "not supported" ;;
-
-		*) echo "$active_player" ;;
-	esac
+  *) echo "$active_player" ;;
+  esac
 
 }
 
-function sliceTrack()
-{
+function sliceTrack() {
   local str="$1"
   local std="$2"
   local len=${#str}
@@ -157,7 +154,6 @@ function sliceTrack()
 
   echo "$result"
 }
-
 
 function remoteControl() {
   toggle_button="$1"
@@ -185,10 +181,33 @@ function remoteControl() {
   fi
 }
 
+# Scroll the text
+function scroll() {
+  local str=$1
+  local width=$2
+  local speed=$3
+
+  local scrolling_text=""
+  local i=0
+  local len=${#str}
+
+  for ((i = 0; i <= len; i++)); do
+    scrolling_text=$(slice_text "$str" "$i" "$width")
+    echo -ne "\r"
+    echo "$scrolling_text"
+    echo -ne "\r"
+
+    sleep "$speed"
+  done
+
+  echo -ne "\r"
+  echo "$scrolling_text"
+  echo -ne "\r"
+}
 
 main() {
   # save buffer to prevent lag
-	local cache_file="/tmp/tmux_mac_player_cache"
+  local cache_file="/tmp/tmux_mac_player_cache"
 
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
 
@@ -206,7 +225,9 @@ main() {
   BACK_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-back" "R")
   NEXT_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-next" "N")
 
-
+  # Scroll
+  SCROLL=$(get_tmux_option "@dracula-mac-player-scroll" false)
+  SCROLL_SPEED=$(get_tmux_option "@dracula-mac-player-scroll-speed" 0.08)
 
   # os checker
   if [[ "$OSTYPE" != "darwin"* ]]; then
@@ -217,16 +238,24 @@ main() {
   # Remote Access
   if [[ "$REMOTE_ACCESS" == true ]]; then
     remoteControl "$PLAY_PAUSE_BUTTON" "$BACK_BUTTON" "$NEXT_BUTTON" "$REMOTE_APP"
-
   fi
 
   if [ ! -f "$cache_file" ] || [ $(($(date +%s) - $(stat -f%c "$cache_file"))) -ge "$RATE" ]; then
-    trackStatus "$PAUSE_ICON" "$PLAY_ICON" > "$cache_file"
-    sliceTrack "$(cat $cache_file)" "$MAX_LENGTH" > "$cache_file"
+    trackStatus "$PAUSE_ICON" "$PLAY_ICON" >"$cache_file"
+
+    if [ "$SCROLL" = false ]; then
+      sliceTrack "$(cat $cache_file)" "$MAX_LENGTH" >"$cache_file"
+    fi
   fi
 
-	cat "$cache_file"
+  # Allow scrolling
+  local str=$(cat "$cache_file")
+  if [ "$SCROLL" = true ]; then
+    scroll "$str" "$MAX_LENGTH" "$SCROLL_SPEED"
+  else
+    echo "$str"
+  fi
+
 }
 
 main
-

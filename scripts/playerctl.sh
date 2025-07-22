@@ -5,21 +5,33 @@ export LC_ALL=en_US.UTF-8
 current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source $current_dir/utils.sh
 
-function slice_loop() {
-  local str="$1"
-  local start="$2"
-  local how_many="$3"
+# Set the configuration
+
+# Scroll the text
+# arg1: text
+# arg2: width
+# arg3: speed
+scroll() {
+  local str=$1
+  local width=$2
+  local speed=$2
+
+  local scrolling_text=""
+  local i=0
   local len=${#str}
 
-  local result=""
+  for ((i = 0; i <= len; i++)); do
+    scrolling_text=$(slice_text "$str" "$i" "$width")
+    echo -ne "\r"
+    echo "$scrolling_text "
+    echo -ne "\r"
 
-  for ((i = 0; i < how_many; i++)); do
-    local index=$(((start + i) % len))
-    local char="${str:index:1}"
-    result="$result$char"
+    sleep "$speed"
   done
 
-  echo "$result"
+  echo -ne "\r"
+  echo "$scrolling_text "
+  echo -ne "\r"
 }
 
 main() {
@@ -31,11 +43,12 @@ main() {
   fi
 
   FORMAT=$(get_tmux_option "@dracula-playerctl-format" "Now playing: {{ artist }} - {{ album }} - {{ title }}")
+  SCROLL=$(get_tmux_option "@dracula-playerctl-scroll" true)
+  WIDTH=$(get_tmux_option "@dracula-playerctl-width" 25)
+  SPEED=$(get_tmux_option "@dracula-playerctl-speed" 0.08)
+
   playerctl_playback=$(playerctl metadata --format "${FORMAT}")
   playerctl_playback="${playerctl_playback} "
-
-  # Adjust width of string
-  terminal_width=25
 
   # Initial start point for scrolling
   start=0
@@ -50,18 +63,11 @@ main() {
 
   scrolling_text=""
 
-  for ((start = 0; start <= len; start++)); do
-    scrolling_text=$(slice_loop "$playerctl_playback" "$start" "$terminal_width")
-    echo -ne "\r"
-    echo "$scrolling_text "
-    echo -ne "\r"
-
-    sleep 0.08
-  done
-
-  echo -ne "\r"
-  echo "$scrolling_text "
-  echo -ne "\r"
+  if [ "$SCROLL" = true ]; then
+    scroll "$playerctl_playback" "$WIDTH" "$SPEED"
+  else
+    echo "$playerctl_playback"
+  fi
 }
 
 # run the main driver
