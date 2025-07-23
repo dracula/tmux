@@ -196,16 +196,12 @@ function scroll() {
 
   for ((i = 0; i <= len; i++)); do
     scrolling_text=$(slice_text "$str" "$i" "$width")
-    echo -ne "\r"
-    echo "$scrolling_text "
-    echo -ne "\r"
+    printf "\r%s " "$scrolling_text"
 
     sleep "$speed"
   done
 
-  echo -ne "\r"
-  echo "$scrolling_text "
-  echo -ne "\r"
+  printf "\r%s " "$scrolling_text"
 }
 
 main() {

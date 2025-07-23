@@ -43,11 +43,16 @@ slice_text() {
   local start="$2"
   local how_many="$3"
 
+  # Check that the string is not empty
+  if [[ -z $str ]]; then
+    echo ""
+    return 0
+  fi
+
   local len=${#str}
 
   local result=""
-
-  # Caputre the strings to show
+  # Capture the strings to show
   for ((i = 0; i < how_many; i++)); do
     local index=$(((start + i) % len))
     local char="${str:index:1}"
