@@ -14,7 +14,7 @@ source $current_dir/utils.sh
 scroll() {
   local str=$1
   local width=$2
-  local speed=$2
+  local speed=$3
 
   local scrolling_text=""
   local i=0
