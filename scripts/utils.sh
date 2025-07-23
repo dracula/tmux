@@ -29,7 +29,7 @@ normalize_percent_len() {
   percent_len=${#1}
   let diff_len=$max_len-$percent_len
   # if the diff_len is even, left will have 1 more space than right
-  let left_spaces=($diff_len + 1)/2
+  let left_spaces=($diff_len+1)/2
   let right_spaces=($diff_len)/2
   printf "%${left_spaces}s%s%${right_spaces}s\n" "" $1 ""
 }
