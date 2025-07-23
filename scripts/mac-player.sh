@@ -6,11 +6,11 @@ current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source $current_dir/utils.sh
 
 function trackStatus() {
-  local active_player
+	local active_player
   local pause_icon="$1"
   local play_icon="$2"
 
-  active_player=$(osascript -e "
+	active_player=$(osascript -e "
 	property playerList : {\"Spotify\", \"Music\", \"Safari\", \"Google Chrome\"}
 	property nativePlayerList : {\"Spotify\", \"Music\"}
 
@@ -127,18 +127,20 @@ function trackStatus() {
 	detectPlayer()
 	")
 
-  case "$active_player" in
-  "not running") echo "not running" ;;
-  "stopped") echo "stopped" ;;
-  "can't encode") echo "unable to encode" ;;
-  "Not Supported") echo "not supported" ;;
 
-  *) echo "$active_player" ;;
-  esac
+case "$active_player" in
+		"not running") echo "not running" ;;
+		"stopped") echo "stopped" ;;
+    "can't encode") echo "unable to encode" ;;
+    "Not Supported") echo "not supported" ;;
+
+		*) echo "$active_player" ;;
+	esac
 
 }
 
-function sliceTrack() {
+function sliceTrack()
+{
   local str="$1"
   local std="$2"
   local len=${#str}
@@ -154,6 +156,7 @@ function sliceTrack() {
 
   echo "$result"
 }
+
 
 function remoteControl() {
   toggle_button="$1"
@@ -194,20 +197,20 @@ function scroll() {
   for ((i = 0; i <= len; i++)); do
     scrolling_text=$(slice_text "$str" "$i" "$width")
     echo -ne "\r"
-    echo "$scrolling_text"
+    echo "$scrolling_text "
     echo -ne "\r"
 
     sleep "$speed"
   done
 
   echo -ne "\r"
-  echo "$scrolling_text"
+  echo "$scrolling_text "
   echo -ne "\r"
 }
 
 main() {
   # save buffer to prevent lag
-  local cache_file="/tmp/tmux_mac_player_cache"
+	local cache_file="/tmp/tmux_mac_player_cache"
 
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
 
@@ -255,7 +258,7 @@ main() {
   else
     echo "$str"
   fi
-
 }
 
 main
+
