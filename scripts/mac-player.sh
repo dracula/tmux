@@ -249,7 +249,7 @@ main() {
 
   # Allow scrolling
   local str=$(cat "$cache_file")
-  if [ "$SCROLL" = true ]; then
+  if [ "$SCROLL" = true ] && [ "${#str}" -ge $MAX_LENGTH ]; then
     scroll "$str" "$MAX_LENGTH" "$SCROLL_SPEED"
   else
     echo "$str"
