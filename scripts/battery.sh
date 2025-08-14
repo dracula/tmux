@@ -61,7 +61,7 @@ battery_percent()
   esac
 }
 
-battery_status()
+get_battery_status()
 {
   # Check OS
   case $(uname -s) in
@@ -84,9 +84,15 @@ battery_status()
     *)
       ;;
   esac
+  echo "$status"
+}
 
-  tmp_bat_perc=$(battery_percent)
-  bat_perc="${tmp_bat_perc%\%}"
+parse_battery_status()
+{
+  # $1 is battery_percent
+  bat_perc="$1"
+  # $2 is get_battery_status
+  status="$2"
 
   case $status in
     discharging|Discharging)
@@ -153,38 +159,40 @@ battery_status()
 
 main()
 {
+  # get left most custom label
   bat_label=$(get_tmux_option "@dracula-battery-label" "♥")
   if [ "$bat_label" == false ]; then
     bat_label=""
   fi
 
+  # get label for when there is no battery
   no_bat_label=$(get_tmux_option "@dracula-no-battery-label" "AC")
   if [ "$no_bat_label" == false ]; then
     no_bat_label=""
   fi
 
-  show_bat_label=$(get_tmux_option "@dracula-show-battery-status" false)
-  if $show_bat_label; then
-    bat_stat=$(battery_status)
-  else
-    bat_stat=""
-  fi
-
   bat_perc=$(battery_percent)
+  bat_perc="${bat_perc%\%}"
 
-  hide_on_desktop=$(get_tmux_option "@dracula-battery-hide-on-desktop" false)
-  # If no battery percent and the feature flag is enabled, hide the widget completely
-  if $hide_on_desktop && [ -z "$bat_perc" ]; then
-      echo ""
-      return
-  fi
-
-  if [ -z "$bat_stat" ]; then # Test if status is empty or not
-    echo "$bat_label $bat_perc"
-  elif [ -z "$bat_perc" ]; then # In case it is a desktop with no battery percent, only AC power
+  # display widget
+  if [ -z "$bat_perc" ]; then # In case it is a desktop with no battery percent, only AC power
     echo "$no_bat_label"
   else
-    echo "$bat_label$bat_stat $bat_perc"
+    IFS=$'\n' read -rd '' -a percs <<<"$bat_perc"
+    IFS=$'\n' read -rd '' -a stats <<<"$(get_battery_status)"
+    IFS=$'\n' read -rd '' -a lbls <<<"$bat_label"
+    num_bats=${#percs[@]}
+    show_bat_label=$(get_tmux_option "@dracula-show-battery-status" false)
+    for ((i=0; i<num_bats; i++)); do
+      if [[ i -gt 0 ]]; then
+        echo -n "$(get_tmux_option "@dracula-battery-separator" "; ")"
+      fi
+      echo -n "${lbls[$i]}"
+      if $show_bat_label; then
+        echo -n "$(parse_battery_status "${percs[$i]}" "${stats[$i]}") "
+      fi
+      echo -n "${percs[$i]}%"
+    done
   fi
 }
 
