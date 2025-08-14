@@ -720,8 +720,6 @@ set -g @dracula-spotify-tui-max-len 30
 
 This widget displays music information provided by [spotify-player](https://github.com/aome510/spotify-player). spotify-player must be installed to use this widget.
 
-NOTE: `set -g @dracula-refresh-rate 5` affects this widget
-
 To change player icons:
 
 ```bash
