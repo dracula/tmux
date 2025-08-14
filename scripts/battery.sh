@@ -178,11 +178,10 @@ main()
   if [ -z "$bat_perc" ]; then # In case it is a desktop with no battery percent, only AC power
     echo "$no_bat_label"
   else
-    num_bats=$(wc -l <<< "$bat_perc")
-
     IFS=$'\n' read -rd '' -a percs <<<"$bat_perc"
     IFS=$'\n' read -rd '' -a stats <<<"$(get_battery_status)"
     IFS=$'\n' read -rd '' -a lbls <<<"$bat_label"
+    num_bats=${#percs[@]}
     show_bat_label=$(get_tmux_option "@dracula-show-battery-status" false)
     for ((i=0; i<num_bats; i++)); do
       if [[ i -gt 0 ]]; then

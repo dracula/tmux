@@ -223,7 +223,6 @@ these settings will introduce the following icons:
 if you have no battery and would like the widget to hide in that case, set the following:
 
 ```bash
-set -g @dracula-battery-label false
 set -g @dracula-no-battery-label false
 ```
 
