@@ -91,7 +91,7 @@ main() {
     exit 1
   fi
 
- # Remote Access
+  # Remote Access
   if [[ "$SPR_REMOTE_ACCESS" == "true" ]]; then
     PLAY_PAUSE_BUTTON=$(get_tmux_option "@dracula-spr-remote-play-pause" "P")
     BACK_BUTTON=$(get_tmux_option "@dracula-spr-remote-back" "R")
