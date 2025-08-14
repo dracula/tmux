@@ -537,8 +537,6 @@ The supported remote players are:
 - Spotify
 - Music - Apple Music
 
-NOTE: `set -g @dracula-refresh-rate 5` affects this widget
-
 To change player icons:
 
 ```bash
