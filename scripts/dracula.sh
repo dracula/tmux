@@ -38,6 +38,8 @@ main() {
   show_ssh_session_port=$(get_tmux_option "@dracula-show-ssh-session-port" false)
   show_libreview=$(get_tmux_option "@dracula-show-libreview" false)
   show_empty_plugins=$(get_tmux_option "@dracula-show-empty-plugins" true)
+  left_pad=$(get_tmux_option "@dracula-left-pad" " ")
+  right_pad=$(get_tmux_option "@dracula-right-pad" " ")
 
   narrow_mode=$(get_tmux_option "@dracula-narrow-mode" false)
   if $narrow_mode; then
@@ -361,18 +363,21 @@ main() {
       background_color=${powerbg}
     fi
 
+    # padding
+    pad_script="$left_pad$script$right_pad"
+
     if $show_powerline; then
       if $show_empty_plugins; then
-        tmux set-option -ga status-right " #[fg=${!colors[0]},bg=${background_color},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script $right_edge_icon"
+        tmux set-option -ga status-right " #[fg=${!colors[0]},bg=${background_color},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}]$pad_script$right_edge_icon"
       else
-    tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[0]},nobold,nounderscore,noitalics] ${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script $right_edge_icon}"
+        tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[0]},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}]$pad_script$right_edge_icon}"
     fi
       powerbg=${!colors[0]}
     else
       if $show_empty_plugins; then
-        tmux set-option -ga status-right "#[fg=${!colors[1]},bg=${!colors[0]}] $script "
+        tmux set-option -ga status-right "#[fg=${!colors[1]},bg=${!colors[0]}]$pad_script"
       else
-        tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[1]},bg=${!colors[0]}] $script }"
+        tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[1]},bg=${!colors[0]}]$pad_script}"
       fi
     fi
 
