@@ -716,7 +716,7 @@ set -g @dracula-spotify-tui-max-len 30
 ```
 
 
-`set remote-g @dracula-refresh-rate 5` affects this widget
+`set -g @dracula-refresh-rate 5` affects this widget
 
 ### spr - [up](#table-of-contents)
 
