@@ -280,6 +280,10 @@ main() {
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-mpc-colors" "green dark_gray")
       script="#($current_dir/mpc.sh)"
 
+    elif [ $plugin = "spr" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-spr-colors" "green dark_gray")
+      script="#($current_dir/spr.sh)"
+
     elif [ $plugin = "spotify-tui" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-spotify-tui-colors" "green dark_gray")
       script="#($current_dir/spotify-tui.sh)"
