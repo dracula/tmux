@@ -137,8 +137,8 @@ main() {
       flags=""
       current_flags="";;
     true)
-      flags="#{?window_flags,#[fg=${dark_purple}]#{window_flags},}"
-      current_flags="#{?window_flags,#[fg=${light_purple}]#{window_flags},}"
+      flags="$(get_tmux_option "@dracula-window-flags" "#{?window_flags,#[fg=${dark_purple}]#{window_flags},}")"
+      current_flags="$(get_tmux_option "@dracula-window-current-flags" "#{?window_flags,#[fg=${light_purple}]#{window_flags},}")"
   esac
 
   # sets refresh interval to every 5 seconds
