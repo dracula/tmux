@@ -31,6 +31,7 @@
   - [playerctl](#playerctl---up)
   - [ram-usage](#ram-usage---up)
   - [spotify-tui](#spotify-tui---up)
+  - [spr](#spr---up)
   - [ssh-session](#ssh-session---up)
   - [synchronize-panes](#synchronize-panes---up)
   - [sys-temp](#sys-temp---up)
@@ -86,6 +87,18 @@ Hide empty plugins
 
 ```bash
 set -g @dracula-show-empty-plugins false
+```
+
+Set plugin padding
+Whilst the padding is one space per default, can be whatever you want it to be, whether that's whitespace or other characters.
+**If you want to remove any padding, you need to use a zero width space!**
+
+```bash
+set -g @dracula-left-pad ' ° '
+set -g @dracula-right-pad ' ° '
+# no padding with zero width space
+set -g @dracula-left-pad '​'
+set -g @dracula-right-pad '​'
 ```
 
 ### Powerline - [up](#table-of-contents)
@@ -217,6 +230,18 @@ alternatively, if you have no battery and would like a nerdfont icon to indicate
 
 ```bash
 set -g @dracula-no-battery-label " "
+```
+
+in case you have multiple batteries:
+
+the default battery label is only displayed in the very front.
+you can specify multiple battery labels by splitting them with `\n` like so:
+```bash
+set -g @dracula-battery-label "1:\n2:"
+```
+additionally you can specify the separator between each battery like so:
+```bash
+set -g @dracula-battery-separator "; "
 ```
 
 ### compact-alt - [up](#table-of-contents)
@@ -516,6 +541,7 @@ set -g @dracula-kubernetes-eks-extract-account true
 This script retrieves and displays continuous glucose monitoring (CGM) data from the LibreView API.
 It caches the data to minimize API requests and displays the latest glucose level along with a trend indicator in a Tmux status bar.
 
+
 ### mac-player - [up](#table-of-contents)
 
 This widget and script displays music information provided by the native macOS players.
@@ -534,8 +560,6 @@ The supported remote players are:
 
 - Spotify
 - Music - Apple Music
-
-NOTE: `set -g @dracula-refresh-rate 5` affects this widget
 
 To change player icons:
 
@@ -728,7 +752,46 @@ To limit the maximum length (0 means unlimited length):
 set -g @dracula-spotify-tui-max-len 30
 ```
 
+
 `set -g @dracula-refresh-rate 5` affects this widget
+
+### spr - [up](#table-of-contents)
+
+This widget displays music information provided by [spotify-player](https://github.com/aome510/spotify-player). spotify-player must be installed to use this widget.
+
+To change player icons:
+
+```bash
+set -g @dracula-spr-play-icon "♪ "
+set -g @dracula-spr-pause-icon "❚❚ "
+
+```
+
+This section includes an experimental remote control feature, but it may limit the widget’s display on macOS.
+
+In order to utilize the remote feature you need to install the [spotify-player-daemon](https://github.com/aome510/spotify-player#daemon)
+To activate the remote:
+
+```bash
+set -g @dracula-spr-remote true
+```
+
+The default keybinds are:
+
+- `<prefix> + P` - Play/Pause
+- `<prefix> + R` - Back to position 0/previous track
+- `<prefix> + N` - Next track
+
+To change the keybinds:
+
+```bash
+set -g @dracula-spr-remote-play-pause "P"
+set -g @dracula-spr-remote-back "R"
+set -g @dracula-spr-remote-next "N"
+```
+
+`set -g @dracula-refresh-rate 5` affects this widget
+
 
 ### ssh-session - [up](#table-of-contents)
 

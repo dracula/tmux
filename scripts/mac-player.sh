@@ -159,15 +159,20 @@ function sliceTrack()
 
 
 function remoteControl() {
-  toggle_button="$1"
-  back_button="$2"
-  next_button="$3"
-  app_controlled="$4"
+  local toggle_button="$1"
+  local back_button="$2"
+  local next_button="$3"
+  local app_controlled="$4"
 
   if [[ $app_controlled == "Spotify" ]] || [[ $app_controlled == "Music" ]]; then
 
+    if [[ $app_controlled == "Music" ]]; then
+      back="osascript -e 'tell application \"$app_controlled\" to back track'"
+    else
+      back="osascript -e 'tell application \"$app_controlled\" to previous track'"
+    fi
+
     toggle="osascript -e 'tell application \"$app_controlled\" to playpause'"
-    back="osascript -e 'tell application \"$app_controlled\" to back track'"
     next="osascript -e 'tell application \"$app_controlled\" to play next track'"
 
     tmux unbind-key "$toggle_button"
@@ -177,10 +182,6 @@ function remoteControl() {
     tmux bind-key "$toggle_button" run-shell "$toggle"
     tmux bind-key "$back_button" run-shell "$back"
     tmux bind-key "$next_button" run-shell "$next"
-  else
-    tmux unbind-key "$toggle_button"
-    tmux unbind-key "$back_button"
-    tmux unbind-key "$next_button"
   fi
 }
 
@@ -216,7 +217,7 @@ main() {
   MAX_LENGTH=$(get_tmux_option "@dracula-mac-player-length" 25)
 
   # Remote variables
-  REMOTE_ACCESS=$(get_tmux_option "@dracula-mac-player-remote" false)
+  REMOTE_ACCESS=$(get_tmux_option "@dracula-mac-player-remote" "false")
   REMOTE_APP=$(get_tmux_option "@dracula-mac-player-app" "Spotify")
 
   # Remote Control Buttons Customizations
@@ -230,20 +231,33 @@ main() {
 
   # os checker
   if [[ "$OSTYPE" != "darwin"* ]]; then
-    echo ""
     exit 1
   fi
 
   # Remote Access
-  if [[ "$REMOTE_ACCESS" == true ]]; then
+  if [[ "$REMOTE_ACCESS" == "true" ]]; then
+    # Remote Control Buttons Customizations
+    PLAY_PAUSE_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-play-pause" "P")
+    BACK_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-back" "R")
+    NEXT_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-next" "N")
+
     remoteControl "$PLAY_PAUSE_BUTTON" "$BACK_BUTTON" "$NEXT_BUTTON" "$REMOTE_APP"
+  else
+    # Clean up when remote is disabled
+    tmux set -g @dracula-mac-player-remote-play-pause ""
+    tmux set -g @dracula-mac-player-remote-back ""
+    tmux set -g @dracula-mac-player-remote-next ""
+    tmux unbind-key "$PLAY_PAUSE_BUTTON" 2>/dev/null
+    tmux unbind-key "$BACK_BUTTON" 2>/dev/null
+    tmux unbind-key "$NEXT_BUTTON" 2>/dev/null
   fi
 
   if [ ! -f "$cache_file" ] || [ $(($(date +%s) - $(stat -f%c "$cache_file"))) -ge "$RATE" ]; then
-    trackStatus "$PAUSE_ICON" "$PLAY_ICON" >"$cache_file"
+    local full_track
+    full_track=$(trackStatus "$PAUSE_ICON" "$PLAY_ICON")
 
     if [ "$SCROLL" = false ]; then
-      sliceTrack "$(cat $cache_file)" "$MAX_LENGTH" >"$cache_file"
+      sliceTrack "$full_track" "$MAX_LENGTH" > "$cache_file"
     fi
   fi
 
