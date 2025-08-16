@@ -256,14 +256,16 @@ main() {
     local full_track
     full_track=$(trackStatus "$PAUSE_ICON" "$PLAY_ICON")
 
-    if [ "$SCROLL" = "false" ]; then
+    if [ "$SCROLL" = "true" ] && [ "${#str}" -ge $MAX_LENGTH ]; then
+      echo "$full_track" > "$cache_file"
+    else
       sliceTrack "$full_track" "$MAX_LENGTH" > "$cache_file"
     fi
   fi
 
   # Allow scrolling
   local str=$(cat "$cache_file")
-  if [ "$SCROLL" = "true" ] && [ "${#str}" -ge $MAX_LENGTH ]; then
+  if [ "$SCROLL" = "true" ]; then
     scroll "$str" "$MAX_LENGTH" "$SCROLL_SPEED"
   else
     echo "$str"
