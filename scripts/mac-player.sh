@@ -226,7 +226,7 @@ main() {
   NEXT_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-next" "N")
 
   # Scroll
-  SCROLL=$(get_tmux_option "@dracula-mac-player-scroll" false)
+  SCROLL=$(get_tmux_option "@dracula-mac-player-scroll" "false")
   SCROLL_SPEED=$(get_tmux_option "@dracula-mac-player-scroll-speed" 0.08)
 
   # os checker
@@ -252,23 +252,21 @@ main() {
     tmux unbind-key "$NEXT_BUTTON" 2>/dev/null
   fi
 
+  # handle cache separately from the scrolling feature
   if [ ! -f "$cache_file" ] || [ $(($(date +%s) - $(stat -f%c "$cache_file"))) -ge "$RATE" ]; then
     local full_track
     full_track=$(trackStatus "$PAUSE_ICON" "$PLAY_ICON")
 
-    if [ "$SCROLL" = "true" ] && [ "${#str}" -ge $MAX_LENGTH ]; then
-      echo "$full_track" > "$cache_file"
-    else
-      sliceTrack "$full_track" "$MAX_LENGTH" > "$cache_file"
-    fi
+    echo "$full_track" >"$cache_file"
   fi
 
-  # Allow scrolling
-  local str=$(cat "$cache_file")
-  if [ "$SCROLL" = "true" ]; then
-    scroll "$str" "$MAX_LENGTH" "$SCROLL_SPEED"
+  # Allow scrolling and if not default to the string stripping concatenation thingy from length
+  local final_str
+  final_str=$(cat "$cache_file")
+  if [ "$SCROLL" = "true" ] && [ "${#final_str}" -ge "$MAX_LENGTH" ]; then
+    scroll "$final_str" "$MAX_LENGTH" "$SCROLL_SPEED"
   else
-    echo "$str"
+    sliceTrack "$final_str" "$MAX_LENGTH"
   fi
 }
 
