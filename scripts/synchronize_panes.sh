@@ -17,6 +17,12 @@ main()
   # storing the refresh rate in the variable RATE, default is 5
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
 
+  # Use the @dracula-synchronize-panes-refresh-rate plugin variable to override it.
+  RATE_OVERRIDE=$(get_tmux_option "@dracula-synchronize-panes-refresh-rate" "")
+  if [[ -n "$RATE_OVERRIDE" ]]; then
+    RATE="$RATE_OVERRIDE"
+  fi
+
   synchronize_panes_auto_hide=$(get_tmux_option "@dracula-synchronize-panes-auto-hide" "false")
   synchronize_panes_status=$(get_synchronize_panes_status)
   synchronize_panes_label=$label
