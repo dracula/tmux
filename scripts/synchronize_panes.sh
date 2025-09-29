@@ -16,9 +16,19 @@ main()
 {
   # storing the refresh rate in the variable RATE, default is 5
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
-  synchronize_panes_label=$label
+
+  synchronize_panes_auto_hide=$(get_tmux_option "@dracula-synchronize-panes-auto-hide" "false")
   synchronize_panes_status=$(get_synchronize_panes_status)
-  echo "$synchronize_panes_label $synchronize_panes_status"
+  synchronize_panes_label=$label
+
+  if [[ "$synchronize_panes_auto_hide" == 'true' ]]; then
+    if [[ "$synchronize_panes_status" == 'on' ]]; then
+      echo "$synchronize_panes_label"
+    fi
+  else
+    echo "$synchronize_panes_label $synchronize_panes_status"
+  fi
+
   sleep $RATE
 }
 
