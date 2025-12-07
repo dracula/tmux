@@ -601,6 +601,13 @@ set -g @dracula-mac-player-remote-back "R"
 set -g @dracula-mac-player-remote-next "N"
 ```
 
+To add a scrolling effect to the player instead of a truncated text:
+
+```bash
+set -g @dracula-mac-player-scroll true
+set -g @dracula-mac-player-scroll-speed 0.08 # Lower speeds means faster scroll between renders
+```
+
 ### mpc - [up](#table-of-contents)
 
 This widget displays music information provided by mpc.
@@ -703,6 +710,14 @@ Set the playerctl metadata format like so:
 
 ```bash
 set -g @dracula-playerctl-format "►  {{ artist }} - {{ title }}"
+```
+
+To set the player to scroll the text:
+
+```bash
+set -g @dracula-playerctl-scroll true # on by default
+set -g @dracula-playerctl-width 25
+set -g @dracula-playerctl-speed 0.08 # Small speeds = faster scrolling
 ```
 
 ### ram-usage - [up](#table-of-contents)
