@@ -15,11 +15,11 @@ get_ssid()
   # Check OS
   case $(uname -s) in
     Linux)
-      SSID=$(iw dev | sed -nr 's/^\t\tssid (.*)/\1/p')
+      SSID=$(iwgetid -r)
       if [ -n "$SSID" ]; then
-        echo "$wifi_label$SSID"
+        printf '%s' "  $SSID"
       else
-        echo "$ethernet_label"
+        echo '󰈀 Ethernet'
       fi
       ;;
 
