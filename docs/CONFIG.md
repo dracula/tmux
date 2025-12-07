@@ -802,7 +802,7 @@ nerdfont icons to consider:
 
 ### synchronize-panes - [up](#table-of-contents)
 
-This widget displays whether the tmux panes are currently synchronised or not.
+This widget displays whether the tmux panes are currently synchronised.
 
 To change the label:
 
@@ -810,7 +810,26 @@ To change the label:
 set -g @dracula-synchronize-panes-label "Sync"
 ```
 
-`set -g @dracula-refresh-rate 5` affects this widget
+The global refresh rate affects this widget:
+
+```bash
+set -g @dracula-refresh-rate 5
+```
+
+You can set a custom refresh rate just for synchronize-panes:
+
+```bash
+set -g @dracula-synchronize-panes-refresh-rate "0.5"  # default: unset
+```
+
+**Note:** This only takes precedence for the synchronize-panes widget. This means it won't
+override the global `@dracula-refresh-rate`.
+
+Alternatively, you can automatically hide the label when sync is `off`:
+
+```bash
+set -g @dracula-synchronize-panes-auto-hide true  # default: false
+```
 
 ### sys-temp - [up](#table-of-contents)
 
