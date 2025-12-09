@@ -44,9 +44,9 @@ get_gpu()
   gpu_power_percent=$(get_tmux_option "@dracula-gpu-power-percent" false)
   if [[ "$gpu" == NVIDIA ]]; then
     if $gpu_power_percent; then
-      usage=$(nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk '{ draw += $0; max +=$2 } END { printf("%d%%\n", draw / max * 100) }')
+      usage=$(echo "Power" && nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk '{ printf("|%d%%", $0 / $2 * 100) }' && echo "|")
   else
-      usage=$(nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk '{ draw += $0; max +=$2 } END { printf("%dW/%dW\n", draw, max) }')
+    usage=$(echo "Power" && nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk '{ printf("|%dW/%dW", $1, $2) }' && echo "|")
     fi
 
   elif [[ "$gpu" == apple ]]; then
