@@ -42,14 +42,14 @@ get_gpu()
   gpu_vram_percent=$(get_tmux_option "@dracula-gpu-vram-percent" false)
   if [[ "$gpu" == NVIDIA ]]; then
     if $gpu_vram_percent; then
-      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk '{ used += $0; total +=$2 } END { printf("%d%%\n", used / total * 100 ) }')
+      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk -F ', *' '{ printf("|%d%%", $0 / $2 * 100) }' && echo "|")
     normalize_percent_len $usage
     exit 0
     else
       # to add finer grained info
       used_accuracy=$(get_tmux_option "@dracula-gpu-vram-used-accuracy" "d")
       total_accuracy=$(get_tmux_option "@dracula-gpu-vram-total-accuracy" "d")
-      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk "{ used += \$0; total +=\$2 } END { printf(\"%${used_accuracy}GB/%${total_accuracy}GB\n\", used / 1024, total / 1024) }")
+      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk -F ', *' '{ printf("|%dGB/%dGB", $0, $2) }' && echo "|")
     fi
   elif [[ "$gpu" == Advanced ]]; then
     usage="$(
