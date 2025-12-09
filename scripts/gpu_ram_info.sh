@@ -42,7 +42,7 @@ get_gpu()
   gpu_vram_percent=$(get_tmux_option "@dracula-gpu-vram-percent" false)
   if [[ "$gpu" == NVIDIA ]]; then
     if $gpu_vram_percent; then
-      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk '{ printf("|%d%%", $0 / $2 * 100) }' && echo "|")
+      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk -F ', *' '{ printf("|%d%%", $0 / $2 * 100) }' && echo "|")
     normalize_percent_len $usage
     exit 0
     else
