@@ -44,7 +44,7 @@ get_gpu()
   gpu_power_percent=$(get_tmux_option "@dracula-gpu-power-percent" false)
   if [[ "$gpu" == NVIDIA ]]; then
     if $gpu_power_percent; then
-      usage=$(echo "Power" && nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk -F ', *' '{ printf("|%d%%", $0 / $2 * 100) }' && echo "|")
+      usage=$(nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk -F ', *' '{ printf("|%d%%", $0 / $2 * 100) }' && echo "|")
   else
     usage=$(echo "Power" && nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk -F ', *' '{ printf("|%dW/%dW", $1, $2) }' && echo "|")
     fi
