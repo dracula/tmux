@@ -51,7 +51,7 @@ get_gpu()
   else # "Intel" "Matrox", etc
     usage="unknown"
   fi
-  normalize_percent_len $usage
+  echo $usage
 }
 
 main()
