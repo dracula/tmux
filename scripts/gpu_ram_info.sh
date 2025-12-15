@@ -43,7 +43,7 @@ get_gpu()
   if [[ "$gpu" == NVIDIA ]]; then
     if $gpu_vram_percent; then
       usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk -F ', *' '{ printf("|%d%%", $0 / $2 * 100) }' && echo "|")
-    normalize_percent_len $usage
+    echo $usage
     exit 0
     else
       # to add finer grained info
