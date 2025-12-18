@@ -46,10 +46,9 @@ get_gpu()
     echo $usage
     exit 0
     else
-      # to add finer grained info
       used_accuracy=$(get_tmux_option "@dracula-gpu-vram-used-accuracy" "d")
       total_accuracy=$(get_tmux_option "@dracula-gpu-vram-total-accuracy" "d")
-      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk -F ', *' '{ printf("|%dGB/%dGB", $0 / 1024, $2 / 1024) }' && echo "|")
+      usage=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk -F ", *" "{ printf(\"|%${used_accuracy}GB/%${total_accuracy}GB\", \$0 / 1024, \$2 / 1024) }" && echo "|")
     fi
   elif [[ "$gpu" == Advanced ]]; then
     usage="$(
