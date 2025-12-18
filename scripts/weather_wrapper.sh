@@ -14,6 +14,7 @@ INTERVAL=1200
 # Arguments:
 #   show fahrenheit, either "true" (default) or "false"
 #   show location, either "true" (default) or "false"
+#   hide errors, either "true" or "false" (default)
 #   optional fixed location to query data about, e.g. "Houston, Texas"
 function main() {
   local _show_fahrenheit _show_location _hide_errors _location _current_dir _last _now

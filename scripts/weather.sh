@@ -94,6 +94,7 @@ function format_weather_info() {
 #   show fahrenheit, either "true" (default) or "false"
 #   show location, either "true" (default) or "false"
 #   optional fixed location to query data about, e.g. "Houston, Texas"
+#   hide errors, either "true" or "false" (default)
 function main() {
   local _show_fahrenheit _show_location _location _hide_errors
   _show_fahrenheit="${1:-true}"
