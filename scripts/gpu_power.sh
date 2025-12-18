@@ -46,7 +46,7 @@ get_gpu()
     if $gpu_power_percent; then
       usage=$(nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk -F ', *' '{ printf("|%d%%", $0 / $2 * 100) }' && echo "|")
   else
-    usage=$(nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk -F ', *' '{ printf("|%dW/%dW", $1, $2) }' && echo "|")
+    usage=$(nvidia-smi --query-gpu=power.draw,power.limit --format=csv,noheader,nounits | awk -F ', *' '{ printf("|%dW/%dW", $0, $2) }' && echo "|")
     fi
 
   elif [[ "$gpu" == apple ]]; then
