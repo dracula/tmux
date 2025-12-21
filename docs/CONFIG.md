@@ -218,8 +218,6 @@ these settings will introduce the following icons:
 - we were able to determine that the battery is charging/ discharging, but something about the percentage went wrong: `󰂃`
 - we don't know the status of the battery: ``
 
-
-
 if you have no battery and would like the widget to hide in that case, set the following:
 
 ```bash
@@ -541,7 +539,6 @@ set -g @dracula-kubernetes-eks-extract-account true
 This script retrieves and displays continuous glucose monitoring (CGM) data from the LibreView API.
 It caches the data to minimize API requests and displays the latest glucose level along with a trend indicator in a Tmux status bar.
 
-
 ### mac-player - [up](#table-of-contents)
 
 This widget and script displays music information provided by the native macOS players.
@@ -737,7 +734,6 @@ To limit the maximum length (0 means unlimited length):
 set -g @dracula-spotify-tui-max-len 30
 ```
 
-
 `set -g @dracula-refresh-rate 5` affects this widget
 
 ### spr - [up](#table-of-contents)
@@ -776,7 +772,6 @@ set -g @dracula-spr-remote-next "N"
 ```
 
 `set -g @dracula-refresh-rate 5` affects this widget
-
 
 ### ssh-session - [up](#table-of-contents)
 
@@ -921,6 +916,12 @@ Hide your location
 
 ```bash
 set -g @dracula-show-location false
+```
+Hide the weather plugin output when an error occurs (prints an empty string instead of "Weather Unavailable" / "Unknown Location").
+This is especially useful together with `set -g @dracula-show-empty-plugins false`.
+
+```bash
+set -g @dracula-weather-hide-errors true
 ```
 
 ### custom:script-name - [up](#table-of-contents)
