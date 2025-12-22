@@ -25,6 +25,7 @@
   - [mac-player](#mac-player---up)
   - [mpc](#mpc---up)
   - [network](#network---up)
+  - [network-public-ip](#network-public-ip---up)
   - [network-bandwidth](#network-bandwidth---up)
   - [network-ping](#network-ping---up)
   - [network-vpn](#network-vpn---up)
@@ -644,6 +645,16 @@ wifi:      󰖩  󰘊 󰒢
 Known issues:
 
 - If for some reason `iw` is only in the path for root and not the normal user, wifi connections will be considered ethernet connections.
+
+### network-public-ip - [up](#table-of-contents)
+
+This widget displays the public IP address you're using, by querying the public service `ifconfig.me`.
+
+Possible nerdfont settings for public IP info:
+
+```bash
+set -g @dracula-network-public-ip-label "󰖟 "
+```
 
 ### network-bandwidth - [up](#table-of-contents)
 
