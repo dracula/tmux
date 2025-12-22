@@ -91,14 +91,17 @@ set -g @dracula-show-empty-plugins false
 
 Set plugin padding
 Whilst the padding is one space per default, can be whatever you want it to be, whether that's whitespace or other characters.
-**If you want to remove any padding, you need to use a zero width space!**
 
 ```bash
 set -g @dracula-left-pad ' ° '
 set -g @dracula-right-pad ' ° '
-# no padding with zero width space
-set -g @dracula-left-pad '​'
-set -g @dracula-right-pad '​'
+```
+
+If you want to remove any padding, you can use `false` as a value.
+
+```bash
+set -g @dracula-left-pad false
+set -g @dracula-right-pad false
 ```
 
 ### Powerline - [up](#table-of-contents)
