@@ -648,7 +648,7 @@ Known issues:
 
 ### network-public-ip - [up](#table-of-contents)
 
-This widget displays the public IP address you're using.
+This widget displays the public IP address you're using, by querying the public service `ifconfig.me`.
 
 Possible nerdfont settings for public IP info:
 
