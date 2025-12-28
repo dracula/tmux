@@ -14,14 +14,14 @@ INTERVAL=1200
 # Arguments:
 #   show fahrenheit, either "true" (default) or "false"
 #   show location, either "true" (default) or "false"
-#   hide errors, either "true" or "false" (default)
 #   optional fixed location to query data about, e.g. "Houston, Texas"
+#   hide errors, either "true" or "false" (default)
 function main() {
   local _show_fahrenheit _show_location _hide_errors _location _current_dir _last _now
-  _show_fahrenheit="${1:-true}"
-  _show_location="${2:-true}"
-  _hide_errors="${3:-false}"
-  _location="$4"
+  _show_fahrenheit="$1"
+  _show_location="$2"
+  _location="$3"
+  _hide_errors="$4"
   _current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
   _last=$(cat "$LAST_EXEC_FILE" 2>/dev/null || echo 0)
   _now=$(date +%s)
