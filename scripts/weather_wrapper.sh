@@ -15,18 +15,20 @@ INTERVAL=1200
 #   show fahrenheit, either "true" (default) or "false"
 #   show location, either "true" (default) or "false"
 #   optional fixed location to query data about, e.g. "Houston, Texas"
+#   hide errors, either "true" or "false" (default)
 function main() {
-  local _show_fahrenheit _show_location _location _current_dir _last _now
+  local _show_fahrenheit _show_location _hide_errors _location _current_dir _last _now
   _show_fahrenheit="$1"
   _show_location="$2"
   _location="$3"
+  _hide_errors="$4"
   _current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
   _last=$(cat "$LAST_EXEC_FILE" 2>/dev/null || echo 0)
   _now=$(date +%s)
 
   if (((_now - _last) > INTERVAL)); then
     # Run weather script here
-    "${_current_dir}/weather.sh" "$_show_fahrenheit" "$_show_location" "$_location" >"${DATAFILE}"
+    "${_current_dir}/weather.sh" "$_show_fahrenheit" "$_show_location" "$_location" "$_hide_errors" >"${DATAFILE}"
     printf '%s' "$_now" >"${LAST_EXEC_FILE}"
   fi
 
