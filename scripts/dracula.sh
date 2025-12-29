@@ -42,6 +42,9 @@ main() {
   left_pad=$(get_tmux_option "@dracula-left-pad" " ")
   right_pad=$(get_tmux_option "@dracula-right-pad" " ")
 
+  if [ "$left_pad" = false ]; then left_pad=""; fi
+  if [ "$right_pad" = false ]; then right_pad=""; fi
+
   narrow_mode=$(get_tmux_option "@dracula-narrow-mode" false)
   if $narrow_mode; then
     IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-narrow-plugins" "compact-alt battery network weather")
