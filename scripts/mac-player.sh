@@ -3,8 +3,7 @@
 export LC_ALL=en_US.UTF-8
 
 current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$current_dir/utils.sh"
-
+source $current_dir/utils.sh
 
 function trackStatus() {
 	local active_player
@@ -186,6 +185,25 @@ function remoteControl() {
   fi
 }
 
+# Scroll the text
+function scroll() {
+  local str=$1
+  local width=$2
+  local speed=$3
+
+  local scrolling_text=""
+  local i=0
+  local len=${#str}
+
+  for ((i = 0; i <= len; i++)); do
+    scrolling_text=$(slice_text "$str" "$i" "$width")
+    printf "\r%s " "$scrolling_text"
+
+    sleep "$speed"
+  done
+
+  printf "\r%s " "$scrolling_text"
+}
 
 main() {
   # save buffer to prevent lag
@@ -201,6 +219,15 @@ main() {
   # Remote variables
   REMOTE_ACCESS=$(get_tmux_option "@dracula-mac-player-remote" "false")
   REMOTE_APP=$(get_tmux_option "@dracula-mac-player-app" "Spotify")
+
+  # Remote Control Buttons Customizations
+  PLAY_PAUSE_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-play-pause" "P")
+  BACK_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-back" "R")
+  NEXT_BUTTON=$(get_tmux_option "@dracula-mac-player-remote-next" "N")
+
+  # Scroll
+  SCROLL=$(get_tmux_option "@dracula-mac-player-scroll" "false")
+  SCROLL_SPEED=$(get_tmux_option "@dracula-mac-player-scroll-speed" 0.08)
 
   # os checker
   if [[ "$OSTYPE" != "darwin"* ]]; then
@@ -225,14 +252,22 @@ main() {
     tmux unbind-key "$NEXT_BUTTON" 2>/dev/null
   fi
 
+  # handle cache separately from the scrolling feature
   if [ ! -f "$cache_file" ] || [ $(($(date +%s) - $(stat -f%c "$cache_file"))) -ge "$RATE" ]; then
     local full_track
-
     full_track=$(trackStatus "$PAUSE_ICON" "$PLAY_ICON")
-    sliceTrack "$full_track" "$MAX_LENGTH" > "$cache_file"
+
+    echo "$full_track" >"$cache_file"
   fi
 
-	cat "$cache_file"
+  # Allow scrolling and if not default to the string stripping concatenation thingy from length
+  local final_str
+  final_str=$(cat "$cache_file")
+  if [ "$SCROLL" = "true" ] && [ "${#final_str}" -ge "$MAX_LENGTH" ]; then
+    scroll "$final_str" "$MAX_LENGTH" "$SCROLL_SPEED"
+  else
+    sliceTrack "$final_str" "$MAX_LENGTH"
+  fi
 }
 
 main
