@@ -17,5 +17,3 @@ pink='#d27e99'
 yellow='#ff9e3b'
 "
 ```
-
-alternatively use the full kanagawa color palette and customise the flags accordingly
