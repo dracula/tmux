@@ -113,7 +113,7 @@ main() {
     sliceTrack "$full_track" "$MAX_LENGTH" > "$cache_file"
   fi
 
-  echo "$BACK_BUTTON"
+  cat "$cache_file"
 }
 
 main

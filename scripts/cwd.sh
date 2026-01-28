@@ -24,8 +24,8 @@ main() {
   fi
 
   # change '/home/user' to '~'
-  cwd="${path/"${HOME}/"/'~/'}"
-
+  cwd="${path/${HOME}/~}"
+  
   # check max number of subdirs to display. 0 means unlimited
   cwd_max_dirs="$(get_tmux_option "@dracula-cwd-max-dirs" "0")"
 

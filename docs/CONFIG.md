@@ -25,6 +25,7 @@
   - [mac-player](#mac-player---up)
   - [mpc](#mpc---up)
   - [network](#network---up)
+  - [network-public-ip](#network-public-ip---up)
   - [network-bandwidth](#network-bandwidth---up)
   - [network-ping](#network-ping---up)
   - [network-vpn](#network-vpn---up)
@@ -91,14 +92,17 @@ set -g @dracula-show-empty-plugins false
 
 Set plugin padding
 Whilst the padding is one space per default, can be whatever you want it to be, whether that's whitespace or other characters.
-**If you want to remove any padding, you need to use a zero width space!**
 
 ```bash
 set -g @dracula-left-pad ' ° '
 set -g @dracula-right-pad ' ° '
-# no padding with zero width space
-set -g @dracula-left-pad '​'
-set -g @dracula-right-pad '​'
+```
+
+If you want to remove any padding, you can use `false` as a value.
+
+```bash
+set -g @dracula-left-pad false
+set -g @dracula-right-pad false
 ```
 
 ### Powerline - [up](#table-of-contents)
@@ -217,8 +221,6 @@ these settings will introduce the following icons:
 - power is being drawn from AC, but the battery is neither charging nor discharging: ``
 - we were able to determine that the battery is charging/ discharging, but something about the percentage went wrong: `󰂃`
 - we don't know the status of the battery: ``
-
-
 
 if you have no battery and would like the widget to hide in that case, set the following:
 
@@ -541,7 +543,6 @@ set -g @dracula-kubernetes-eks-extract-account true
 This script retrieves and displays continuous glucose monitoring (CGM) data from the LibreView API.
 It caches the data to minimize API requests and displays the latest glucose level along with a trend indicator in a Tmux status bar.
 
-
 ### mac-player - [up](#table-of-contents)
 
 This widget and script displays music information provided by the native macOS players.
@@ -652,6 +653,16 @@ Known issues:
 
 - If for some reason `iw` is only in the path for root and not the normal user, wifi connections will be considered ethernet connections.
 
+### network-public-ip - [up](#table-of-contents)
+
+This widget displays the public IP address you're using, by querying the public service `ifconfig.me`.
+
+Possible nerdfont settings for public IP info:
+
+```bash
+set -g @dracula-network-public-ip-label "󰖟 "
+```
+
 ### network-bandwidth - [up](#table-of-contents)
 
 This widget gives the currently used up and download speeds per second for one interface.
@@ -752,7 +763,6 @@ To limit the maximum length (0 means unlimited length):
 set -g @dracula-spotify-tui-max-len 30
 ```
 
-
 `set -g @dracula-refresh-rate 5` affects this widget
 
 ### spr - [up](#table-of-contents)
@@ -792,7 +802,6 @@ set -g @dracula-spr-remote-next "N"
 
 `set -g @dracula-refresh-rate 5` affects this widget
 
-
 ### ssh-session - [up](#table-of-contents)
 
 This widget displays the current username@host combination, both of the local machine as well as when connected via ssh.
@@ -817,7 +826,7 @@ nerdfont icons to consider:
 
 ### synchronize-panes - [up](#table-of-contents)
 
-This widget displays whether the tmux panes are currently synchronised or not.
+This widget displays whether the tmux panes are currently synchronised.
 
 To change the label:
 
@@ -825,7 +834,26 @@ To change the label:
 set -g @dracula-synchronize-panes-label "Sync"
 ```
 
-`set -g @dracula-refresh-rate 5` affects this widget
+The global refresh rate affects this widget:
+
+```bash
+set -g @dracula-refresh-rate 5
+```
+
+You can set a custom refresh rate just for synchronize-panes:
+
+```bash
+set -g @dracula-synchronize-panes-refresh-rate "0.5"  # default: unset
+```
+
+**Note:** This only takes precedence for the synchronize-panes widget. This means it won't
+override the global `@dracula-refresh-rate`.
+
+Alternatively, you can automatically hide the label when sync is `off`:
+
+```bash
+set -g @dracula-synchronize-panes-auto-hide true  # default: false
+```
 
 ### sys-temp - [up](#table-of-contents)
 
@@ -917,6 +945,12 @@ Hide your location
 
 ```bash
 set -g @dracula-show-location false
+```
+Hide the weather plugin output when an error occurs (prints an empty string instead of "Weather Unavailable" / "Unknown Location").
+This is especially useful together with `set -g @dracula-show-empty-plugins false`.
+
+```bash
+set -g @dracula-weather-hide-errors true
 ```
 
 ### custom:script-name - [up](#table-of-contents)
