@@ -412,6 +412,11 @@ Show the current repository name in the status bar
 set -g @dracula-git-show-repo-name true
 ```
 
+Limit the maximum length of git branch names displayed in the status bar. Truncation is disabled by default.
+```bash
+set -g @dracula-git-truncate-length 10
+```
+
 ### gpu-info - [up](#table-of-contents)
 
 These widgets display the current computational, ram, and power usage of installed graphics cards.
