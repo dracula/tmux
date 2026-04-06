@@ -10,6 +10,7 @@ IFS=' ' read -r -a no_repo_message <<< $(get_tmux_option "@dracula-git-no-repo-m
 IFS=' ' read -r -a no_untracked_files <<< $(get_tmux_option "@dracula-git-no-untracked-files" "false")
 IFS=' ' read -r -a show_remote_status <<< $(get_tmux_option "@dracula-git-show-remote-status" "false")
 show_repo_name="$(get_tmux_option "@dracula-git-show-repo-name" "false")"
+git_truncate_length="$(get_tmux_option "@dracula-git-truncate-length" "")"
 
 # Get added, modified, updated and deleted files from git status
 getChanges()
@@ -143,6 +144,7 @@ getMessage()
 {
     if [ $(checkForGitDir) == "true" ]; then
         branch="$(getBranch)"
+        [ -n "$git_truncate_length" ] && branch="${branch:0:$git_truncate_length}"
         repo_name="$(getRepoName)"
         output=""
 
