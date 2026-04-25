@@ -16,8 +16,6 @@ count_clients() {
 }
 
 main() {
-  # storing the refresh rate in the variable RATE, default is 5
-  RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
   clients_count=$(count_clients)
   clients_minimum=$(get_tmux_option "@dracula-clients-minimum" 1)
   if (( $clients_count >= $clients_minimum )); then
@@ -28,7 +26,6 @@ main() {
     fi
     echo "$clients_count $clients_label"
   fi
-  sleep $RATE
 }
 
 # run main driver
