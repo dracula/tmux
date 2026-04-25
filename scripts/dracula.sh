@@ -314,7 +314,7 @@ main() {
 
     elif [ $plugin = "weather" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-weather-colors" "orange dark_gray")
-      script="#($current_dir/weather_wrapper.sh $show_fahrenheit $show_location '$fixed_location' $weather_hide_errors)"
+      script="#($current_dir/weather_wrapper.sh $show_fahrenheit $show_location '"$fixed_location"' $weather_hide_errors)"
 
     elif [ $plugin = "time" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-time-colors" "dark_purple white")
