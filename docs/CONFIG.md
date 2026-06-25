@@ -863,10 +863,16 @@ This widget displays the system temperature.
 
 ### terraform - [up](#table-of-contents)
 
-**TODO**
+Add prefix label before workspace
 
-```
+```bash
 set -g @dracula-terraform-label ""
+```
+
+To use a Terraform fork like `tofu`
+
+```bash
+set -g @dracula-terraform-fork "tofu"
 ```
 
 `set -g @dracula-refresh-rate 5` affects this widget
