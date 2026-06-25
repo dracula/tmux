@@ -22,7 +22,11 @@ get_ssid()
   # Check OS
   case $(uname -s) in
     Linux)
-      SSID=$(iw dev | sed -nr 's/^\t\tssid (.*)/\1/p')
+      if grep -qi microsoft /proc/version 2>/dev/null && command -v netsh.exe &>/dev/null; then
+        SSID=$(netsh.exe wlan show interfaces 2>/dev/null | sed -nr 's/^\s*SSID\s*:\s*(.+)/\1/p' | head -1 | tr -d '\r')
+      else
+        SSID=$(iw dev | sed -nr 's/^\t\tssid (.*)/\1/p')
+      fi
       if [ -n "$SSID" ]; then
         echo "$wifi_label$SSID"
       else
