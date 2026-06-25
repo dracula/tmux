@@ -6,7 +6,8 @@ hide_arn_from_cluster=$1
 extract_account=$2
 hide_user=$3
 just_current_context=$4
-label=$5
+hide_no_config=$5
+label=$6
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
@@ -35,6 +36,11 @@ main()
   # storing the refresh rate in the variable RATE, default is 5
   RATE=$(get_tmux_option "@dracula-refresh-rate" 5)
   OUTPUT_STRING=""
+
+  if [ ! -f ~/.kube/config ] && [ "$hide_no_config" = "true" ]
+  then
+    return
+  fi
 
   if [ "$just_current_context" = "true" ]
   then
