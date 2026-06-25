@@ -3,7 +3,8 @@
 export LC_ALL=en_US.UTF-8
 
 tf_fork=$1
-label=$2
+tf_hide_status=$2
+label=$3
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
@@ -16,6 +17,8 @@ main() {
   if [ -d $terraform_dir ]; then
     current_workspace=$($tf_fork workspace show 2>/dev/null)
     OUTPUT_STRING="${current_workspace}"
+  elif [ "$tf_hide_status" = "true" ]; then
+    return
   fi
   if [ "$label" = "" ]
   then
