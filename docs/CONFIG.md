@@ -359,7 +359,7 @@ set -g @dracula-cwd-max-chars "0"
 
 ### fossil - [up](#table-of-contents)
 
-**TODO**
+Fossil has no configurable options
 
 ### git - [up](#table-of-contents)
 
