@@ -875,6 +875,12 @@ To use a Terraform fork like `tofu`
 set -g @dracula-terraform-fork "tofu"
 ```
 
+To hide the plugin when a `.terraform` isn't present
+
+```bash
+set -g @dracula-terraform-hide true
+```
+
 `set -g @dracula-refresh-rate 5` affects this widget
 
 ### time - [up](#table-of-contents)
