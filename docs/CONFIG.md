@@ -527,20 +527,26 @@ set -g @dracula-kubernetes-context-label "Some Label"
 
 Hide user from the context string
 
-```
+```bash
 set -g @dracula-kubernetes-hide-user true
 ```
 
 Hide ARN (show only cluster name) - Available for EKS only (only available for cluster names that are ARNs)
 
-```
+```bash
 set -g @dracula-kubernetes-eks-hide-arn true
 ```
 
 Extract the account as a prefix to the cluster name - Available for EKS only (only available for cluster names that are ARNs)
 
-```
+```bash
 set -g @dracula-kubernetes-eks-extract-account true
+```
+
+Combine the above options and show only the Kubernetes Context
+
+```bash
+set -g @dracula-show-only-kubernetes-context true
 ```
 
 ### libreview - [up](#table-of-contents)
