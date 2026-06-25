@@ -549,6 +549,12 @@ Combine the above options and show only the Kubernetes Context
 set -g @dracula-show-only-kubernetes-context true
 ```
 
+Hide empty plugin when the `~/.kube/config` file is missing
+
+```bash
+set -g @dracula-kubernetes-hide-no-config true
+```
+
 ### libreview - [up](#table-of-contents)
 
 This script retrieves and displays continuous glucose monitoring (CGM) data from the LibreView API.
