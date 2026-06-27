@@ -171,7 +171,8 @@ main() {
   tmux set-option -g pane-border-style "fg=${gray}"
 
   # message styling
-  tmux set-option -g message-style "bg=${gray},fg=${white}"
+  # 'fill' (tmux 3.7+) covers the status line under overlays.
+  tmux set-option -g message-style "bg=${gray},fg=${white},fill=${gray}"
 
   # status bar
   tmux set-option -g status-style "bg=${bg_color},fg=${white}"
