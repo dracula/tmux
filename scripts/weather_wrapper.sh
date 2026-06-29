@@ -28,7 +28,7 @@ function main() {
 
   if (((_now - _last) > INTERVAL)); then
     # Run weather script here
-    "${_current_dir}/weather.sh" "$_show_fahrenheit" "$_show_location" "$_location" "$_hide_errors" >"${DATAFILE}"
+    "${_current_dir}/weather.sh" $_show_fahrenheit $_show_location "$_location" $_hide_errors >"${DATAFILE}"
     printf '%s' "$_now" >"${LAST_EXEC_FILE}"
   fi
 
