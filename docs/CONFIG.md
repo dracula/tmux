@@ -976,3 +976,13 @@ set -g @dracula-weather-hide-errors true
 
 For testing/ running custom plugins, put the bash script into the scripts directory of dracula/tmux plugin.
 Additionally, in the `@dracula-plugins` option, add the script as `custom:name-of-script.sh`.
+
+Each custom plugin can have its own colors, just like a packaged plugin, by setting
+`@dracula-custom-<name-of-script>-colors "bg fg"` (the `custom-` prefix avoids clashing with a
+packaged plugin's own `@dracula-<name-of-script>-colors` option, should one exist). If unset, it
+falls back to `@dracula-custom-plugin-colors "bg fg"`, and then to dracula defaults.
+
+```bash
+set -g @dracula-plugins "custom:docker.sh"
+set -g @dracula-custom-docker-colors "blue dark_gray"
+```
