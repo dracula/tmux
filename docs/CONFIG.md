@@ -718,6 +718,11 @@ Set verbose to true in order to see the VPNs IP or name of Tailscale exit node.
 set -g @dracula-network-vpn-verbose true
 ```
 
+Set the interface to check for VPN connection (default to `tun0`)
+```
+set -g @dracula-network-vpn-interface proton0
+```
+
 Set the widgets label like so:
 ```bash
 set -g @dracula-network-vpn-label "󰌘 "
