@@ -13,8 +13,10 @@ vpn_function() {
 
     verbose=$(get_tmux_option "@dracula-network-vpn-verbose" false)
 
-    # Show IP of tun0 if connected
-    vpn=$(ip -o -4 addr show dev tun0 | awk '{print $4}' | cut -d/ -f1)
+    # Show IP of the VPN interface if connected (defaults to tun0, override
+    # with e.g. `set -g @dracula-network-vpn-interface "proton0"` for Proton VPN)
+    vpn_interface=$(get_tmux_option "@dracula-network-vpn-interface" "tun0")
+    vpn=$(ip -o -4 addr show dev "$vpn_interface" 2>/dev/null | awk '{print $4}' | cut -d/ -f1)
 
     which -s tailscale > /dev/null
     tailscale_installed=$?
