@@ -196,7 +196,13 @@ main() {
     if case $plugin in custom:*) true;; *) false;; esac; then
       script=${plugin#"custom:"}
       if [[ -x "${current_dir}/${script}" ]]; then
-        IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-custom-plugin-colors" "cyan dark_gray")
+        custom_plugin_name=$(basename "${script}")
+        custom_plugin_name=${custom_plugin_name%.sh}
+        custom_plugin_colors=$(get_tmux_option "@dracula-custom-${custom_plugin_name}-colors" "")
+        if [ -z "$custom_plugin_colors" ]; then
+          custom_plugin_colors=$(get_tmux_option "@dracula-custom-plugin-colors" "cyan dark_gray")
+        fi
+        IFS=' ' read -r -a colors <<<"$custom_plugin_colors"
         script="#($current_dir/${script})"
       else
         colors[0]="red"
