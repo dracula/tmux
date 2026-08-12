@@ -197,7 +197,7 @@ main() {
       script=${plugin#"custom:"}
       if [[ -x "${current_dir}/${script}" ]]; then
         IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-custom-plugin-colors" "cyan dark_gray")
-        script="#($current_dir/${script})"
+        script="#($current_dir/${script} #{session_name})"
       else
         colors[0]="red"
         colors[1]="dark_gray"
@@ -212,22 +212,22 @@ main() {
     elif [ $plugin = "cwd" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-cwd-colors" "dark_gray white")
       tmux set-option -g status-right-length 250
-      script="#($current_dir/cwd.sh)"
+      script="#($current_dir/cwd.sh #{session_name})"
 
     elif [ $plugin = "fossil" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-fossil-colors" "green dark_gray")
       tmux set-option -g status-right-length 250
-      script="#($current_dir/fossil.sh)"
+      script="#($current_dir/fossil.sh #{session_name})"
 
     elif [ $plugin = "git" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-git-colors" "green dark_gray")
       tmux set-option -g status-right-length 250
-      script="#($current_dir/git.sh)"
+      script="#($current_dir/git.sh #{session_name})"
 
     elif [ $plugin = "hg" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-hg-colors" "green dark_gray")
       tmux set-option -g status-right-length 250
-      script="#($current_dir/hg.sh)"
+      script="#($current_dir/hg.sh #{session_name})"
 
     elif [ $plugin = "battery" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-battery-colors" "pink dark_gray")
