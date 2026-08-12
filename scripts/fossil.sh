@@ -48,20 +48,14 @@ for i in $(cd $path; fossil changes --differ|cut -f1 -d' ')
 }
 
 
-# getting the #{pane_current_path} from dracula.sh is no longer possible
 getPaneDir()
 {
- nextone="false"
- for i in $(tmux list-panes -F "#{pane_active} #{pane_current_path}");
- do
-    if [ "$nextone" == "true" ]; then
-       echo $i
-       return
-    fi 
-    if [ "$i" == "1" ]; then
-        nextone="true"
+    local session="$1"
+    if [ -n "$session" ]; then
+        tmux list-panes -t "$session" -f '#{pane_active}' -F "#{pane_current_path}" 2>/dev/null
+    else
+        tmux list-panes -f '#{pane_active}' -F "#{pane_current_path}" 2>/dev/null
     fi
-  done
 }
 
 
@@ -169,10 +163,10 @@ getMessage()
 }
 
 main()
-{  
-    path=$(getPaneDir)
+{
+    path=$(getPaneDir "$1")
     getMessage
 }
 
 #run main driver program
-main 
+main "$@"

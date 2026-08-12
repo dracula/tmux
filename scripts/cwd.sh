@@ -5,18 +5,16 @@ source "$current_dir/utils.sh"
 
 # return current working directory of tmux pane
 getPaneDir() {
-  nextone="false"
-  ret=""
-  for i in $(tmux list-panes -F "#{pane_active} #{pane_current_path}"); do
-    [ "$i" == "1" ] && nextone="true" && continue
-    [ "$i" == "0" ] && nextone="false"
-    [ "$nextone" == "true" ] && ret+="$i "
-  done
-  echo "${ret%?}"
+  local session="$1"
+  if [ -n "$session" ]; then
+    tmux list-panes -t "$session" -f '#{pane_active}' -F "#{pane_current_path}" 2>/dev/null
+  else
+    tmux list-panes -f '#{pane_active}' -F "#{pane_current_path}" 2>/dev/null
+  fi
 }
 
 main() {
-  path="$(getPaneDir)"
+  path="$(getPaneDir "$1")"
 
   if [[ "$path" == "$HOME" ]]; then
     echo "~"
@@ -50,4 +48,4 @@ main() {
 }
 
 #run main driver program
-main
+main "$@"
