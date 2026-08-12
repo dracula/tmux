@@ -22,9 +22,12 @@ get_tmux_window_option() {
   fi
 }
 
-# getting the #{pane_current_path} from dracula.sh is no longer possible
+# Print the current path of the active pane of session $1.
+# Without $1, tmux picks an arbitrary session, possibly the wrong one.
 get_pane_dir() {
-  tmux list-panes -F "#{pane_active} #{pane_current_path}" | while read -r active dir; do
+  local target=()
+  [ -n "$1" ] && target=(-t "$1")
+  tmux list-panes "${target[@]}" -F "#{pane_active} #{pane_current_path}" 2>/dev/null | while read -r active dir; do
     if [ "$active" == "1" ]; then
       echo "$dir"
       return

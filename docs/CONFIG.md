@@ -977,6 +977,13 @@ set -g @dracula-weather-hide-errors true
 For testing/ running custom plugins, put the bash script into the scripts directory of dracula/tmux plugin.
 Additionally, in the `@dracula-plugins` option, add the script as `custom:name-of-script.sh`.
 
+The script receives the id of the tmux session whose status bar is being rendered (e.g. `$3`) as its first argument.
+Use it to target that session in tmux commands, e.g. to get the path of its active pane:
+
+```bash
+tmux list-panes -t "$1" -F '#{pane_active}#{pane_current_path}' | sed -n 's/^1//p'
+```
+
 Each custom plugin can have its own colors, just like a packaged plugin, by setting
 `@dracula-custom-<name-of-script>-colors "bg fg"`, using the full script name including any file
 extension (e.g. `@dracula-custom-docker.sh-colors`). The `custom-` prefix avoids clashing with a
