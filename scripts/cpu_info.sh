@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # setting the locale, some users have issues with different locales, this forces the correct one
-export LC_ALL=en_US.UTF-8
+export LC_ALL=C
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
@@ -9,7 +9,7 @@ get_percent()
 {
   case $(uname -s) in
     Linux)
-      percent=$(LC_NUMERIC=en_US.UTF-8 top -bn2 -d 0.01 | grep "[C]pu(s)" | tail -1 | sed "s/.*, *\([0-9.]*\)%* id, *\([0-9.]*\)%* wa.*/\1 \2/" | awk '{usage = 100 - $1 - $2; if (usage < 0.005) usage = 0; printf usage"%"}')
+      percent=$(top -bn2 -d 0.01 | grep "[C]pu(s)" | tail -1 | sed "s/.*, *\([0-9.]*\)%* id, *\([0-9.]*\)%* wa.*/\1 \2/" | awk '{usage = 100 - $1 - $2; if (usage < 0.005) usage = 0; printf usage"%"}')
       normalize_percent_len $percent
       ;;
 
