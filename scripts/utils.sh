@@ -34,3 +34,32 @@ normalize_percent_len() {
   printf "%${left_spaces}s%s%${right_spaces}s\n" "" $1 ""
 }
 
+# Create a slice of the text to show currently in the module
+# arg1: The full string
+# arg2: Where to start the loop from
+# arg3: The length of characters to display
+slice_text() {
+  local str="$1"
+  local start="$2"
+  local how_many="$3"
+
+  # Check that the string is not empty
+  if [[ -z $str ]]; then
+    echo ""
+    return 0
+  fi
+
+  local len=${#str}
+
+  local result=""
+  # Capture the strings to show
+  for ((i = 0; i < how_many; i++)); do
+    local index=$(((start + i) % len))
+    local char="${str:index:1}"
+
+    # Append the character to show
+    result="$result$char"
+  done
+
+  echo "$result"
+}
