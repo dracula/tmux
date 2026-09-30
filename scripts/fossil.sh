@@ -18,7 +18,7 @@ getChanges()
    declare -i updated=0;
    declare -i deleted=0;
 
-for i in $(cd $path; fossil changes --differ|cut -f1 -d' ')
+for i in $(cd "$path"; fossil changes --differ|cut -f1 -d' ')
 
     do
       case $i in 
@@ -51,15 +51,11 @@ for i in $(cd $path; fossil changes --differ|cut -f1 -d' ')
 # getting the #{pane_current_path} from dracula.sh is no longer possible
 getPaneDir()
 {
- nextone="false"
- for i in $(tmux list-panes -F "#{pane_active} #{pane_current_path}");
+ tmux list-panes -F "#{pane_active} #{pane_current_path}" | while read -r active dir;
  do
-    if [ "$nextone" == "true" ]; then
-       echo $i
+    if [ "$active" == "1" ]; then
+       echo "$dir"
        return
-    fi 
-    if [ "$i" == "1" ]; then
-        nextone="true"
     fi
   done
 }
@@ -80,7 +76,7 @@ checkEmptySymbol()
 checkForChanges()
 {
     if [ "$(checkForFossilDir)" == "true" ]; then
-        if [ "$(cd $path; fossil changes --differ)" != "" ]; then
+        if [ "$(cd "$path"; fossil changes --differ)" != "" ]; then
             echo "true"
         else
             echo "false"
@@ -93,7 +89,7 @@ checkForChanges()
 # check if a git repo exists in the directory
 checkForFossilDir()
 {
-    if [ -f ${path}/.fslckout ]; then
+    if [ -f "${path}/.fslckout" ]; then
         echo "true"
     else
         echo "false"
@@ -104,7 +100,7 @@ checkForFossilDir()
 getBranch()
 {   
     if [ $(checkForFossilDir) == "true" ]; then
-        echo $(cd $path; fossil branch current)
+        echo $(cd "$path"; fossil branch current)
     else
         echo $no_repo_message
     fi
@@ -112,7 +108,7 @@ getBranch()
 
 getRemoteInfo()
 {
-    base=$(cd $path; fossil branch current)
+    base=$(cd "$path"; fossil branch current)
     remote=$(echo "$base" | cut -d" " -f1)
     out=""
 
