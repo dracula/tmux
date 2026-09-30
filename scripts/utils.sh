@@ -22,6 +22,16 @@ get_tmux_window_option() {
   fi
 }
 
+# getting the #{pane_current_path} from dracula.sh is no longer possible
+get_pane_dir() {
+  tmux list-panes -F "#{pane_active} #{pane_current_path}" | while read -r active dir; do
+    if [ "$active" == "1" ]; then
+      echo "$dir"
+      return
+    fi
+  done
+}
+
 # normalize the percentage string to always have a length of 5
 normalize_percent_len() {
   # the max length that the percent can reach, which happens for a two digit number with a decimal house: "99.9%"

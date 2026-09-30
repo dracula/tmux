@@ -51,19 +51,6 @@ for i in $(hg -R "$path" status -admru)
 }
 
 
-# getting the #{pane_current_path} from dracula.sh is no longer possible
-getPaneDir()
-{
- tmux list-panes -F "#{pane_active} #{pane_current_path}" | while read -r active dir;
- do
-    if [ "$active" == "1" ]; then
-       echo "$dir"
-       return
-    fi
-  done
-}
-
-
 # check if the current or diff symbol is empty to remove ugly padding
 checkEmptySymbol()
 {
@@ -151,7 +138,7 @@ getMessage()
 
 main()
 {
-    path=$(getPaneDir)
+    path=$(get_pane_dir)
     getMessage
 }
 
