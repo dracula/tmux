@@ -5,6 +5,7 @@ set -g @dracula-attached-clients-colors "cyan dark_gray"
 set -g @dracula-battery-colors "pink dark_gray"
 set -g @dracula-continuum-colors "cyan dark_gray"
 set -g @dracula-cpu-usage-colors "orange dark_gray"
+set -g @dracula-custom-<name-of-script>-colors "cyan dark_gray"
 set -g @dracula-custom-plugin-colors "cyan dark_gray"
 set -g @dracula-cwd-colors "dark_gray white"
 set -g @dracula-fossil-colors "green dark_gray"
@@ -30,6 +31,8 @@ set -g @dracula-time-colors "dark_purple white"
 set -g @dracula-tmux-ram-usage-colors "cyan dark_gray"
 set -g @dracula-weather-colors "orange dark_gray"
 ```
+
+per-plugin colors for custom scripts are covered in [custom:script-name](/docs/CONFIG.md#customscript-name---up).
 
 # overriding color variables
 
