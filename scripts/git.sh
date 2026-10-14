@@ -20,7 +20,7 @@ getChanges()
    declare -i updated=0;
    declare -i deleted=0;
 
-for i in $(git -C $path --no-optional-locks status -s)
+for i in $(git -C "$path" --no-optional-locks status -s)
 
     do
       case $i in 
@@ -50,23 +50,6 @@ for i in $(git -C $path --no-optional-locks status -s)
 }
 
 
-# getting the #{pane_current_path} from dracula.sh is no longer possible
-getPaneDir()
-{
- nextone="false"
- for i in $(tmux list-panes -F "#{pane_active} #{pane_current_path}");
- do
-    if [ "$nextone" == "true" ]; then
-       echo $i
-       return
-    fi 
-    if [ "$i" == "1" ]; then
-        nextone="true"
-    fi
-  done
-}
-
-
 # check if the current or diff symbol is empty to remove ugly padding
 checkEmptySymbol()
 {
@@ -83,7 +66,7 @@ checkForChanges()
 {
     [ $no_untracked_files == "false" ] && no_untracked="" || no_untracked="-uno"
     if [ "$(checkForGitDir)" == "true" ]; then
-        if [ "$(git -C $path --no-optional-locks status -s $no_untracked)" != "" ]; then
+        if [ "$(git -C "$path" --no-optional-locks status -s $no_untracked)" != "" ]; then
             echo "true"
         else
             echo "false"
@@ -96,7 +79,7 @@ checkForChanges()
 # check if a git repo exists in the directory
 checkForGitDir()
 {
-    if [ "$(git -C $path rev-parse --abbrev-ref HEAD)" != "" ]; then
+    if [ -n "$path" ] && [ "$(git -C "$path" rev-parse --abbrev-ref HEAD)" != "" ]; then
         echo "true"
     else
         echo "false"
@@ -107,7 +90,7 @@ checkForGitDir()
 getBranch()
 {   
     if [ $(checkForGitDir) == "true" ]; then
-        echo $(git -C $path rev-parse --abbrev-ref HEAD)
+        echo $(git -C "$path" rev-parse --abbrev-ref HEAD)
     else
         echo $no_repo_message
     fi
@@ -115,7 +98,7 @@ getBranch()
 
 getRemoteInfo()
 {
-    base=$(git -C $path for-each-ref --format='%(upstream:short) %(upstream:track)' "$(git -C $path symbolic-ref -q HEAD)")
+    base=$(git -C "$path" for-each-ref --format='%(upstream:short) %(upstream:track)' "$(git -C "$path" symbolic-ref -q HEAD)")
     remote=$(echo "$base" | cut -d" " -f1)
     out=""
 
@@ -183,7 +166,7 @@ getMessage()
 
 main()
 {  
-    path=$(getPaneDir)
+    path=$(get_pane_dir)
     getMessage
 }
 

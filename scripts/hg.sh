@@ -18,7 +18,7 @@ getChanges()
    declare -i removed=0;
    declare -i untracked=0;
 
-for i in $(hg -R $path status -admru)
+for i in $(hg -R "$path" status -admru)
     do
       case $i in
       'A')
@@ -51,23 +51,6 @@ for i in $(hg -R $path status -admru)
 }
 
 
-# getting the #{pane_current_path} from dracula.sh is no longer possible
-getPaneDir()
-{
- nextone="false"
- for i in $(tmux list-panes -F "#{pane_active} #{pane_current_path}");
- do
-    if [ "$nextone" == "true" ]; then
-       echo $i
-       return
-    fi
-    if [ "$i" == "1" ]; then
-        nextone="true"
-    fi
-  done
-}
-
-
 # check if the current or diff symbol is empty to remove ugly padding
 checkEmptySymbol()
 {
@@ -84,7 +67,7 @@ checkForChanges()
 {
     [ $no_untracked_files == "false" ] && no_untracked="-u" || no_untracked=""
     if [ "$(checkForHgDir)" == "true" ]; then
-        if [ "$(hg -R $path status -admr $no_untracked)" != "" ]; then
+        if [ "$(hg -R "$path" status -admr $no_untracked)" != "" ]; then
             echo "true"
         else
             echo "false"
@@ -97,7 +80,7 @@ checkForChanges()
 # check if a hg repo exists in the directory
 checkForHgDir()
 {
-    if [ "$(hg -R $path branch)" != "" ]; then
+    if [ -n "$path" ] && [ "$(hg -R "$path" branch)" != "" ]; then
         echo "true"
     else
         echo "false"
@@ -108,7 +91,7 @@ checkForHgDir()
 getBranch()
 {
     if [ $(checkForHgDir) == "true" ]; then
-        echo $(hg -R $path branch)
+        echo $(hg -R "$path" branch)
     else
         echo $no_repo_message
     fi
@@ -155,7 +138,7 @@ getMessage()
 
 main()
 {
-    path=$(getPaneDir)
+    path=$(get_pane_dir)
     getMessage
 }
 
