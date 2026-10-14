@@ -41,6 +41,16 @@ get_ssid()
 
       ifname=$(_get_wifi_ifname)
 
+      # Only report a Wi-Fi network when the interface is actually associated. Otherwise the
+      # fallback below can surface a saved/preferred SSID (listpreferredwirelessnetworks) and
+      # show a stale name -- e.g. an old hotspot -- whenever Wi-Fi is off but the machine is
+      # online via Ethernet. Association state stays readable even though the SSID itself is
+      # gated behind Location Services on macOS 15+.
+      if [[ "$(ifconfig "$ifname" 2>/dev/null | awk '/status:/ {print $2}')" != "active" ]]; then
+        echo "$ethernet_label"
+        return
+      fi
+
       # string manipulation required to remove the minor version of the macos version (e.g. x.y.z removes .z)
       # this is required to prevent issues in version detection
       #
