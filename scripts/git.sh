@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Usage: git.sh [session_id]
+#   session_id: tmux session to query, e.g. $3 (passed by dracula.sh)
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
@@ -165,10 +167,10 @@ getMessage()
 }
 
 main()
-{  
-    path=$(get_pane_dir)
+{
+    path=$(get_pane_dir "$1")
     getMessage
 }
 
 #run main driver program
-main 
+main "$@"

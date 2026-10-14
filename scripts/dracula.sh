@@ -198,7 +198,7 @@ main() {
       if [[ -x "${current_dir}/${script}" ]]; then
         default_custom_plugin_colors=$(get_tmux_option "@dracula-custom-plugin-colors" "cyan dark_gray")
         IFS=' ' read -r -a colors <<<"$(get_tmux_option "@dracula-custom-${script}-colors" "$default_custom_plugin_colors")"
-        script="#($current_dir/${script})"
+        script="#($current_dir/${script} #{q:session_id})"
       else
         colors[0]="red"
         colors[1]="dark_gray"
@@ -213,22 +213,22 @@ main() {
     elif [ $plugin = "cwd" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-cwd-colors" "dark_gray white")
       tmux set-option -g status-right-length 250
-      script="#($current_dir/cwd.sh)"
+      script="#($current_dir/cwd.sh #{q:session_id})"
 
     elif [ $plugin = "fossil" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-fossil-colors" "green dark_gray")
       tmux set-option -g status-right-length 250
-      script="#($current_dir/fossil.sh)"
+      script="#($current_dir/fossil.sh #{q:session_id})"
 
     elif [ $plugin = "git" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-git-colors" "green dark_gray")
       tmux set-option -g status-right-length 250
-      script="#($current_dir/git.sh)"
+      script="#($current_dir/git.sh #{q:session_id})"
 
     elif [ $plugin = "hg" ]; then
       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-hg-colors" "green dark_gray")
       tmux set-option -g status-right-length 250
-      script="#($current_dir/hg.sh)"
+      script="#($current_dir/hg.sh #{q:session_id})"
 
     elif [ $plugin = "battery" ]; then
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-battery-colors" "pink dark_gray")
@@ -277,7 +277,7 @@ main() {
 
     elif [ $plugin = "attached-clients" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-attached-clients-colors" "cyan dark_gray")
-      script="#($current_dir/attached_clients.sh)"
+      script="#($current_dir/attached_clients.sh #{q:session_id})"
 
 
      elif [ $plugin = "mac-player" ]; then
