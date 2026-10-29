@@ -728,6 +728,11 @@ Set the widgets label like so:
 set -g @dracula-network-vpn-label "󰌘 "
 ```
 
+Set displayed label if no VPN is connected (default to " "):
+```bash
+set -g @dracula-network-vpn-not-found-label "NO VPN"
+```
+
 ### playerctl - [up](#table-of-contents)
 
 This widget displays playerctl info.
